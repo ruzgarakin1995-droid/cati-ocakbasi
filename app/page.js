@@ -887,7 +887,14 @@ export default function Home() {
                     {cartTotal < threshold && <span style={{ fontSize: '13px', color: '#999', fontStyle: 'italic', fontWeight: '500' }}>Ortalama kurye ücretimiz: {courierFee} ₺'dir.</span>}
                   </div>
 
-                  <button className="btn-checkout-premium compact-btn" onClick={() => setCheckoutStep(2)} style={{ width: '100%', padding: '14px', borderRadius: '8px', background: 'var(--primary-color)', color: '#000', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
+                  <button className="btn-checkout-premium compact-btn" onClick={() => {
+                    const minAmount = data.settings?.minOrderAmount || 0;
+                    if (cartTotal < minAmount) {
+                      alert(`Sipariş verebilmek için minimum sepet tutarı ${minAmount} ₺ olmalıdır. Lütfen sepetinize ürün eklemeye devam ediniz.`);
+                      return;
+                    }
+                    setCheckoutStep(2);
+                  }} style={{ width: '100%', padding: '14px', borderRadius: '8px', background: 'var(--primary-color)', color: '#000', fontWeight: 'bold', border: 'none', cursor: 'pointer' }}>
                     Devam Et <i className="fa-solid fa-arrow-right"></i>
                   </button>
                 </>

@@ -1889,6 +1889,11 @@ function SettingsTab({ settings, reload }) {
           </label>
           
           <label style={{ display: 'block', marginBottom: 16 }}>
+            <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Minimum Sipariş Tutarı (TL)</div>
+            <input type="number" className="admin-input" value={form.minOrderAmount || ''} onChange={e => setForm({...form, minOrderAmount: Number(e.target.value)})} />
+          </label>
+          
+          <label style={{ display: 'block', marginBottom: 16 }}>
             <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Ortalama Kurye Ücreti (Sepet İçi Uyarı) (TL)</div>
             <input type="number" className="admin-input" value={form.courierFee || ''} onChange={e => setForm({...form, courierFee: Number(e.target.value)})} />
           </label>
