@@ -413,7 +413,7 @@ export default function Home() {
           </div>
         </div>
         <div className="container hero-info" style={{ marginTop: '16px' }}>
-          <span className="info-badge rating"><i className="fa-solid fa-star"></i> 5.0 (60 Yorum)</span>
+          <span className="info-badge rating"><i className="fa-solid fa-star"></i> {data.settings?.ratingValue || '5.0'} ({data.settings?.ratingCount || '60'} Yorum)</span>
           <span className="info-badge"><i className="fa-solid fa-bag-shopping"></i> Gel-al</span>
           <span className="info-badge"><i className="fa-solid fa-motorcycle"></i> Adrese Teslim</span>
         </div>

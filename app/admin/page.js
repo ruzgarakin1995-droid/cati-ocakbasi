@@ -1892,6 +1892,16 @@ function SettingsTab({ settings, reload }) {
             <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Ortalama Kurye Ücreti (Sepet İçi Uyarı) (TL)</div>
             <input type="number" className="admin-input" value={form.courierFee || ''} onChange={e => setForm({...form, courierFee: Number(e.target.value)})} />
           </label>
+
+          <label style={{ display: 'block', marginBottom: 16 }}>
+            <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Google Yıldız Puanı (Örn: 5.0)</div>
+            <input type="text" className="admin-input" value={form.ratingValue || ''} onChange={e => setForm({...form, ratingValue: e.target.value})} placeholder="5.0" />
+          </label>
+          
+          <label style={{ display: 'block', marginBottom: 16 }}>
+            <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Google Yorum Sayısı (Örn: 60)</div>
+            <input type="text" className="admin-input" value={form.ratingCount || ''} onChange={e => setForm({...form, ratingCount: e.target.value})} placeholder="60" />
+          </label>
         </div>
 
         {/* Links */}
