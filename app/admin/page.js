@@ -2041,14 +2041,14 @@ function DesignTab({ settings, reload }) {
 
   const THEME_BACKGROUNDS = [
     { id: 'default', name: 'Sade (Varsayılan)', bg: 'none', icon: 'fa-solid fa-ban' },
-    { id: 'cafe', name: 'Kafe & Pastane', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='2.5' fill='#9ca3af' fill-opacity='0.4'/></svg>`), icon: 'fa-solid fa-cookie' },
-    { id: 'coffee', name: 'Kahve Teması', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M0 40L40 0M-10 10L10 -10M30 50L50 30' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.2'/></svg>`), icon: 'fa-solid fa-mug-hot' },
-    { id: 'doner', name: 'Dönerci Teması', bg: getSvgBg(`<svg width='40' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M0 10 Q 10 0, 20 10 T 40 10' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.25'/></svg>`), icon: 'fa-solid fa-utensils' },
-    { id: 'fastfood', name: 'Fast Food', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><rect width='20' height='20' fill='#9ca3af' fill-opacity='0.15'/><rect x='20' y='20' width='20' height='20' fill='#9ca3af' fill-opacity='0.15'/></svg>`), icon: 'fa-solid fa-burger' },
-    { id: 'kebap', name: 'Kebapçı Teması', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M20 0v40M0 20h40' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.2'/></svg>`), icon: 'fa-solid fa-fire-burner' },
-    { id: 'midye', name: 'Kokoreç & Midye', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='14' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.25'/></svg>`), icon: 'fa-solid fa-lemon' },
-    { id: 'seafood', name: 'Deniz Ürünleri', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M0 40 L40 0 Z' fill='none' stroke='#9ca3af' stroke-opacity='0.2' stroke-width='3'/></svg>`), icon: 'fa-solid fa-fish' },
-    { id: 'candy', name: 'Şeker Teması', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M20 0 L40 20 L20 40 L0 20 Z' fill='none' stroke='#9ca3af' stroke-opacity='0.2' stroke-width='2'/></svg>`), icon: 'fa-solid fa-candy-cane' }
+    { id: 'dots', name: 'Noktalı Desen', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='2.5' fill='#9ca3af' fill-opacity='0.4'/></svg>`), icon: 'fa-solid fa-ellipsis' },
+    { id: 'diagonal', name: 'Çapraz Çizgiler', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M0 40L40 0M-10 10L10 -10M30 50L50 30' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.2'/></svg>`), icon: 'fa-solid fa-slash' },
+    { id: 'waves', name: 'Dalgalı Desen', bg: getSvgBg(`<svg width='40' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M0 10 Q 10 0, 20 10 T 40 10' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.25'/></svg>`), icon: 'fa-solid fa-water' },
+    { id: 'checkers', name: 'Kareli Desen', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><rect width='20' height='20' fill='#9ca3af' fill-opacity='0.15'/><rect x='20' y='20' width='20' height='20' fill='#9ca3af' fill-opacity='0.15'/></svg>`), icon: 'fa-solid fa-chess-board' },
+    { id: 'grid', name: 'Izgara Desen', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M20 0v40M0 20h40' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.2'/></svg>`), icon: 'fa-solid fa-table-cells' },
+    { id: 'rings', name: 'Halkalı Desen', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='14' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.25'/></svg>`), icon: 'fa-solid fa-bullseye' },
+    { id: 'zigzag', name: 'Geometrik Desen', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M0 40 L40 0 Z' fill='none' stroke='#9ca3af' stroke-opacity='0.2' stroke-width='3'/></svg>`), icon: 'fa-solid fa-shapes' },
+    { id: 'diamonds', name: 'Elmas Desen', bg: getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M20 0 L40 20 L20 40 L0 20 Z' fill='none' stroke='#9ca3af' stroke-opacity='0.2' stroke-width='2'/></svg>`), icon: 'fa-regular fa-gem' }
   ];
 
   const THEME_COLORS = [
