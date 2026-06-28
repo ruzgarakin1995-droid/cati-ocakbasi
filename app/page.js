@@ -433,14 +433,14 @@ export default function Home() {
         const getSvgBg = (svgStr) => `url("data:image/svg+xml,${encodeURIComponent(svgStr)}")`;
         
         const backgrounds = {
-          'cafe': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><circle cx='2' cy='2' r='1.5' fill='%239ca3af' fill-opacity='0.4'/></svg>`),
-          'coffee': getSvgBg(`<svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'><path d='M-2 2 l4 -4 M0 16 l16 -16 M14 18 l4 -4' stroke='%239ca3af' stroke-width='1' stroke-opacity='0.3'/></svg>`),
-          'doner': getSvgBg(`<svg width='20' height='10' xmlns='http://www.w3.org/2000/svg'><path d='M0 5 Q 5 0, 10 5 T 20 5' fill='none' stroke='%239ca3af' stroke-width='1.5' stroke-opacity='0.3'/></svg>`),
-          'fastfood': getSvgBg(`<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><rect width='12' height='12' fill='%239ca3af' fill-opacity='0.15'/><rect x='12' y='12' width='12' height='12' fill='%239ca3af' fill-opacity='0.15'/></svg>`),
-          'kebap': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M10 0v20M0 10h20' fill='none' stroke='%239ca3af' stroke-width='1' stroke-opacity='0.3'/></svg>`),
-          'midye': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><circle cx='10' cy='10' r='8' fill='none' stroke='%239ca3af' stroke-opacity='0.3'/></svg>`),
-          'seafood': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M0 20 L20 0 Z' fill='none' stroke='%239ca3af' stroke-opacity='0.3' stroke-width='2'/></svg>`),
-          'candy': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M10 0 L20 10 L10 20 L0 10 Z' fill='none' stroke='%239ca3af' stroke-opacity='0.25' stroke-width='1.5'/></svg>`)
+          'cafe': getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='2.5' fill='#9ca3af' fill-opacity='0.4'/></svg>`),
+          'coffee': getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M0 40L40 0M-10 10L10 -10M30 50L50 30' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.2'/></svg>`),
+          'doner': getSvgBg(`<svg width='40' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M0 10 Q 10 0, 20 10 T 40 10' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.25'/></svg>`),
+          'fastfood': getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><rect width='20' height='20' fill='#9ca3af' fill-opacity='0.15'/><rect x='20' y='20' width='20' height='20' fill='#9ca3af' fill-opacity='0.15'/></svg>`),
+          'kebap': getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M20 0v40M0 20h40' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.2'/></svg>`),
+          'midye': getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><circle cx='20' cy='20' r='14' fill='none' stroke='#9ca3af' stroke-width='2' stroke-opacity='0.25'/></svg>`),
+          'seafood': getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M0 40 L40 0 Z' fill='none' stroke='#9ca3af' stroke-opacity='0.2' stroke-width='3'/></svg>`),
+          'candy': getSvgBg(`<svg width='40' height='40' xmlns='http://www.w3.org/2000/svg'><path d='M20 0 L40 20 L20 40 L0 20 Z' fill='none' stroke='#9ca3af' stroke-opacity='0.2' stroke-width='2'/></svg>`)
         };
         const bgPattern = settings?.bgThemeId && backgrounds[settings.bgThemeId] ? backgrounds[settings.bgThemeId] : 'none';
 
