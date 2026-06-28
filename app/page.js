@@ -419,7 +419,7 @@ export default function Home() {
     <>
       {settings?.themeColor && (
         <style dangerouslySetInnerHTML={{__html: `
-          :root {
+          :root, body, body.light-mode {
             --accent-color: ${settings.themeColor} !important;
           }
         `}} />
