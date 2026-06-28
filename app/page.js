@@ -430,29 +430,37 @@ export default function Home() {
         }
 
         // Arka plan teması hesaplaması
-        const getEmojiBg = (emoji) => `url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='30' text-anchor='middle' dominant-baseline='central' opacity='0.08'%3E${encodeURIComponent(emoji)}%3C/text%3E%3C/svg%3E")`;
+        const getSvgBg = (svgStr) => `url("data:image/svg+xml,${encodeURIComponent(svgStr)}")`;
         
         const backgrounds = {
-          'cafe': getEmojiBg('🍰'),
-          'coffee': getEmojiBg('☕'),
-          'doner': getEmojiBg('🥙'),
-          'fastfood': getEmojiBg('🍔'),
-          'kebap': getEmojiBg('🥩'),
-          'midye': getEmojiBg('🦪'),
-          'seafood': getEmojiBg('🦐'),
-          'candy': getEmojiBg('🍬')
+          'cafe': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><circle cx='2' cy='2' r='1.5' fill='%239ca3af' fill-opacity='0.4'/></svg>`),
+          'coffee': getSvgBg(`<svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'><path d='M-2 2 l4 -4 M0 16 l16 -16 M14 18 l4 -4' stroke='%239ca3af' stroke-width='1' stroke-opacity='0.3'/></svg>`),
+          'doner': getSvgBg(`<svg width='20' height='10' xmlns='http://www.w3.org/2000/svg'><path d='M0 5 Q 5 0, 10 5 T 20 5' fill='none' stroke='%239ca3af' stroke-width='1.5' stroke-opacity='0.3'/></svg>`),
+          'fastfood': getSvgBg(`<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><rect width='12' height='12' fill='%239ca3af' fill-opacity='0.15'/><rect x='12' y='12' width='12' height='12' fill='%239ca3af' fill-opacity='0.15'/></svg>`),
+          'kebap': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M10 0v20M0 10h20' fill='none' stroke='%239ca3af' stroke-width='1' stroke-opacity='0.3'/></svg>`),
+          'midye': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><circle cx='10' cy='10' r='8' fill='none' stroke='%239ca3af' stroke-opacity='0.3'/></svg>`),
+          'seafood': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M0 20 L20 0 Z' fill='none' stroke='%239ca3af' stroke-opacity='0.3' stroke-width='2'/></svg>`),
+          'candy': getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M10 0 L20 10 L10 20 L0 10 Z' fill='none' stroke='%239ca3af' stroke-opacity='0.25' stroke-width='1.5'/></svg>`)
         };
         const bgPattern = settings?.bgThemeId && backgrounds[settings.bgThemeId] ? backgrounds[settings.bgThemeId] : 'none';
 
-        if (!settings?.themeColor && bgPattern === 'none') return null;
+        if (!settings?.themeColor && bgPattern === 'none' && !settings?.customBgImage) return null;
 
         return (
-          <style dangerouslySetInnerHTML={{__html: `
-            :root, body, body.light-mode {
-              ${settings?.themeColor ? `--accent-color: ${settings.themeColor} !important; --accent-text: ${textColor} !important;` : ''}
-              ${bgPattern !== 'none' ? `--theme-bg-pattern: ${bgPattern} !important;` : ''}
-            }
-          `}} />
+          <>
+            <style dangerouslySetInnerHTML={{__html: `
+              :root, body, body.light-mode {
+                ${settings?.themeColor ? `--accent-color: ${settings.themeColor} !important; --accent-text: ${textColor} !important;` : ''}
+                ${bgPattern !== 'none' && !settings?.customBgImage ? `--theme-bg-pattern: ${bgPattern} !important;` : ''}
+              }
+            `}} />
+            {settings?.customBgImage && (
+              <>
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -2, backgroundImage: `url(${settings.customBgImage})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed' }}></div>
+                <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: -1, backdropFilter: 'blur(24px) saturate(150%)', backgroundColor: 'var(--bg-alpha-50)', WebkitBackdropFilter: 'blur(24px) saturate(150%)' }}></div>
+              </>
+            )}
+          </>
         );
       })()}
       {/* HEADER */}

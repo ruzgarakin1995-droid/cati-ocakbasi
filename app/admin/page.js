@@ -1995,30 +1995,60 @@ function DesignTab({ settings, reload }) {
   }
 
   async function handleSelectBg(bgId) {
-    if (settings?.bgThemeId === bgId) return;
+    if (settings?.bgThemeId === bgId && !settings?.customBgImage) return;
     setSaving(true);
     try {
-      await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({ ...settings, bgThemeId: bgId }) });
+      await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({ ...settings, bgThemeId: bgId, customBgImage: null }) });
       reload();
-      alert('Arka plan başarıyla güncellendi!');
+      alert('Arka plan teması başarıyla güncellendi!');
     } catch (e) {
       alert('Hata: ' + e.message);
     }
     setSaving(false);
   }
 
-  const getEmojiBg = (emoji) => `url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='30' text-anchor='middle' dominant-baseline='central' opacity='0.08'%3E${encodeURIComponent(emoji)}%3C/text%3E%3C/svg%3E")`;
+  const [bgUploading, setBgUploading] = useState(false);
+  async function handleCustomBgUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    setBgUploading(true);
+    const data = new FormData();
+    data.append('file', file);
+    
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('adminToken')}` },
+        body: data
+      });
+      const result = await res.json();
+      if (res.ok && result.url) {
+        await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({ ...settings, bgThemeId: 'custom', customBgImage: result.url }) });
+        reload();
+        alert('Özel arka plan başarıyla yüklendi!');
+      } else {
+        alert(result.error || 'Yükleme başarısız');
+      }
+    } catch (err) {
+      alert('Yükleme hatası');
+    } finally {
+      setBgUploading(false);
+    }
+  }
+
+  const getSvgBg = (svgStr) => `url("data:image/svg+xml,${encodeURIComponent(svgStr)}")`;
 
   const THEME_BACKGROUNDS = [
     { id: 'default', name: 'Sade (Varsayılan)', bg: 'none', icon: 'fa-solid fa-ban' },
-    { id: 'cafe', name: 'Kafe & Pastane', bg: getEmojiBg('🍰'), emoji: '🍰' },
-    { id: 'coffee', name: 'Kahve Teması', bg: getEmojiBg('☕'), emoji: '☕' },
-    { id: 'doner', name: 'Dönerci Teması', bg: getEmojiBg('🥙'), emoji: '🥙' },
-    { id: 'fastfood', name: 'Fast Food', bg: getEmojiBg('🍔'), emoji: '🍔' },
-    { id: 'kebap', name: 'Kebapçı Teması', bg: getEmojiBg('🥩'), emoji: '🥩' },
-    { id: 'midye', name: 'Kokoreç & Midye', bg: getEmojiBg('🦪'), emoji: '🦪' },
-    { id: 'seafood', name: 'Deniz Ürünleri', bg: getEmojiBg('🦐'), emoji: '🦐' },
-    { id: 'candy', name: 'Şeker Teması', bg: getEmojiBg('🍬'), emoji: '🍬' }
+    { id: 'cafe', name: 'Kafe & Pastane', bg: getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><circle cx='2' cy='2' r='1.5' fill='%239ca3af' fill-opacity='0.4'/></svg>`), icon: 'fa-solid fa-cookie' },
+    { id: 'coffee', name: 'Kahve Teması', bg: getSvgBg(`<svg width='16' height='16' xmlns='http://www.w3.org/2000/svg'><path d='M-2 2 l4 -4 M0 16 l16 -16 M14 18 l4 -4' stroke='%239ca3af' stroke-width='1' stroke-opacity='0.3'/></svg>`), icon: 'fa-solid fa-mug-hot' },
+    { id: 'doner', name: 'Dönerci Teması', bg: getSvgBg(`<svg width='20' height='10' xmlns='http://www.w3.org/2000/svg'><path d='M0 5 Q 5 0, 10 5 T 20 5' fill='none' stroke='%239ca3af' stroke-width='1.5' stroke-opacity='0.3'/></svg>`), icon: 'fa-solid fa-utensils' },
+    { id: 'fastfood', name: 'Fast Food', bg: getSvgBg(`<svg width='24' height='24' xmlns='http://www.w3.org/2000/svg'><rect width='12' height='12' fill='%239ca3af' fill-opacity='0.15'/><rect x='12' y='12' width='12' height='12' fill='%239ca3af' fill-opacity='0.15'/></svg>`), icon: 'fa-solid fa-burger' },
+    { id: 'kebap', name: 'Kebapçı Teması', bg: getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M10 0v20M0 10h20' fill='none' stroke='%239ca3af' stroke-width='1' stroke-opacity='0.3'/></svg>`), icon: 'fa-solid fa-fire-burner' },
+    { id: 'midye', name: 'Kokoreç & Midye', bg: getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><circle cx='10' cy='10' r='8' fill='none' stroke='%239ca3af' stroke-opacity='0.3'/></svg>`), icon: 'fa-solid fa-lemon' },
+    { id: 'seafood', name: 'Deniz Ürünleri', bg: getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M0 20 L20 0 Z' fill='none' stroke='%239ca3af' stroke-opacity='0.3' stroke-width='2'/></svg>`), icon: 'fa-solid fa-fish' },
+    { id: 'candy', name: 'Şeker Teması', bg: getSvgBg(`<svg width='20' height='20' xmlns='http://www.w3.org/2000/svg'><path d='M10 0 L20 10 L10 20 L0 10 Z' fill='none' stroke='%239ca3af' stroke-opacity='0.25' stroke-width='1.5'/></svg>`), icon: 'fa-solid fa-candy-cane' }
   ];
 
   const THEME_COLORS = [
@@ -2117,12 +2147,31 @@ function DesignTab({ settings, reload }) {
             >
               <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: bg.bg, zIndex: 0 }}></div>
               <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--bg-color)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, zIndex: 1, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                {bg.icon ? <i className={bg.icon} style={{ color: 'var(--text-muted)' }}></i> : bg.emoji}
+                <i className={bg.icon} style={{ color: 'var(--text-muted)' }}></i>
               </div>
               <span style={{ fontSize: 13, color: 'var(--text-main)', fontWeight: isActive ? 700 : 500, zIndex: 1, textShadow: '0 0 10px var(--bg-color), 0 0 10px var(--bg-color)' }}>{bg.name}</span>
             </button>
           );
         })}
+      </div>
+
+      <h3 style={{ fontSize: 16, color: colors.gold, marginTop: 40, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Özel Arka Plan Görseli Yükle (Premium Glass Efekti)</h3>
+      <p style={{ color: colors.textMuted, marginBottom: 24, fontSize: 14 }}>
+        Kendi görselinizi yükleyerek işletmenize tamamen özel bir arka plan oluşturabilirsiniz. Görselinizin üzerine otomatik olarak premium bir "glass" (buzlu cam) efekti uygulanacaktır.
+      </p>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <label className="admin-btn" style={{ background: 'var(--primary-color)', color: '#000', cursor: 'pointer', opacity: bgUploading ? 0.5 : 1 }}>
+          <i className="fa-solid fa-upload"></i> {bgUploading ? 'Yükleniyor...' : 'Görsel Seç ve Yükle'}
+          <input type="file" style={{ display: 'none' }} accept="image/*" onChange={handleCustomBgUpload} disabled={bgUploading} />
+        </label>
+        
+        {settings?.customBgImage && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <img src={settings.customBgImage} alt="Custom Bg" style={{ width: 60, height: 60, objectFit: 'cover', borderRadius: 8, border: '2px solid var(--glass-border)' }} />
+            <button onClick={() => handleSelectBg('default')} className="admin-btn" style={{ background: '#ef4444', color: '#fff' }}>Kaldır</button>
+          </div>
+        )}
       </div>
     </div>
   );
