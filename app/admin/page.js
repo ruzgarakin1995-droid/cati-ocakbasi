@@ -1979,6 +1979,7 @@ function SettingsTab({ settings, reload }) {
 // ============================================================
 function DesignTab({ settings, reload }) {
   const [saving, setSaving] = useState(false);
+  const [customColor, setCustomColor] = useState(settings?.themeColor || '#eab308');
 
   async function handleSelectColor(colorHex) {
     if (settings?.themeColor === colorHex) return;
@@ -2000,16 +2001,25 @@ function DesignTab({ settings, reload }) {
     { name: 'Yeşil', hex: '#22c55e' },
     { name: 'Mavi', hex: '#3b82f6' },
     { name: 'Mor', hex: '#a855f7' },
-    { name: 'Pembe', hex: '#ec4899' }
+    { name: 'Pembe', hex: '#ec4899' },
+    { name: 'Siyah', hex: '#18181b' },
+    { name: 'Kahverengi', hex: '#8b4513' },
+    { name: 'Lacivert', hex: '#1e3a8a' },
+    { name: 'Bordo', hex: '#7f1d1d' },
+    { name: 'Zümrüt', hex: '#065f46' },
+    { name: 'Turkuaz', hex: '#0d9488' },
+    { name: 'Hardal', hex: '#ca8a04' },
+    { name: 'Gümüş Gri', hex: '#9ca3af' }
   ];
 
   return (
     <div className="admin-card" style={{ padding: 24, animation: 'fadeIn 0.3s ease' }}>
       <h2 style={{ margin: 0, fontSize: 20, marginBottom: 8 }}>Tasarım Yönetimi</h2>
       <p style={{ color: colors.textMuted, marginBottom: 24, fontSize: 14 }}>
-        Müşteri ekranındaki ana butonların ve öne çıkan alanların rengini anında değiştirebilirsiniz.
+        Müşteri ekranındaki ana butonların ve öne çıkan alanların rengini anında değiştirebilirsiniz. Koyu renkler seçildiğinde yazı rengi otomatik olarak beyaza döner.
       </p>
 
+      <h3 style={{ fontSize: 16, color: colors.gold, marginTop: 16, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Hazır Renkler</h3>
       <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
         {THEME_COLORS.map(c => {
           const isActive = settings?.themeColor === c.hex || (!settings?.themeColor && c.hex === '#eab308');
@@ -2033,6 +2043,24 @@ function DesignTab({ settings, reload }) {
             </button>
           );
         })}
+      </div>
+
+      <h3 style={{ fontSize: 16, color: colors.gold, marginTop: 32, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Özel Renk Oluştur</h3>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        <input 
+          type="color" 
+          value={customColor} 
+          onChange={(e) => setCustomColor(e.target.value)} 
+          style={{ width: 48, height: 48, padding: 0, border: 'none', borderRadius: 8, cursor: 'pointer', background: 'transparent' }} 
+        />
+        <button 
+          onClick={() => handleSelectColor(customColor)}
+          disabled={saving}
+          className="admin-btn"
+          style={{ background: 'var(--surface-color)', color: 'var(--text-main)', border: '1px solid var(--glass-border)' }}
+        >
+          {saving ? 'Kaydediliyor...' : 'Seçili Özel Rengi Uygula'}
+        </button>
       </div>
     </div>
   );

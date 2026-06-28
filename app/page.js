@@ -417,13 +417,23 @@ export default function Home() {
 
   return (
     <>
-      {settings?.themeColor && (
-        <style dangerouslySetInnerHTML={{__html: `
-          :root, body, body.light-mode {
-            --accent-color: ${settings.themeColor} !important;
-          }
-        `}} />
-      )}
+      {settings?.themeColor && (() => {
+        const hex = settings.themeColor.replace('#', '');
+        const r = parseInt(hex.substr(0, 2), 16) || 0;
+        const g = parseInt(hex.substr(2, 2), 16) || 0;
+        const b = parseInt(hex.substr(4, 2), 16) || 0;
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        const textColor = brightness > 128 ? '#000000' : '#ffffff';
+        
+        return (
+          <style dangerouslySetInnerHTML={{__html: `
+            :root, body, body.light-mode {
+              --accent-color: ${settings.themeColor} !important;
+              --accent-text: ${textColor} !important;
+            }
+          `}} />
+        );
+      })()}
       {/* HEADER */}
       <header className="hero">
         <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 999, display: 'flex', gap: '8px' }}>
