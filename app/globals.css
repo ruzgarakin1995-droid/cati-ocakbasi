@@ -8,8 +8,10 @@
   --text-main: #ffffff;
   --text-muted: #a0a0a0;
   --border-radius: 12px;
-  --glass-bg: rgba(26, 26, 26, 0.6);
+  --glass-bg: rgba(0, 0, 0, 0.4);
   --glass-border: rgba(255, 255, 255, 0.08);
+  --toast-bg: rgba(0, 0, 0, 0.7);
+  --toast-border: rgba(255, 255, 255, 0.1);
   
   /* Additional Variables for Refactoring */
   --bg-alpha-02: var(--bg-alpha-02);
@@ -40,8 +42,10 @@ body.light-mode {
   --accent-color: #eab308;
   --text-main: #18181b;
   --text-muted: #52525b;
-  --glass-bg: rgba(255, 255, 255, 0.8);
-  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --toast-bg: rgba(255, 255, 255, 0.75);
+  --toast-border: rgba(0, 0, 0, 0.15);
 
   --bg-alpha-02: rgba(0, 0, 0, 0.015);
   --bg-alpha-03: rgba(0, 0, 0, 0.02);
@@ -150,7 +154,9 @@ h1, h2, h3, h4 {
 .search-bar {
   display: flex;
   align-items: center;
-  background: var(--surface-color);
+  background: var(--bg-alpha-06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--glass-border);
   border-radius: 8px;
   padding: 10px 14px;
@@ -163,11 +169,7 @@ h1, h2, h3, h4 {
 
 /* LIGHT MODE UI REFINEMENTS */
 body.light-mode .premium-toast {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(25px);
-  -webkit-backdrop-filter: blur(25px);
   box-shadow: -8px 8px 30px rgba(0, 0, 0, 0.08), 0 0 20px rgba(212, 175, 55, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 body.light-mode .hero-title {
@@ -178,9 +180,7 @@ body.light-mode .hero-title {
 }
 
 body.light-mode .nav-item {
-  background: rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 10px rgba(0,0,0,0.03);
-  border: 1px solid rgba(0,0,0,0.05);
   color: #555;
 }
 
@@ -270,7 +270,9 @@ body.light-mode .nav-item.active {
   font-weight: 500;
   padding: 8px 16px;
   border-radius: 20px;
-  background: var(--surface-color-light);
+  background: var(--bg-alpha-06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--glass-border);
   transition: all 0.3s;
 }
