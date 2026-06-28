@@ -2089,7 +2089,6 @@ function DesignTab({ settings, reload }) {
           {saving ? 'Kaydediliyor...' : 'Seçili Özel Rengi Uygula'}
         </button>
       </div>
-      </div>
 
       <h3 style={{ fontSize: 16, color: colors.gold, marginTop: 40, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Arka Plan Deseni (Tema)</h3>
       <p style={{ color: colors.textMuted, marginBottom: 24, fontSize: 14 }}>
