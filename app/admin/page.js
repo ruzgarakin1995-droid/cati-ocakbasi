@@ -2021,14 +2021,14 @@ function DesignTab({ settings, reload }) {
               style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
                 background: 'var(--surface-color)',
-                border: isActive ? \`2px solid \${c.hex}\` : '2px solid var(--glass-border)',
+                border: isActive ? `2px solid ${c.hex}` : '2px solid var(--glass-border)',
                 borderRadius: 12, padding: 16, cursor: 'pointer',
                 opacity: saving ? 0.5 : 1,
                 transition: 'all 0.2s',
                 width: 140
               }}
             >
-              <div style={{ width: 48, height: 48, borderRadius: '50%', background: c.hex, boxShadow: \`0 4px 12px \${c.hex}66\` }}></div>
+              <div style={{ width: 48, height: 48, borderRadius: '50%', background: c.hex, boxShadow: `0 4px 12px ${c.hex}66` }}></div>
               <span style={{ fontSize: 13, color: 'var(--text-main)', fontWeight: isActive ? 700 : 500 }}>{c.name}</span>
             </button>
           );
