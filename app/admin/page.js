@@ -284,6 +284,7 @@ export default function AdminPage() {
     { id: 'orders', icon: 'fa-solid fa-box', label: '📦 Siparişler', badge: newOrders, activeBadge: activeOrders },
     { id: 'finance', icon: 'fa-solid fa-chart-line', label: '💰 Maliyet & Finans' },
     { id: 'settings', icon: 'fa-solid fa-store', label: '🏪 İşletme Ayarları' },
+    { id: 'design', icon: 'fa-solid fa-palette', label: '🎨 Tasarım Yönetimi' },
   ];
 
   return (
@@ -403,6 +404,7 @@ export default function AdminPage() {
           {activeTab === 'orders' && <OrdersTab orders={orders} reload={loadOrders} />}
           {activeTab === 'settings' && <SettingsTab settings={settings} reload={loadSettings} />}
           {activeTab === 'finance' && <FinanceTab expenses={expenses} categories={categories} orders={orders} reloadExpenses={loadExpenses} reloadCategories={loadMenu} reminders={reminders} reloadReminders={loadReminders} />}
+          {activeTab === 'design' && <DesignTab settings={settings} reload={loadSettings} />}
         </div>
       </main>
     </div>
@@ -1967,6 +1969,70 @@ function SettingsTab({ settings, reload }) {
           </label>
 
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// DESIGN TAB
+// ============================================================
+function DesignTab({ settings, reload }) {
+  const [saving, setSaving] = useState(false);
+
+  async function handleSelectColor(colorHex) {
+    if (settings?.themeColor === colorHex) return;
+    setSaving(true);
+    try {
+      await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({ ...settings, themeColor: colorHex }) });
+      reload();
+      alert('Tasarım rengi başarıyla güncellendi!');
+    } catch (e) {
+      alert('Hata: ' + e.message);
+    }
+    setSaving(false);
+  }
+
+  const THEME_COLORS = [
+    { name: 'Sarı (Varsayılan)', hex: '#eab308' },
+    { name: 'Turuncu', hex: '#f97316' },
+    { name: 'Kırmızı', hex: '#ef4444' },
+    { name: 'Yeşil', hex: '#22c55e' },
+    { name: 'Mavi', hex: '#3b82f6' },
+    { name: 'Mor', hex: '#a855f7' },
+    { name: 'Pembe', hex: '#ec4899' }
+  ];
+
+  return (
+    <div className="admin-card" style={{ padding: 24, animation: 'fadeIn 0.3s ease' }}>
+      <h2 style={{ margin: 0, fontSize: 20, marginBottom: 8 }}>Tasarım Yönetimi</h2>
+      <p style={{ color: colors.textMuted, marginBottom: 24, fontSize: 14 }}>
+        Müşteri ekranındaki ana butonların ve öne çıkan alanların rengini anında değiştirebilirsiniz.
+      </p>
+
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        {THEME_COLORS.map(c => {
+          const isActive = settings?.themeColor === c.hex || (!settings?.themeColor && c.hex === '#eab308');
+          return (
+            <button 
+              key={c.hex}
+              disabled={saving}
+              onClick={() => handleSelectColor(c.hex)}
+              style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                background: 'var(--surface-color)',
+                border: isActive ? \`2px solid \${c.hex}\` : '2px solid var(--glass-border)',
+                borderRadius: 12, padding: 16, cursor: 'pointer',
+                opacity: saving ? 0.5 : 1,
+                transition: 'all 0.2s',
+                width: 140
+              }}
+            >
+              <div style={{ width: 48, height: 48, borderRadius: '50%', background: c.hex, boxShadow: \`0 4px 12px \${c.hex}66\` }}></div>
+              <span style={{ fontSize: 13, color: 'var(--text-main)', fontWeight: isActive ? 700 : 500 }}>{c.name}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );

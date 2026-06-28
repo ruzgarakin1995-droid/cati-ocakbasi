@@ -417,6 +417,13 @@ export default function Home() {
 
   return (
     <>
+      {settings?.themeColor && (
+        <style dangerouslySetInnerHTML={{__html: `
+          :root {
+            --accent-color: ${settings.themeColor} !important;
+          }
+        `}} />
+      )}
       {/* HEADER */}
       <header className="hero">
         <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 999, display: 'flex', gap: '8px' }}>
