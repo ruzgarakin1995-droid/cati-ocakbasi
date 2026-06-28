@@ -18,6 +18,28 @@ export default function Home() {
   const [data, setData] = useState({ banners: [], featured: [], categories: [], settings: null });
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [theme, setTheme] = useState('dark');
+  
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('appTheme') || 'dark';
+    setTheme(savedTheme);
+    if (savedTheme === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('appTheme', newTheme);
+    if (newTheme === 'light') {
+      document.body.classList.add('light-mode');
+    } else {
+      document.body.classList.remove('light-mode');
+    }
+  };
   
   // Double Confirmation & Tracking Logic
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
@@ -398,13 +420,16 @@ export default function Home() {
       {/* HEADER */}
       <header className="hero">
         <div style={{ position: 'absolute', top: 16, right: 16, zIndex: 999, display: 'flex', gap: '8px' }}>
+          <button onClick={toggleTheme} style={{ background: 'var(--theme-btn-bg)', border: '1px solid var(--glass-border)', color: 'var(--theme-btn-color)', padding: '8px', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s' }}>
+            <i className={theme === 'dark' ? "fa-solid fa-sun" : "fa-solid fa-moon"}></i>
+          </button>
           <LanguageSelector />
           <button className="admin-profile-btn" onClick={() => setIsLoginOpen(true)}>
             <i className="fa-solid fa-user-shield"></i>
           </button>
         </div>
         <div className="container hero-content" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--primary-color)', boxShadow: '0 4px 15px rgba(0,0,0,0.5)', position: 'relative' }}>
+          <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--primary-color)', boxShadow: '0 4px 15px var(--glass-input-focus)', position: 'relative' }}>
             <Image src="/cati-logo.png" alt="Çatı Ocakbaşı Logo" fill style={{ objectFit: 'cover' }} sizes="80px" priority />
           </div>
           <div>
@@ -613,7 +638,7 @@ export default function Home() {
 
           <a href={settings?.socialLinks?.instagram || '#'} className="social-link-item" style={{ borderRadius: '16px 16px 0 0', textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--surface-color)', padding: '16px', border: '1px solid var(--glass-border)' }}>
             <div className="social-link-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div className="social-icon instagram" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
+              <div className="social-icon instagram" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
                 <i className="fa-brands fa-instagram" style={{ fontSize: '24px' }}></i>
               </div>
               <div className="social-info">
@@ -626,7 +651,7 @@ export default function Home() {
 
           <a href={settings?.socialLinks?.whatsapp ? `https://wa.me/${settings.socialLinks.whatsapp.replace(/[^0-9]/g, '')}` : '#'} className="social-link-item" style={{ borderTop: 'none', borderBottom: 'none', textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--surface-color)', padding: '16px', borderLeft: '1px solid var(--glass-border)', borderRight: '1px solid var(--glass-border)' }}>
             <div className="social-link-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div className="social-icon whatsapp" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: '#25d366' }}>
+              <div className="social-icon whatsapp" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', background: '#25d366' }}>
                 <i className="fa-brands fa-whatsapp" style={{ fontSize: '24px' }}></i>
               </div>
               <div className="social-info">
@@ -639,7 +664,7 @@ export default function Home() {
 
           <a href={settings?.socialLinks?.googleReview || '#'} className="social-link-item" style={{ borderRadius: '0 0 16px 16px', textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--surface-color)', padding: '16px', border: '1px solid var(--glass-border)' }}>
             <div className="social-link-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div className="social-icon google" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: '#ea4335' }}>
+              <div className="social-icon google" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', background: '#ea4335' }}>
                 <i className="fa-brands fa-google" style={{ fontSize: '24px' }}></i>
               </div>
               <div className="social-info">
@@ -658,7 +683,7 @@ export default function Home() {
           </div>
           
           <div className="contact-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid var(--glass-border)' }}>
-            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa' }}>
+            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-alpha-05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
               <i className="fa-solid fa-phone"></i>
             </div>
             <div className="contact-info-text" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -668,7 +693,7 @@ export default function Home() {
           </div>
 
           <div className="contact-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid var(--glass-border)' }}>
-            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa' }}>
+            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-alpha-05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
               <i className="fa-solid fa-mobile-screen"></i>
             </div>
             <div className="contact-info-text" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -678,7 +703,7 @@ export default function Home() {
           </div>
 
           <div className="contact-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid var(--glass-border)', marginBottom: '24px' }}>
-            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#aaa' }}>
+            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-alpha-05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
               <i className="fa-regular fa-envelope"></i>
             </div>
             <div className="contact-info-text" style={{ display: 'flex', flexDirection: 'column' }}>
@@ -835,7 +860,7 @@ export default function Home() {
                     : 'Malzemeleri Düzenle';
                   
                   return (
-                  <div key={item.cartId} className="cart-item" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: '12px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                  <div key={item.cartId} className="cart-item" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: '12px 0', borderBottom: '1px solid var(--bg-alpha-05)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                       <div className="cart-item-info" style={{ fontWeight: 600 }}>
                         <span style={{ color: 'var(--primary-color)', marginRight: '6px' }}>1x</span> 
@@ -849,12 +874,12 @@ export default function Home() {
                         )}
                         <div className="cart-item-price" style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>
                           {item.price} ₺ 
-                          <i className="fa-solid fa-xmark remove-item" onClick={() => removeFromCart(item.cartId)} style={{ cursor: 'pointer', marginLeft: '10px', color: 'rgba(255,255,255,0.5)' }}></i>
+                          <i className="fa-solid fa-xmark remove-item" onClick={() => removeFromCart(item.cartId)} style={{ cursor: 'pointer', marginLeft: '10px', color: 'var(--text-alpha-50)' }}></i>
                         </div>
                       </div>
                     </div>
                     {item.excludedIngredients.length > 0 && (
-                      <div className="cart-item-notes" style={{ width: '100%', fontSize: '11px', color: 'rgba(255,255,255,0.4)', fontStyle: 'italic', marginTop: '4px' }}>
+                      <div className="cart-item-notes" style={{ width: '100%', fontSize: '11px', color: 'var(--text-alpha-40)', fontStyle: 'italic', marginTop: '4px' }}>
                         İstemiyor: {item.excludedIngredients.join(', ')}
                       </div>
                     )}
@@ -869,15 +894,15 @@ export default function Home() {
                 
                 {cart.length === 0 && (
                   <div className="cart-empty-state" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '30px 0' }}>
-                    <i className="fa-solid fa-basket-shopping" style={{ fontSize: '2.5rem', color: 'rgba(255,255,255,0.2)', marginBottom: '10px' }}></i>
-                    <p style={{ fontSize: '14px', margin: 0, color: 'rgba(255,255,255,0.5)' }}>Sepetiniz boş.</p>
+                    <i className="fa-solid fa-basket-shopping" style={{ fontSize: '2.5rem', color: 'var(--bg-alpha-20)', marginBottom: '10px' }}></i>
+                    <p style={{ fontSize: '14px', margin: 0, color: 'var(--text-alpha-50)' }}>Sepetiniz boş.</p>
                   </div>
                 )}
               </div>
               
               {cart.length > 0 && (
                 <>
-                  <div className="cart-total-row compact-total" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', padding: '16px 0', borderTop: '1px dashed rgba(255,255,255,0.1)' }}>
+                  <div className="cart-total-row compact-total" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', padding: '16px 0', borderTop: '1px dashed var(--bg-alpha-10)' }}>
                     <strong>Ara Toplam</strong>
                     <strong>{cartTotal} ₺</strong>
                   </div>
@@ -905,13 +930,13 @@ export default function Home() {
             <div style={{ display: checkoutStep === 2 ? 'block' : 'none' }}>
               <style dangerouslySetInnerHTML={{ __html: `
                 .premium-input {
-                  width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #fff; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: all 0.3s;
+                  width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--bg-alpha-10); background: var(--bg-alpha-03); color: var(--text-main); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: all 0.3s;
                 }
                 .premium-input:focus {
-                  border-color: var(--primary-color); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 4px rgba(212,175,55,0.1);
+                  border-color: var(--primary-color); background: var(--glass-input-focus); box-shadow: 0 0 0 4px rgba(212,175,55,0.1);
                 }
                 .premium-payment-btn {
-                  flex: 1; padding: 16px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); color: #aaa; cursor: pointer; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; font-weight: 600; transition: all 0.3s; text-align: left;
+                  flex: 1; padding: 16px; border-radius: 12px; border: 1px solid var(--bg-alpha-10); background: var(--bg-alpha-03); color: var(--text-muted); cursor: pointer; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 12px; font-weight: 600; transition: all 0.3s; text-align: left;
                 }
                 .premium-payment-btn.active {
                   border-color: var(--primary-color); background: rgba(212,175,55,0.05); color: var(--primary-color); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(212,175,55,0.1);
@@ -936,7 +961,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div style={{ marginBottom: '12px', color: 'rgba(255,255,255,0.5)', fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Ödeme Yöntemi</div>
+              <div style={{ marginBottom: '12px', color: 'var(--text-alpha-50)', fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Ödeme Yöntemi</div>
               <div className="payment-methods compact-payment" style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
                 <button className={`premium-payment-btn ${customerInfo.paymentMethod === 'nakit' ? 'active' : ''}`} onClick={() => setCustomerInfo({...customerInfo, paymentMethod: 'nakit'})}>
                   <i className="fa-solid fa-money-bill-wave" style={{ color: '#2ecc71', fontSize: '22px' }}></i>
@@ -958,7 +983,7 @@ export default function Home() {
                     placeholder="KUPON KODU GİRİN" 
                     value={couponCode}
                     onChange={e => setCouponCode(e.target.value)}
-                    style={{ width: '100%', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600, paddingLeft: '44px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+                    style={{ width: '100%', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600, paddingLeft: '44px', background: 'var(--bg-alpha-05)', border: '1px solid var(--bg-alpha-10)' }}
                   />
                 </div>
                 <button className="btn-apply-coupon" onClick={handleApplyCoupon} style={{ padding: '0 24px', borderRadius: '12px', border: '1px solid var(--primary-color)', background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.2))', color: 'var(--primary-color)', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.3s' }}>
@@ -973,8 +998,8 @@ export default function Home() {
                 </div>
               )}
               
-              <div className="cart-total-row compact-total" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px 0', borderTop: '1px dashed rgba(255,255,255,0.1)', paddingTop: '20px', alignItems: 'center' }}>
-                <span style={{ fontSize: '16px', color: 'rgba(255,255,255,0.7)', fontWeight: 600 }}>Genel Toplam</span>
+              <div className="cart-total-row compact-total" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px 0', borderTop: '1px dashed var(--bg-alpha-10)', paddingTop: '20px', alignItems: 'center' }}>
+                <span style={{ fontSize: '16px', color: 'var(--text-alpha-70)', fontWeight: 600 }}>Genel Toplam</span>
                 <strong style={{ color: 'var(--primary-color)', fontSize: '28px', textShadow: '0 2px 10px rgba(212,175,55,0.3)' }}>{finalTotal} ₺</strong>
               </div>
               
@@ -1014,12 +1039,12 @@ export default function Home() {
             <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '18px' }}>
               {cart[editingCartIndex]?.title?.toLowerCase().includes('meşrubat') ? 'Meşrubat Seçimi' : 'Ürün Malzemeleri'}
             </h4>
-            <i className="fa-solid fa-xmark close-edit" onClick={() => setIsEditOpen(false)} style={{ cursor: 'pointer', fontSize: '20px', color: 'rgba(255,255,255,0.5)' }}></i>
+            <i className="fa-solid fa-xmark close-edit" onClick={() => setIsEditOpen(false)} style={{ cursor: 'pointer', fontSize: '20px', color: 'var(--text-alpha-50)' }}></i>
           </div>
           <div className="edit-body" style={{ marginBottom: '20px' }}>
             {cart[editingCartIndex]?.title?.toLowerCase().includes('meşrubat') ? (
               ['Kola', 'Fanta', 'Sprite', 'Ice Tea Limon', 'Ice Tea Şeftali'].map(drink => (
-                <div key={drink} className="ingredient-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                <div key={drink} className="ingredient-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--bg-alpha-05)' }}>
                   <span className="ingredient-name">{drink}</span>
                   <input 
                     type="radio" 
@@ -1036,7 +1061,7 @@ export default function Home() {
               ))
             ) : (
               getCustomizableIngredients(cart[editingCartIndex]).map(ing => (
-                <div key={ing} className="ingredient-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                <div key={ing} className="ingredient-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--bg-alpha-05)' }}>
                   <span className="ingredient-name">{ing}</span>
                   <label className="switch" style={{ position: 'relative', display: 'inline-block', width: '40px', height: '20px' }}>
                     <input 
@@ -1078,7 +1103,7 @@ export default function Home() {
           <p style={{ marginBottom: 20 }}>Sipariş Numaranız: <strong>{trackingOrder?.id}</strong></p>
 
           {trackingOrder && trackingOrder.items && (
-            <div style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 12, padding: 16, marginBottom: 24, textAlign: 'left', fontSize: 14 }}>
+            <div style={{ background: 'var(--bg-alpha-03)', border: '1px solid var(--bg-alpha-10)', borderRadius: 12, padding: 16, marginBottom: 24, textAlign: 'left', fontSize: 14 }}>
               <div style={{ fontWeight: 700, color: 'var(--primary-color)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <i className="fa-solid fa-receipt"></i> Sipariş Özeti
               </div>
@@ -1094,7 +1119,7 @@ export default function Home() {
                   </div>
                 ))}
               </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: 12, marginBottom: 8 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--bg-alpha-10)', paddingTop: 12, marginBottom: 8 }}>
                 <span style={{ color: 'var(--text-muted)' }}>Ödeme Yöntemi:</span>
                 <span style={{ fontWeight: 600 }}>
                   {trackingOrder.customerInfo?.paymentMethod === 'nakit' ? 'Kapıda Nakit' : 
@@ -1119,11 +1144,11 @@ export default function Home() {
             <div style={{ background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.3)', borderRadius: 12, padding: 24, textAlign: 'center', marginBottom: 24 }}>
               <div style={{ fontSize: 48, marginBottom: 12 }}>😔</div>
               <h4 style={{ color: '#e74c3c', fontSize: 18, marginBottom: 8, fontWeight: 700 }}>Siparişiniz İptal Edildi</h4>
-              <p style={{ color: '#eee', fontSize: 14, marginBottom: 16, lineHeight: 1.5 }}>Çok özür dileriz ama maalesef siparişiniz iptal oldu.</p>
+              <p style={{ color: 'var(--text-main)', fontSize: 14, marginBottom: 16, lineHeight: 1.5 }}>Çok özür dileriz ama maalesef siparişiniz iptal oldu.</p>
               {trackingOrder.statusHistory?.find(h => h.status === 'cancelled')?.note && (
-                <div style={{ background: 'rgba(0,0,0,0.2)', padding: 12, borderRadius: 8, textAlign: 'left', borderLeft: '3px solid #e74c3c' }}>
+                <div style={{ background: 'var(--bg-alpha-06)', padding: 12, borderRadius: 8, textAlign: 'left', borderLeft: '3px solid #e74c3c' }}>
                   <div style={{ color: '#e74c3c', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>İptal Notu:</div>
-                  <div style={{ color: '#ddd', fontSize: 13, fontStyle: 'italic' }}>{trackingOrder.statusHistory.find(h => h.status === 'cancelled').note}</div>
+                  <div style={{ color: 'var(--text-muted)', fontSize: 13, fontStyle: 'italic' }}>{trackingOrder.statusHistory.find(h => h.status === 'cancelled').note}</div>
                 </div>
               )}
             </div>
@@ -1200,7 +1225,7 @@ export default function Home() {
 
       {/* STORE CLOSED OVERLAY */}
       {!isStoreOpen && (
-        <div className="store-closed-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', zIndex: 99999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: '#fff', padding: '20px', textAlign: 'center', backdropFilter: 'blur(10px)' }}>
+        <div className="store-closed-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', zIndex: 99999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', padding: '20px', textAlign: 'center', backdropFilter: 'blur(10px)' }}>
           <i className="fa-solid fa-store-slash" style={{ fontSize: 64, color: 'var(--primary-color)', marginBottom: 20 }}></i>
           <h2 style={{ fontSize: 28, marginBottom: 10 }}>Şu An Kapalıyız</h2>
           <p style={{ color: '#ccc', maxWidth: 450, lineHeight: 1.6, fontSize: '15px' }}>

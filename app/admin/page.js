@@ -7,17 +7,17 @@ import { useRouter } from 'next/navigation';
 // STYLES
 // ============================================================
 const colors = {
-  bg: '#0d0d0d',
-  bgCard: 'rgba(255,255,255,0.04)',
-  bgCardHover: 'rgba(255,255,255,0.07)',
-  bgSidebar: 'rgba(13,13,13,0.97)',
-  gold: '#d4af37',
-  goldLight: '#e8c94a',
+  bg: 'var(--bg-color)',
+  bgCard: 'var(--bg-alpha-04)',
+  bgCardHover: 'var(--bg-alpha-07)',
+  bgSidebar: 'var(--surface-color)',
+  gold: 'var(--primary-color)',
+  goldLight: 'var(--accent-color)',
   goldDark: '#b8961f',
-  text: '#f5f5f5',
-  textMuted: '#999',
-  textDim: '#666',
-  border: 'rgba(255,255,255,0.08)',
+  text: 'var(--text-main)',
+  textMuted: 'var(--text-muted)',
+  textDim: 'var(--text-alpha-50)',
+  border: 'var(--glass-border)',
   danger: '#e74c3c',
   dangerDark: '#c0392b',
   success: '#27ae60',
@@ -78,6 +78,22 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState('dark');
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('appTheme') || 'dark';
+    setTheme(savedTheme);
+    if (savedTheme === 'light') document.body.classList.add('light-mode');
+    else document.body.classList.remove('light-mode');
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('appTheme', newTheme);
+    if (newTheme === 'light') document.body.classList.add('light-mode');
+    else document.body.classList.remove('light-mode');
+  };
 
   // Data states
   const [banners, setBanners] = useState([]);
@@ -284,28 +300,28 @@ export default function AdminPage() {
         .admin-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.3); }
         .admin-btn:active { transform: translateY(0); }
         .admin-btn-gold { background: linear-gradient(135deg, ${colors.gold}, ${colors.goldLight}); color: #000; }
-        .admin-btn-danger { background: ${colors.danger}; color: #fff; }
+        .admin-btn-danger { background: ${colors.danger}; color: var(--text-main); }
         .admin-btn-danger:hover { background: ${colors.dangerDark}; }
-        .admin-btn-ghost { background: rgba(255,255,255,0.06); color: ${colors.text}; border: 1px solid ${colors.border}; }
-        .admin-btn-ghost:hover { background: rgba(255,255,255,0.1); }
+        .admin-btn-ghost { background: var(--bg-alpha-06); color: ${colors.text}; border: 1px solid ${colors.border}; }
+        .admin-btn-ghost:hover { background: var(--bg-alpha-10); }
         .admin-btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 8px; }
-        .admin-input { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06); border: 1px solid ${colors.border}; border-radius: 10px; color: ${colors.text}; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.25s; box-sizing: border-box; }
+        .admin-input { width: 100%; padding: 12px 16px; background: var(--bg-alpha-06); border: 1px solid ${colors.border}; border-radius: 10px; color: ${colors.text}; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: border-color 0.25s; box-sizing: border-box; }
         .admin-input:focus { border-color: ${colors.gold}; }
         .admin-input::placeholder { color: ${colors.textDim}; }
-        .admin-select { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06); border: 1px solid ${colors.border}; border-radius: 10px; color: ${colors.text}; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; }
-        .admin-select option { background: #1a1a1a; color: #fff; }
+        .admin-select { width: 100%; padding: 12px 16px; background: var(--bg-alpha-06); border: 1px solid ${colors.border}; border-radius: 10px; color: ${colors.text}; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; cursor: pointer; appearance: none; -webkit-appearance: none; }
+        .admin-select option { background: #1a1a1a; color: var(--text-main); }
         .admin-label { display: block; margin-bottom: 6px; font-size: 13px; color: ${colors.textMuted}; font-weight: 500; }
         .admin-pulse { width: 10px; height: 10px; border-radius: 50%; background: ${colors.danger}; animation: pulse 1.5s infinite; display: inline-block; }
         .admin-sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998; }
         .admin-table { width: 100%; border-collapse: collapse; }
         .admin-table th, .admin-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid ${colors.border}; font-size: 14px; }
         .admin-table th { color: ${colors.textMuted}; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .admin-table tr:hover td { background: rgba(255,255,255,0.02); }
-        .admin-textarea { width: 100%; padding: 12px 16px; background: rgba(255,255,255,0.06); border: 1px solid ${colors.border}; border-radius: 10px; color: ${colors.text}; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; resize: vertical; min-height: 80px; box-sizing: border-box; }
+        .admin-table tr:hover td { background: var(--bg-alpha-02); }
+        .admin-textarea { width: 100%; padding: 12px 16px; background: var(--bg-alpha-06); border: 1px solid ${colors.border}; border-radius: 10px; color: ${colors.text}; font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; resize: vertical; min-height: 80px; box-sizing: border-box; }
         .admin-textarea:focus { border-color: ${colors.gold}; }
         .admin-checkbox { width: 18px; height: 18px; accent-color: ${colors.gold}; cursor: pointer; }
         .admin-badge { padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; display: inline-block; }
-        .status-flow-btn { padding: 6px 12px; border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; background: rgba(255,255,255,0.04); color: ${colors.textMuted}; cursor: pointer; font-family: 'Outfit'; font-size: 11px; transition: all 0.2s; }
+        .status-flow-btn { padding: 6px 12px; border: 1px solid var(--bg-alpha-10); border-radius: 8px; background: var(--bg-alpha-04); color: ${colors.textMuted}; cursor: pointer; font-family: 'Outfit'; font-size: 11px; transition: all 0.2s; }
         .status-flow-btn:hover { background: rgba(255,255,255,0.08); }
         .status-flow-btn.active { border-color: ${colors.gold}; background: rgba(212,175,55,0.15); color: ${colors.gold}; }
         @media (max-width: 768px) {
@@ -335,13 +351,13 @@ export default function AdminPage() {
       {/* ===== REMINDERS POPUP ===== */}
       <div style={{ position: 'fixed', top: 24, right: 24, zIndex: 9999, display: 'flex', flexDirection: 'column', gap: 12 }}>
         {activeReminders.map(r => (
-          <div key={r.id} style={{ background: '#2c3e50', borderLeft: '4px solid #f39c12', padding: 16, borderRadius: 8, boxShadow: '0 10px 25px rgba(0,0,0,0.5)', width: 320, animation: 'fadeIn 0.3s ease' }}>
+          <div key={r.id} style={{ background: '#2c3e50', borderLeft: '4px solid #f39c12', padding: 16, borderRadius: 8, boxShadow: '0 10px 25px var(--glass-input-focus)', width: 320, animation: 'fadeIn 0.3s ease' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
               <div style={{ fontWeight: 600, color: '#f39c12', marginBottom: 4 }}><i className="fa-solid fa-bell admin-pulse"></i> Ödeme Hatırlatması</div>
-              <button onClick={() => dismissReminder(r.id)} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', opacity: 0.5 }}><i className="fa-solid fa-xmark"></i></button>
+              <button onClick={() => dismissReminder(r.id)} style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', opacity: 0.5 }}><i className="fa-solid fa-xmark"></i></button>
             </div>
             <div style={{ fontSize: 15, marginBottom: 4 }}>{r.title}</div>
-            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.6)', marginBottom: 12 }}>Tutar: {formatPrice(r.amount)} | Son Ödeme: {new Date(r.dueDate).toLocaleDateString('tr-TR')}</div>
+            <div style={{ fontSize: 13, color: 'var(--text-alpha-60)', marginBottom: 12 }}>Tutar: {formatPrice(r.amount)} | Son Ödeme: {new Date(r.dueDate).toLocaleDateString('tr-TR')}</div>
             <button onClick={() => { dismissReminder(r.id); setActiveTab('finance'); }} className="admin-btn admin-btn-sm" style={{ background: 'rgba(243, 156, 18, 0.2)', color: '#f39c12', width: '100%', justifyContent: 'center' }}>Finans Sekmesine Git</button>
           </div>
         ))}
@@ -358,7 +374,7 @@ export default function AdminPage() {
         )}
 
         {/* Header */}
-        <header style={{ padding: '16px 24px', borderBottom: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(13,13,13,0.8)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
+        <header style={{ padding: '16px 24px', borderBottom: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface-color)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <button className="admin-mobile-toggle" onClick={() => setSidebarOpen(true)} style={{ background: 'none', border: 'none', color: colors.text, fontSize: 20, cursor: 'pointer', padding: 8 }}>
               <i className="fa-solid fa-bars"></i>
@@ -367,9 +383,14 @@ export default function AdminPage() {
               {tabs.find(t => t.id === activeTab)?.label || 'Admin'}
             </h1>
           </div>
-          <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={handleLogout}>
-            <i className="fa-solid fa-right-from-bracket"></i> Çıkış
-          </button>
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <button onClick={toggleTheme} style={{ background: 'var(--theme-btn-bg)', border: '1px solid var(--glass-border)', color: 'var(--theme-btn-color)', padding: '6px', borderRadius: '50%', width: 34, height: 34, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.3s' }}>
+              <i className={theme === 'dark' ? "fa-solid fa-sun" : "fa-solid fa-moon"}></i>
+            </button>
+            <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={handleLogout}>
+              <i className="fa-solid fa-right-from-bracket"></i> Çıkış
+            </button>
+          </div>
         </header>
 
         {/* Content */}
@@ -414,11 +435,11 @@ function SidebarContent({ tabs, activeTab, setActiveTab, handleLogout }) {
                 {tab.badge > 0 && (
                   <>
                     <span className="admin-pulse" />
-                    <span style={{ background: colors.danger, color: '#fff', padding: '2px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{tab.badge}</span>
+                    <span style={{ background: colors.danger, color: 'var(--text-main)', padding: '2px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{tab.badge}</span>
                   </>
                 )}
                 {tab.activeBadge > 0 && (
-                  <span style={{ background: '#3498db', color: '#fff', padding: '2px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{tab.activeBadge}</span>
+                  <span style={{ background: '#3498db', color: 'var(--text-main)', padding: '2px 8px', borderRadius: 10, fontSize: 11, fontWeight: 700 }}>{tab.activeBadge}</span>
                 )}
               </span>
             )}
@@ -543,7 +564,7 @@ function DashboardTab({ banners, featured, categories, coupons, orders, expenses
 
   return (
     <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 24, padding: '16px 20px', background: 'rgba(255,255,255,0.02)', borderRadius: 16, border: '1px solid rgba(255,255,255,0.05)' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 24, padding: '16px 20px', background: 'var(--bg-alpha-02)', borderRadius: 16, border: '1px solid var(--bg-alpha-05)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginRight: 16 }}>
           <i className="fa-solid fa-calendar-days" style={{ color: colors.gold }}></i>
           <span style={{ fontWeight: 600, color: colors.text }}>Tarih Filtresi:</span>
@@ -563,9 +584,9 @@ function DashboardTab({ banners, featured, categories, coupons, orders, expenses
         ))}
         {timeFilter === 'custom' && (
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginLeft: 'auto' }}>
-            <input type="date" value={customStart} onChange={e => setCustomStart(e.target.value)} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: colors.text, colorScheme: 'dark', fontSize: 13 }} />
+            <input type="date" value={customStart} onChange={e => setCustomStart(e.target.value)} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--bg-alpha-10)', color: colors.text, colorScheme: 'dark', fontSize: 13 }} />
             <span style={{ color: colors.textMuted }}>-</span>
-            <input type="date" value={customEnd} onChange={e => setCustomEnd(e.target.value)} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: colors.text, colorScheme: 'dark', fontSize: 13 }} />
+            <input type="date" value={customEnd} onChange={e => setCustomEnd(e.target.value)} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(0,0,0,0.2)', border: '1px solid var(--bg-alpha-10)', color: colors.text, colorScheme: 'dark', fontSize: 13 }} />
           </div>
         )}
       </div>
@@ -622,14 +643,14 @@ function DashboardTab({ banners, featured, categories, coupons, orders, expenses
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {topItems.map((item, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', borderRadius: 12 }}>
+                <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'var(--bg-alpha-03)', borderRadius: 12 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: idx < 3 ? 'rgba(212,175,55,0.2)' : 'rgba(255,255,255,0.1)', color: idx < 3 ? colors.gold : '#aaa', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13 }}>
+                    <div style={{ width: 28, height: 28, borderRadius: '50%', background: idx < 3 ? 'rgba(212,175,55,0.2)' : 'var(--bg-alpha-10)', color: idx < 3 ? colors.gold : 'var(--text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13 }}>
                       {idx + 1}
                     </div>
                     <span style={{ fontWeight: 600 }}>{item.name}</span>
                   </div>
-                  <div style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: 20, fontSize: 13, fontWeight: 600 }}>
+                  <div style={{ background: 'var(--bg-alpha-10)', padding: '4px 10px', borderRadius: 20, fontSize: 13, fontWeight: 600 }}>
                     {item.count} adet
                   </div>
                 </div>
@@ -728,7 +749,7 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
         <h2 style={{ fontSize: 24, fontWeight: 700, margin: 0 }}>💰 Maliyet & Finans Yönetimi</h2>
       </div>
 
-      <div style={{ display: 'flex', gap: 12, marginBottom: 24, borderBottom: `1px solid rgba(255,255,255,0.1)` }}>
+      <div style={{ display: 'flex', gap: 12, marginBottom: 24, borderBottom: `1px solid var(--bg-alpha-10)` }}>
         {[
           { id: 'summary', label: 'Finansal Özet' },
           { id: 'products', label: 'Ürün Maliyetleri' },
@@ -739,7 +760,7 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
             key={tab.id} 
             onClick={() => setActiveSubTab(tab.id)}
             style={{ 
-              background: 'transparent', border: 'none', color: activeSubTab === tab.id ? '#D4AF37' : 'rgba(255,255,255,0.5)',
+              background: 'transparent', border: 'none', color: activeSubTab === tab.id ? '#D4AF37' : 'var(--text-alpha-50)',
               padding: '12px 16px', fontSize: 15, fontWeight: activeSubTab === tab.id ? 600 : 400, cursor: 'pointer',
               borderBottom: activeSubTab === tab.id ? `2px solid #D4AF37` : '2px solid transparent', marginBottom: -1
             }}
@@ -753,22 +774,22 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 20 }}>
           <div className="admin-card" style={{ padding: 24, textAlign: 'center' }}>
             <div style={{ fontSize: 32, color: '#2ecc71', marginBottom: 12 }}><i className="fa-solid fa-coins"></i></div>
-            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>Toplam Ciro</div>
+            <div style={{ fontSize: 14, color: 'var(--text-alpha-50)' }}>Toplam Ciro</div>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{formatPrice(totalRevenue)}</div>
           </div>
           <div className="admin-card" style={{ padding: 24, textAlign: 'center' }}>
             <div style={{ fontSize: 32, color: '#f39c12', marginBottom: 12 }}><i className="fa-solid fa-receipt"></i></div>
-            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>Toplam Ürün Maliyeti</div>
+            <div style={{ fontSize: 14, color: 'var(--text-alpha-50)' }}>Toplam Ürün Maliyeti</div>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{formatPrice(totalProductCost)}</div>
           </div>
           <div className="admin-card" style={{ padding: 24, textAlign: 'center' }}>
             <div style={{ fontSize: 32, color: '#e67e22', marginBottom: 12 }}><i className="fa-solid fa-money-bill-wave"></i></div>
-            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>Toplam Sabit Giderler</div>
+            <div style={{ fontSize: 14, color: 'var(--text-alpha-50)' }}>Toplam Sabit Giderler</div>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{formatPrice(totalFixedExpenses)}</div>
           </div>
           <div className="admin-card" style={{ padding: 24, textAlign: 'center', border: `2px solid ${netIncome >= 0 ? '#1abc9c' : '#e74c3c'}` }}>
             <div style={{ fontSize: 32, color: netIncome >= 0 ? '#1abc9c' : '#e74c3c', marginBottom: 12 }}><i className="fa-solid fa-chart-line"></i></div>
-            <div style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)' }}>Net Gelir</div>
+            <div style={{ fontSize: 14, color: 'var(--text-alpha-50)' }}>Net Gelir</div>
             <div style={{ fontSize: 28, fontWeight: 700 }}>{formatPrice(netIncome)}</div>
           </div>
         </div>
@@ -777,7 +798,7 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
       {activeSubTab === 'products' && (
         <div className="admin-card" style={{ padding: 24 }}>
           <h3 style={{ marginTop: 0, marginBottom: 20 }}>Ürün Birim Maliyetleri</h3>
-          <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', marginBottom: 20 }}>Menüdeki ürünlerin birim satış maliyetlerini (malzeme vb.) buradan güncelleyebilirsiniz. Değişiklikler anında kaydedilir.</p>
+          <p style={{ fontSize: 14, color: 'var(--text-alpha-50)', marginBottom: 20 }}>Menüdeki ürünlerin birim satış maliyetlerini (malzeme vb.) buradan güncelleyebilirsiniz. Değişiklikler anında kaydedilir.</p>
           <table className="admin-table">
             <thead>
               <tr>
@@ -790,7 +811,7 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
             <tbody>
               {categories.map(c => c.items?.map(item => (
                 <tr key={item.id}>
-                  <td style={{ color: 'rgba(255,255,255,0.5)' }}>{c.title}</td>
+                  <td style={{ color: 'var(--text-alpha-50)' }}>{c.title}</td>
                   <td>{item.title || item.name}</td>
                   <td>{formatPrice(item.price)}</td>
                   <td>
@@ -818,7 +839,7 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
           <div className="admin-card" style={{ padding: 24, flex: 1, minWidth: 300 }}>
             <h3 style={{ marginTop: 0, marginBottom: 20 }}>Gider Listesi</h3>
             {expenses.length === 0 ? (
-              <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', padding: 20 }}>Henüz gider eklenmemiş.</div>
+              <div style={{ textAlign: 'center', color: 'var(--text-alpha-50)', padding: 20 }}>Henüz gider eklenmemiş.</div>
             ) : (
               <table className="admin-table">
                 <thead>
@@ -841,7 +862,7 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
                   ))}
                 </tbody>
                 <tfoot>
-                  <tr style={{ borderTop: '2px solid rgba(255,255,255,0.1)' }}>
+                  <tr style={{ borderTop: '2px solid var(--bg-alpha-10)' }}>
                     <td style={{ fontWeight: 700, paddingTop: 16 }}>TOPLAM</td>
                     <td style={{ fontWeight: 700, paddingTop: 16 }} colSpan="2">{formatPrice(expenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0))}</td>
                   </tr>
@@ -872,7 +893,7 @@ function FinanceTab({ expenses, categories, orders, reloadExpenses, reloadCatego
           <div className="admin-card" style={{ padding: 24, flex: 1, minWidth: 300 }}>
             <h3 style={{ marginTop: 0, marginBottom: 20 }}>Yaklaşan Ödemeler</h3>
             {(!reminders || reminders.length === 0) ? (
-              <div style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', padding: 20 }}>Henüz ödeme/alarm eklenmemiş.</div>
+              <div style={{ textAlign: 'center', color: 'var(--text-alpha-50)', padding: 20 }}>Henüz ödeme/alarm eklenmemiş.</div>
             ) : (
               <table className="admin-table">
                 <thead>
@@ -974,7 +995,7 @@ function IngredientsEditor({ ingredients, onChange }) {
           return (
             <button key={p.type} type="button" onClick={() => toggle(p)} style={{
               padding: '8px 14px', borderRadius: 10, border: `1px solid ${active ? colors.gold : colors.border}`,
-              background: active ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.04)',
+              background: active ? 'rgba(212,175,55,0.15)' : 'var(--bg-alpha-04)',
               color: active ? colors.gold : colors.textMuted, cursor: 'pointer', fontFamily: "'Outfit'", fontSize: 13,
               display: 'flex', alignItems: 'center', gap: 8, transition: 'all 0.2s',
             }}>
@@ -1013,7 +1034,7 @@ function CustomizableOptionsEditor({ options, onChange }) {
       </div>
       <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
         {options.map((opt, idx) => (
-          <div key={idx} style={{ padding: '4px 10px', background: 'rgba(255,255,255,0.05)', borderRadius: 12, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, border: `1px solid ${colors.border}` }}>
+          <div key={idx} style={{ padding: '4px 10px', background: 'var(--bg-alpha-05)', borderRadius: 12, fontSize: 13, display: 'flex', alignItems: 'center', gap: 6, border: `1px solid ${colors.border}` }}>
             {opt}
             <i className="fa-solid fa-xmark" style={{ cursor: 'pointer', color: colors.danger }} onClick={() => onChange(options.filter(o => o !== opt))}></i>
           </div>
@@ -1450,7 +1471,7 @@ function CouponsTab({ coupons, reload }) {
   }
 
   function getCouponStatus(c) {
-    if (!c.isActive) return { label: 'Pasif', color: colors.textDim, bg: 'rgba(255,255,255,0.05)' };
+    if (!c.isActive) return { label: 'Pasif', color: colors.textDim, bg: 'var(--bg-alpha-05)' };
     if (c.expiresAt && new Date(c.expiresAt) < new Date()) return { label: 'Süresi Dolmuş', color: colors.danger, bg: 'rgba(231,76,60,0.12)' };
     if (c.maxUses && c.usedCount >= c.maxUses) return { label: 'Tükenmiş', color: colors.warning, bg: 'rgba(243,156,18,0.12)' };
     return { label: 'Aktif', color: colors.success, bg: 'rgba(39,174,96,0.12)' };
@@ -1614,8 +1635,8 @@ function OrdersTab({ orders, reload }) {
               onClick={() => setFilterTab(tab.id)}
               style={{
                 padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '14px', whiteSpace: 'nowrap',
-                background: filterTab === tab.id ? 'var(--primary-color)' : 'rgba(255,255,255,0.05)',
-                color: filterTab === tab.id ? '#000' : '#fff',
+                background: filterTab === tab.id ? 'var(--primary-color)' : 'var(--bg-alpha-05)',
+                color: filterTab === tab.id ? '#000' : 'var(--text-main)',
                 transition: 'all 0.3s'
               }}
             >
@@ -1630,13 +1651,13 @@ function OrdersTab({ orders, reload }) {
             value={dateFilter} 
             onChange={e => setDateFilter(e.target.value)}
             className="admin-input" 
-            style={{ width: 'auto', padding: '8px 12px', height: 'auto', fontSize: '14px', background: 'rgba(255,255,255,0.06)', color: '#fff' }}
+            style={{ width: 'auto', padding: '8px 12px', height: 'auto', fontSize: '14px', background: 'var(--bg-alpha-06)', color: 'var(--text-main)' }}
           >
-            <option value="all" style={{ background: '#1a1a1a', color: '#fff' }}>Tüm Zamanlar</option>
-            <option value="daily" style={{ background: '#1a1a1a', color: '#fff' }}>Günlük (Bugün)</option>
-            <option value="weekly" style={{ background: '#1a1a1a', color: '#fff' }}>Haftalık</option>
-            <option value="monthly" style={{ background: '#1a1a1a', color: '#fff' }}>Aylık</option>
-            <option value="custom" style={{ background: '#1a1a1a', color: '#fff' }}>Özel Tarih</option>
+            <option value="all" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Tüm Zamanlar</option>
+            <option value="daily" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Günlük (Bugün)</option>
+            <option value="weekly" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Haftalık</option>
+            <option value="monthly" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Aylık</option>
+            <option value="custom" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Özel Tarih</option>
           </select>
 
           {dateFilter === 'custom' && (
@@ -1673,7 +1694,7 @@ function OrdersTab({ orders, reload }) {
             />
             <div style={{ display: 'flex', gap: 12, justifyContent: 'flex-end' }}>
               <button className="admin-btn admin-btn-ghost" onClick={() => setCancelModal({ isOpen: false, orderId: null, note: '' })}>Vazgeç</button>
-              <button className="admin-btn" style={{ background: colors.danger, color: '#fff' }} onClick={() => updateStatus(cancelModal.orderId, 'cancelled', cancelModal.note)}>İptali Onayla</button>
+              <button className="admin-btn" style={{ background: colors.danger, color: 'var(--text-main)' }} onClick={() => updateStatus(cancelModal.orderId, 'cancelled', cancelModal.note)}>İptali Onayla</button>
             </div>
           </div>
         </div>
@@ -1815,7 +1836,7 @@ function OrdersTab({ orders, reload }) {
                         <div style={{ marginTop: '16px', padding: '12px', background: 'rgba(231,76,60,0.1)', borderLeft: '4px solid ' + colors.danger, borderRadius: '4px' }}>
                           <div style={{ fontWeight: 600, color: colors.danger, marginBottom: '4px' }}><i className="fa-solid fa-circle-exclamation"></i> Bu Sipariş İptal Edildi</div>
                           {order.statusHistory?.find(h => h.status === 'cancelled')?.note && (
-                            <div style={{ fontSize: '13px', color: '#fff' }}>İptal Notu: {order.statusHistory.find(h => h.status === 'cancelled').note}</div>
+                            <div style={{ fontSize: '13px', color: 'var(--text-main)' }}>İptal Notu: {order.statusHistory.find(h => h.status === 'cancelled').note}</div>
                           )}
                         </div>
                       )}
@@ -1872,9 +1893,9 @@ function SettingsTab({ settings, reload }) {
           
           <label style={{ display: 'block', marginBottom: 16 }}>
             <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Mağaza Durumu (Açık/Kapalı)</div>
-            <select className="admin-input" style={{ background: 'rgba(255,255,255,0.06)', color: '#fff' }} value={form.isStoreOpen ? 'true' : 'false'} onChange={e => setForm({...form, isStoreOpen: e.target.value === 'true'})}>
-              <option value="true" style={{ background: '#1a1a1a', color: '#fff' }}>Açık (Sipariş Alınabilir)</option>
-              <option value="false" style={{ background: '#1a1a1a', color: '#fff' }}>Kapalı (Bakım / Servis Dışı)</option>
+            <select className="admin-input" style={{ background: 'var(--bg-alpha-06)', color: 'var(--text-main)' }} value={form.isStoreOpen ? 'true' : 'false'} onChange={e => setForm({...form, isStoreOpen: e.target.value === 'true'})}>
+              <option value="true" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Açık (Sipariş Alınabilir)</option>
+              <option value="false" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Kapalı (Bakım / Servis Dışı)</option>
             </select>
           </label>
 

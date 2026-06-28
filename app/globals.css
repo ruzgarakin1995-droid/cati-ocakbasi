@@ -1,14 +1,65 @@
 :root {
+  /* DARK MODE (Default) */
   --bg-color: #0d0d0d;
   --surface-color: #1a1a1a;
   --surface-color-light: #262626;
   --primary-color: #d4af37; /* Premium Gold */
-  --accent-color: #fde047; /* Light Yellow (Açık Sarı) */
+  --accent-color: #fde047; /* Light Yellow */
   --text-main: #ffffff;
   --text-muted: #a0a0a0;
   --border-radius: 12px;
   --glass-bg: rgba(26, 26, 26, 0.6);
   --glass-border: rgba(255, 255, 255, 0.08);
+  
+  /* Additional Variables for Refactoring */
+  --bg-alpha-02: rgba(255, 255, 255, 0.02);
+  --bg-alpha-03: rgba(255, 255, 255, 0.03);
+  --bg-alpha-04: rgba(255, 255, 255, 0.04);
+  --bg-alpha-05: rgba(255, 255, 255, 0.05);
+  --bg-alpha-06: rgba(255, 255, 255, 0.06);
+  --bg-alpha-07: rgba(255, 255, 255, 0.07);
+  --bg-alpha-10: rgba(255, 255, 255, 0.1);
+  --bg-alpha-20: rgba(255, 255, 255, 0.2);
+  
+  --text-alpha-40: rgba(255, 255, 255, 0.4);
+  --text-alpha-50: rgba(255, 255, 255, 0.5);
+  --text-alpha-60: rgba(255, 255, 255, 0.6);
+  --text-alpha-70: rgba(255, 255, 255, 0.7);
+  
+  --glass-input-focus: rgba(0, 0, 0, 0.5);
+  --theme-btn-bg: rgba(255, 255, 255, 0.1);
+  --theme-btn-color: #fff;
+}
+
+body.light-mode {
+  /* LIGHT MODE */
+  --bg-color: #f4f4f5;
+  --surface-color: #ffffff;
+  --surface-color-light: #e4e4e7;
+  --primary-color: #b48c26; /* Darker Gold for contrast */
+  --accent-color: #eab308;
+  --text-main: #18181b;
+  --text-muted: #52525b;
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(0, 0, 0, 0.08);
+
+  --bg-alpha-02: rgba(0, 0, 0, 0.015);
+  --bg-alpha-03: rgba(0, 0, 0, 0.02);
+  --bg-alpha-04: rgba(0, 0, 0, 0.03);
+  --bg-alpha-05: rgba(0, 0, 0, 0.04);
+  --bg-alpha-06: rgba(0, 0, 0, 0.05);
+  --bg-alpha-07: rgba(0, 0, 0, 0.06);
+  --bg-alpha-10: rgba(0, 0, 0, 0.08);
+  --bg-alpha-20: rgba(0, 0, 0, 0.12);
+  
+  --text-alpha-40: rgba(0, 0, 0, 0.5);
+  --text-alpha-50: rgba(0, 0, 0, 0.6);
+  --text-alpha-60: rgba(0, 0, 0, 0.7);
+  --text-alpha-70: rgba(0, 0, 0, 0.8);
+  
+  --glass-input-focus: #ffffff;
+  --theme-btn-bg: rgba(0, 0, 0, 0.05);
+  --theme-btn-color: #18181b;
 }
 
 * {
