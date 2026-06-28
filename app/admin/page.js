@@ -456,7 +456,7 @@ function PremiumToast() {
         position: 'fixed', bottom: 32, right: 32, zIndex: 999999,
         background: 'rgba(15, 23, 42, 0.9)',
         backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-        border: \`1px solid \${toast.type === 'error' ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.3)'}\`,
+        border: toast.type === 'error' ? '1px solid rgba(239,68,68,0.3)' : '1px solid rgba(34,197,94,0.3)',
         color: '#fff', padding: '16px 20px', borderRadius: 16,
         display: 'flex', alignItems: 'center', gap: 16,
         boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
@@ -468,7 +468,7 @@ function PremiumToast() {
           color: toast.type === 'error' ? '#ef4444' : '#22c55e',
           fontSize: 18
         }}>
-          <i className={\`fa-solid \${toast.type === 'error' ? 'fa-triangle-exclamation' : 'fa-check'}\`}></i>
+          <i className={"fa-solid " + (toast.type === 'error' ? 'fa-triangle-exclamation' : 'fa-check')}></i>
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span style={{ fontSize: 12, fontWeight: 600, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 2 }}>
