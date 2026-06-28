@@ -454,10 +454,10 @@ function PremiumToast() {
       `}} />
       <div style={{
         position: 'fixed', bottom: 32, right: 32, zIndex: 999999,
-        background: 'var(--toast-bg)',
+        background: 'rgba(0, 0, 0, 0.85)',
         backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
-        border: toast.type === 'error' ? '1px solid rgba(239,68,68,0.3)' : '1px solid var(--toast-border)',
-        color: 'var(--text-main)', padding: '16px 20px', borderRadius: 16,
+        border: toast.type === 'error' ? '1px solid rgba(239,68,68,0.3)' : '1px solid rgba(255,255,255,0.1)',
+        color: '#fff', padding: '16px 20px', borderRadius: 16,
         display: 'flex', alignItems: 'center', gap: 16,
         boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
         animation: 'toastSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards'
@@ -474,7 +474,7 @@ function PremiumToast() {
           <span style={{ fontSize: 12, fontWeight: 600, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 2 }}>
             {toast.type === 'error' ? 'Hata' : 'Başarılı'}
           </span>
-          <span style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-main)' }}>{toast.message}</span>
+          <span style={{ fontSize: 15, fontWeight: 500, color: '#fff' }}>{toast.message}</span>
         </div>
         <button 
           onClick={() => setToast(null)}

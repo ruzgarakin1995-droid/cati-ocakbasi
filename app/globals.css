@@ -97,7 +97,9 @@ h1, h2, h3, h4 {
 /* Header / Hero */
 .hero {
   padding: 24px 0 16px 0;
-  background: linear-gradient(180deg, rgba(212, 175, 55, 0.1) 0%, var(--bg-color) 100%);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: relative;
 }
 
