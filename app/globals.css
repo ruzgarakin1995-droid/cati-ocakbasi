@@ -159,6 +159,35 @@ h1, h2, h3, h4 {
   margin-right: 10px;
 }
 
+/* LIGHT MODE UI REFINEMENTS */
+body.light-mode .premium-toast {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  box-shadow: -8px 8px 30px rgba(0, 0, 0, 0.08), 0 0 20px rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+}
+
+body.light-mode .hero-title {
+  background: linear-gradient(90deg, #b48c26, #444444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0px 4px 15px rgba(180, 140, 38, 0.15);
+}
+
+body.light-mode .nav-item {
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.05);
+  color: #555;
+}
+
+body.light-mode .nav-item.active {
+  background: var(--primary-color);
+  color: #000;
+  border-color: var(--primary-color);
+}
+
 .search-bar input {
   background: transparent;
   border: none;
@@ -369,7 +398,7 @@ h1, h2, h3, h4 {
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
   flex: 1;
   margin-left: 16px;
@@ -1007,8 +1036,8 @@ h1, h2, h3, h4 {
     border: none;
     padding: 6px 12px;
     border-radius: 8px;
-    font-weight: 700;
-    font-size: 12px;
+    font-weight: 600;
+    font-size: 13px;
     cursor: pointer;
 }
 
@@ -2540,8 +2569,8 @@ input:checked + .slider:before {
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
-  font-size: 12px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s, background 0.2s;
 }
