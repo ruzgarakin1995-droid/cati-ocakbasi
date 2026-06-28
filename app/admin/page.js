@@ -407,7 +407,83 @@ export default function AdminPage() {
           {activeTab === 'design' && <DesignTab settings={settings} reload={loadSettings} />}
         </div>
       </main>
+      <PremiumToast />
     </div>
+  );
+}
+
+// ============================================================
+// PREMIUM TOAST NOTIFICATION
+// ============================================================
+function PremiumToast() {
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    let timer;
+    const handleToast = (e) => {
+      setToast(e.detail);
+      clearTimeout(timer);
+      timer = setTimeout(() => setToast(null), 4000);
+    };
+    window.addEventListener('premium-toast', handleToast);
+    
+    // Override global alert for admin page
+    const originalAlert = window.alert;
+    window.alert = (msg) => {
+      const isError = msg.toLowerCase().includes('hata') || msg.toLowerCase().includes('başarısız') || msg.toLowerCase().includes('zorunlu');
+      const event = new CustomEvent('premium-toast', { detail: { message: msg, type: isError ? 'error' : 'success' } });
+      window.dispatchEvent(event);
+    };
+
+    return () => {
+      window.removeEventListener('premium-toast', handleToast);
+      window.alert = originalAlert;
+      clearTimeout(timer);
+    };
+  }, []);
+
+  if (!toast) return null;
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes toastSlideUp {
+          from { opacity: 0; transform: translateY(20px) scale(0.95); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}} />
+      <div style={{
+        position: 'fixed', bottom: 32, right: 32, zIndex: 999999,
+        background: 'rgba(15, 23, 42, 0.9)',
+        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+        border: \`1px solid \${toast.type === 'error' ? 'rgba(239,68,68,0.3)' : 'rgba(34,197,94,0.3)'}\`,
+        color: '#fff', padding: '16px 20px', borderRadius: 16,
+        display: 'flex', alignItems: 'center', gap: 16,
+        boxShadow: '0 20px 40px rgba(0,0,0,0.4)',
+        animation: 'toastSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards'
+      }}>
+        <div style={{ 
+          width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          background: toast.type === 'error' ? 'rgba(239,68,68,0.15)' : 'rgba(34,197,94,0.15)',
+          color: toast.type === 'error' ? '#ef4444' : '#22c55e',
+          fontSize: 18
+        }}>
+          <i className={\`fa-solid \${toast.type === 'error' ? 'fa-triangle-exclamation' : 'fa-check'}\`}></i>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <span style={{ fontSize: 12, fontWeight: 600, opacity: 0.6, textTransform: 'uppercase', letterSpacing: 1, marginBottom: 2 }}>
+            {toast.type === 'error' ? 'Hata' : 'Başarılı'}
+          </span>
+          <span style={{ fontSize: 15, fontWeight: 500, color: '#f8fafc' }}>{toast.message}</span>
+        </div>
+        <button 
+          onClick={() => setToast(null)}
+          style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', marginLeft: 8, padding: 4 }}
+        >
+          <i className="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </>
   );
 }
 
