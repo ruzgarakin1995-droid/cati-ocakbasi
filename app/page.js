@@ -932,6 +932,7 @@ export default function Home() {
                 .premium-input {
                   width: 100%; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--bg-alpha-10); background: var(--bg-alpha-03); color: var(--text-main); font-family: 'Outfit', sans-serif; font-size: 14px; outline: none; transition: all 0.3s;
                 }
+                .premium-input::placeholder { color: var(--text-muted); }
                 .premium-input:focus {
                   border-color: var(--primary-color); background: var(--glass-input-focus); box-shadow: 0 0 0 4px rgba(212,175,55,0.1);
                 }

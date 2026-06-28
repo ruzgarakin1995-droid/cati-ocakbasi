@@ -293,7 +293,7 @@ export default function AdminPage() {
         @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.3); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { transform: translateX(-100%); } to { transform: translateX(0); } }
-        .admin-shimmer { background: linear-gradient(90deg, ${colors.gold} 0%, ${colors.goldLight} 40%, #fff 50%, ${colors.goldLight} 60%, ${colors.gold} 100%); background-size: 200% 100%; animation: shimmer 3s infinite linear; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .admin-shimmer { background: linear-gradient(90deg, ${colors.gold} 0%, ${colors.goldLight} 40%, var(--text-main) 50%, ${colors.goldLight} 60%, ${colors.gold} 100%); background-size: 200% 100%; animation: shimmer 3s infinite linear; -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .admin-card { background: ${colors.bgCard}; backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid ${colors.border}; border-radius: 16px; transition: all 0.3s ease; }
         .admin-card:hover { background: ${colors.bgCardHover}; border-color: rgba(212,175,55,0.2); }
         .admin-btn { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 14px; transition: all 0.25s ease; display: inline-flex; align-items: center; gap: 8px; }
