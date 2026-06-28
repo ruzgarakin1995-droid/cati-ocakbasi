@@ -183,9 +183,9 @@ body.light-mode .nav-item {
 }
 
 body.light-mode .nav-item.active {
-  background: var(--primary-color);
+  background: var(--accent-color);
   color: #000;
-  border-color: var(--primary-color);
+  border-color: var(--accent-color);
 }
 
 .search-bar input {
@@ -274,10 +274,10 @@ body.light-mode .nav-item.active {
 }
 
 .nav-item.active {
-  background: var(--primary-color);
+  background: var(--accent-color);
   color: #000;
   font-weight: 700;
-  border-color: var(--primary-color);
+  border-color: var(--accent-color);
 }
 
 /* Banner Component */
