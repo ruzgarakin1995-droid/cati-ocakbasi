@@ -417,19 +417,40 @@ export default function Home() {
 
   return (
     <>
-      {settings?.themeColor && (() => {
-        const hex = settings.themeColor.replace('#', '');
-        const r = parseInt(hex.substr(0, 2), 16) || 0;
-        const g = parseInt(hex.substr(2, 2), 16) || 0;
-        const b = parseInt(hex.substr(4, 2), 16) || 0;
-        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
-        const textColor = brightness > 128 ? '#000000' : '#ffffff';
+      {(() => {
+        // Renk parlaklık hesaplaması
+        let textColor = '#ffffff';
+        if (settings?.themeColor) {
+          const hex = settings.themeColor.replace('#', '');
+          const r = parseInt(hex.substr(0, 2), 16) || 0;
+          const g = parseInt(hex.substr(2, 2), 16) || 0;
+          const b = parseInt(hex.substr(4, 2), 16) || 0;
+          const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+          textColor = brightness > 128 ? '#000000' : '#ffffff';
+        }
+
+        // Arka plan teması hesaplaması
+        const getEmojiBg = (emoji) => `url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='30' text-anchor='middle' dominant-baseline='central' opacity='0.08'%3E${encodeURIComponent(emoji)}%3C/text%3E%3C/svg%3E")`;
         
+        const backgrounds = {
+          'cafe': getEmojiBg('🍰'),
+          'coffee': getEmojiBg('☕'),
+          'doner': getEmojiBg('🥙'),
+          'fastfood': getEmojiBg('🍔'),
+          'kebap': getEmojiBg('🥩'),
+          'midye': getEmojiBg('🦪'),
+          'seafood': getEmojiBg('🦐'),
+          'candy': getEmojiBg('🍬')
+        };
+        const bgPattern = settings?.bgThemeId && backgrounds[settings.bgThemeId] ? backgrounds[settings.bgThemeId] : 'none';
+
+        if (!settings?.themeColor && bgPattern === 'none') return null;
+
         return (
           <style dangerouslySetInnerHTML={{__html: `
             :root, body, body.light-mode {
-              --accent-color: ${settings.themeColor} !important;
-              --accent-text: ${textColor} !important;
+              ${settings?.themeColor ? `--accent-color: ${settings.themeColor} !important; --accent-text: ${textColor} !important;` : ''}
+              ${bgPattern !== 'none' ? `--theme-bg-pattern: ${bgPattern} !important;` : ''}
             }
           `}} />
         );

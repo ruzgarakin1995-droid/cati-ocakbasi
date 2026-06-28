@@ -1994,6 +1994,33 @@ function DesignTab({ settings, reload }) {
     setSaving(false);
   }
 
+  async function handleSelectBg(bgId) {
+    if (settings?.bgThemeId === bgId) return;
+    setSaving(true);
+    try {
+      await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify({ ...settings, bgThemeId: bgId }) });
+      reload();
+      alert('Arka plan başarıyla güncellendi!');
+    } catch (e) {
+      alert('Hata: ' + e.message);
+    }
+    setSaving(false);
+  }
+
+  const getEmojiBg = (emoji) => `url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Ctext x='50%25' y='50%25' font-size='30' text-anchor='middle' dominant-baseline='central' opacity='0.08'%3E${encodeURIComponent(emoji)}%3C/text%3E%3C/svg%3E")`;
+
+  const THEME_BACKGROUNDS = [
+    { id: 'default', name: 'Sade (Varsayılan)', bg: 'none', icon: 'fa-solid fa-ban' },
+    { id: 'cafe', name: 'Kafe & Pastane', bg: getEmojiBg('🍰'), emoji: '🍰' },
+    { id: 'coffee', name: 'Kahve Teması', bg: getEmojiBg('☕'), emoji: '☕' },
+    { id: 'doner', name: 'Dönerci Teması', bg: getEmojiBg('🥙'), emoji: '🥙' },
+    { id: 'fastfood', name: 'Fast Food', bg: getEmojiBg('🍔'), emoji: '🍔' },
+    { id: 'kebap', name: 'Kebapçı Teması', bg: getEmojiBg('🥩'), emoji: '🥩' },
+    { id: 'midye', name: 'Kokoreç & Midye', bg: getEmojiBg('🦪'), emoji: '🦪' },
+    { id: 'seafood', name: 'Deniz Ürünleri', bg: getEmojiBg('🦐'), emoji: '🦐' },
+    { id: 'candy', name: 'Şeker Teması', bg: getEmojiBg('🍬'), emoji: '🍬' }
+  ];
+
   const THEME_COLORS = [
     { name: 'Sarı (Varsayılan)', hex: '#eab308' },
     { name: 'Turuncu', hex: '#f97316' },
@@ -2061,6 +2088,42 @@ function DesignTab({ settings, reload }) {
         >
           {saving ? 'Kaydediliyor...' : 'Seçili Özel Rengi Uygula'}
         </button>
+      </div>
+      </div>
+
+      <h3 style={{ fontSize: 16, color: colors.gold, marginTop: 40, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Arka Plan Deseni (Tema)</h3>
+      <p style={{ color: colors.textMuted, marginBottom: 24, fontSize: 14 }}>
+        Müşteri ekranının arka planına işletmenizin konseptine uygun hafif desenler ekleyebilirsiniz.
+      </p>
+
+      <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+        {THEME_BACKGROUNDS.map(bg => {
+          const isActive = settings?.bgThemeId === bg.id || (!settings?.bgThemeId && bg.id === 'default');
+          return (
+            <button 
+              key={bg.id}
+              disabled={saving}
+              onClick={() => handleSelectBg(bg.id)}
+              style={{
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                background: 'var(--surface-color)',
+                border: isActive ? `2px solid var(--accent-color)` : '2px solid var(--glass-border)',
+                borderRadius: 12, padding: 16, cursor: 'pointer',
+                opacity: saving ? 0.5 : 1,
+                transition: 'all 0.2s',
+                width: 140,
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: bg.bg, zIndex: 0 }}></div>
+              <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'var(--bg-color)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, zIndex: 1, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+                {bg.icon ? <i className={bg.icon} style={{ color: 'var(--text-muted)' }}></i> : bg.emoji}
+              </div>
+              <span style={{ fontSize: 13, color: 'var(--text-main)', fontWeight: isActive ? 700 : 500, zIndex: 1, textShadow: '0 0 10px var(--bg-color), 0 0 10px var(--bg-color)' }}>{bg.name}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
