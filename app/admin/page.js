@@ -1731,11 +1731,11 @@ function OrdersTab({ orders, reload }) {
             className="admin-input" 
             style={{ width: 'auto', padding: '8px 12px', height: 'auto', fontSize: '14px', background: 'var(--bg-alpha-06)', color: 'var(--text-main)' }}
           >
-            <option value="all" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Tüm Zamanlar</option>
-            <option value="daily" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Günlük (Bugün)</option>
-            <option value="weekly" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Haftalık</option>
-            <option value="monthly" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Aylık</option>
-            <option value="custom" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Özel Tarih</option>
+            <option value="all" style={{ background: 'var(--surface-color)', color: 'var(--text-main)' }}>Tüm Zamanlar</option>
+            <option value="daily" style={{ background: 'var(--surface-color)', color: 'var(--text-main)' }}>Günlük (Bugün)</option>
+            <option value="weekly" style={{ background: 'var(--surface-color)', color: 'var(--text-main)' }}>Haftalık</option>
+            <option value="monthly" style={{ background: 'var(--surface-color)', color: 'var(--text-main)' }}>Aylık</option>
+            <option value="custom" style={{ background: 'var(--surface-color)', color: 'var(--text-main)' }}>Özel Tarih</option>
           </select>
 
           {dateFilter === 'custom' && (
@@ -1972,8 +1972,8 @@ function SettingsTab({ settings, reload }) {
           <label style={{ display: 'block', marginBottom: 16 }}>
             <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Mağaza Durumu (Açık/Kapalı)</div>
             <select className="admin-input" style={{ background: 'var(--bg-alpha-06)', color: 'var(--text-main)' }} value={form.isStoreOpen ? 'true' : 'false'} onChange={e => setForm({...form, isStoreOpen: e.target.value === 'true'})}>
-              <option value="true" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Açık (Sipariş Alınabilir)</option>
-              <option value="false" style={{ background: '#1a1a1a', color: 'var(--text-main)' }}>Kapalı (Bakım / Servis Dışı)</option>
+              <option value="true" style={{ background: 'var(--surface-color)', color: 'var(--text-main)' }}>Açık (Sipariş Alınabilir)</option>
+              <option value="false" style={{ background: 'var(--surface-color)', color: 'var(--text-main)' }}>Kapalı (Bakım / Servis Dışı)</option>
             </select>
           </label>
 
