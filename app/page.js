@@ -5,11 +5,11 @@ import Image from 'next/image';
 
 const toastMessages = [
   "Bence bunu kesinlikle denemelisin!",
-  "Özel malzemelerimizle taptaze hazırlıyoruz.",
-  "Müşterilerimizin en çok tercih ettiği lezzetlerden biri.",
-  "Bugün kendini şımartmaya ne dersin?",
-  "Tam sana göre harika bir önerimiz var.",
-  "Bu eşsiz lezzeti henüz tatmadın mı?"
+  "├ûzel malzemelerimizle taptaze haz─▒rl─▒yoruz.",
+  "M├╝┼şterilerimizin en ├ğok tercih etti─şi lezzetlerden biri.",
+  "Bug├╝n kendini ┼ş─▒martmaya ne dersin?",
+  "Tam sana g├Âre harika bir ├Ânerimiz var.",
+  "Bu e┼şsiz lezzeti hen├╝z tatmad─▒n m─▒?"
 ];
 
 import LanguageSelector from './components/LanguageSelector';
@@ -92,13 +92,13 @@ export default function Home() {
     const title = item?.title;
     if (!title) return [];
     const t = title.toLowerCase();
-    if (t.includes('waffle') || t.includes('tatlı şöleni')) return ["Çikolata Sosu", "Beyaz Çikolata", "Çilek", "Muz", "Kivi", "Fındık", "Fıstık", "Hindistan Cevizi"];
-    if (t.includes('kumpir') || t.includes('şefin elinden')) return ["Sosis", "Salam", "Amerikan Salatası", "Zeytin", "Mısır", "Kornişon Turşu", "Jalapeno", "Meksika Fasulyesi", "Ketçap", "Mayonez", "Acı Sos"];
-    if (t.includes('kumru') || t.includes('gecelerin vazgeçilmezi') || t.includes('efsane')) return ["Sucuk", "Salam", "Sosis", "Kaşar Peyniri", "Domates", "Turşu", "Ketçap", "Mayonez", "Acı Sos"];
-    if (t.includes('burger') || t.includes('cheeseburger')) return ["Karamelize Soğan", "Cheddar Peyniri", "Domates", "Marul", "Turşu", "Ketçap", "Mayonez", "Acı Sos"];
-    if (t.includes('tost') || t.includes('sabahın güneşi')) return ["Sucuk", "Kaşar Peyniri", "Salam", "Sosis", "Turşu", "Ketçap", "Mayonez", "Acı Sos"];
-    if (t.includes('dürüm') || t.includes('porsiyon') || t.includes('ekmek arası')) return ["Soğan", "Domates", "Yeşillik", "Maydanoz", "Turşu", "Ketçap", "Mayonez", "Acı Sos"];
-    return ["Ketçap", "Mayonez", "Turşu", "Domates", "Marul", "Soğan"];
+    if (t.includes('waffle') || t.includes('tatl─▒ ┼ş├Âleni')) return ["├çikolata Sosu", "Beyaz ├çikolata", "├çilek", "Muz", "Kivi", "F─▒nd─▒k", "F─▒st─▒k", "Hindistan Cevizi"];
+    if (t.includes('kumpir') || t.includes('┼şefin elinden')) return ["Sosis", "Salam", "Amerikan Salatas─▒", "Zeytin", "M─▒s─▒r", "Korni┼şon Tur┼şu", "Jalapeno", "Meksika Fasulyesi", "Ket├ğap", "Mayonez", "Ac─▒ Sos"];
+    if (t.includes('kumru') || t.includes('gecelerin vazge├ğilmezi') || t.includes('efsane')) return ["Sucuk", "Salam", "Sosis", "Ka┼şar Peyniri", "Domates", "Tur┼şu", "Ket├ğap", "Mayonez", "Ac─▒ Sos"];
+    if (t.includes('burger') || t.includes('cheeseburger')) return ["Karamelize So─şan", "Cheddar Peyniri", "Domates", "Marul", "Tur┼şu", "Ket├ğap", "Mayonez", "Ac─▒ Sos"];
+    if (t.includes('tost') || t.includes('sabah─▒n g├╝ne┼şi')) return ["Sucuk", "Ka┼şar Peyniri", "Salam", "Sosis", "Tur┼şu", "Ket├ğap", "Mayonez", "Ac─▒ Sos"];
+    if (t.includes('d├╝r├╝m') || t.includes('porsiyon') || t.includes('ekmek aras─▒')) return ["So─şan", "Domates", "Ye┼şillik", "Maydanoz", "Tur┼şu", "Ket├ğap", "Mayonez", "Ac─▒ Sos"];
+    return ["Ket├ğap", "Mayonez", "Tur┼şu", "Domates", "Marul", "So─şan"];
   };
 
   // Admin Login Logic
@@ -149,7 +149,7 @@ export default function Home() {
 
   // --- Cart Actions ---
   const addToCart = (item) => {
-    const isMesrubat = item.title?.toLowerCase().includes('meşrubat');
+    const isMesrubat = item.title?.toLowerCase().includes('me┼şrubat');
     setCart([...cart, { ...item, cartId: Date.now() + Math.random(), excludedIngredients: [], selectedDrink: isMesrubat ? 'Kola' : null }]);
   };
 
@@ -192,11 +192,11 @@ export default function Home() {
       if (data.valid) {
         setAppliedCoupon(data.coupon);
       } else {
-        setCouponError(data.error || 'Geçersiz kupon');
+        setCouponError(data.error || 'Ge├ğersiz kupon');
         setAppliedCoupon(null);
       }
     } catch (err) {
-      setCouponError('Hata oluştu');
+      setCouponError('Hata olu┼ştu');
     }
   };
 
@@ -270,7 +270,7 @@ export default function Home() {
       // Start polling
       pollOrderStatus(order.id);
     } catch (e) {
-      alert('Sipariş oluşturulurken hata oluştu');
+      alert('Sipari┼ş olu┼şturulurken hata olu┼ştu');
     }
   };
 
@@ -287,7 +287,7 @@ export default function Home() {
               setTrackingOrder(null);
               setIsTrackingOpen(false);
               if (typeof window !== 'undefined') localStorage.removeItem('trackingOrderId');
-            }, 35 * 60 * 1000); // 35 dakika sonra butonu ve ekranı gizle
+            }, 35 * 60 * 1000); // 35 dakika sonra butonu ve ekran─▒ gizle
           }
         }
       } catch (e) {
@@ -322,12 +322,12 @@ export default function Home() {
   const getTrackingFabData = () => {
     if (!trackingOrder) return null;
     switch (trackingOrder.status) {
-      case 'received': return { text: "Siparişiniz Alındı 🕒", icon: "fa-clipboard-check", color: "var(--primary-color)" };
-      case 'preparing': return { text: "Siparişiniz Hazırlanıyor 👨‍🍳", icon: "fa-fire-burner", color: "#FF9800" };
-      case 'courier': return { text: "Kuryeye Veriliyor 🛵", icon: "fa-box", color: "#9C27B0" };
-      case 'onway': return { text: "Tatlı Tatlı Geliyor 🚀", icon: "fa-motorcycle", color: "#03A9F4" };
-      case 'delivered': return { text: "Afiyet Olsun! ✅", icon: "fa-check-circle", color: "#4CAF50" };
-      default: return { text: "Sipariş Takip", icon: "fa-location-crosshairs", color: "var(--primary-color)" };
+      case 'received': return { text: "Sipari┼şiniz Al─▒nd─▒ ­şòÆ", icon: "fa-clipboard-check", color: "var(--primary-color)" };
+      case 'preparing': return { text: "Sipari┼şiniz Haz─▒rlan─▒yor ­şæ¿ÔÇı­şı│", icon: "fa-fire-burner", color: "#FF9800" };
+      case 'courier': return { text: "Kuryeye Veriliyor ­şøÁ", icon: "fa-box", color: "#9C27B0" };
+      case 'onway': return { text: "Tatl─▒ Tatl─▒ Geliyor ­şÜÇ", icon: "fa-motorcycle", color: "#03A9F4" };
+      case 'delivered': return { text: "Afiyet Olsun! Ô£à", icon: "fa-check-circle", color: "#4CAF50" };
+      default: return { text: "Sipari┼ş Takip", icon: "fa-location-crosshairs", color: "var(--primary-color)" };
     }
   };
   const fabData = getTrackingFabData();
@@ -360,7 +360,7 @@ export default function Home() {
         setLoginError(data.error);
       }
     } catch (e) {
-      setLoginError('Hata oluştu');
+      setLoginError('Hata olu┼ştu');
     }
   };
 
@@ -423,7 +423,7 @@ export default function Home() {
   return (
     <>
       {(() => {
-        // Renk parlaklık hesaplaması
+        // Renk parlakl─▒k hesaplamas─▒
         let textColor = '#ffffff';
         if (settings?.themeColor) {
           const hex = settings.themeColor.replace('#', '');
@@ -434,7 +434,7 @@ export default function Home() {
           textColor = brightness > 128 ? '#000000' : '#ffffff';
         }
 
-        // Arka plan teması hesaplaması
+        // Arka plan temas─▒ hesaplamas─▒
         const getSvgBg = (svgStr) => `url("data:image/svg+xml,${encodeURIComponent(svgStr)}")`;
         
         const backgrounds = {
@@ -481,11 +481,11 @@ export default function Home() {
         </div>
         <div className="container hero-content" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
           <div style={{ width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--primary-color)', boxShadow: '0 4px 15px var(--glass-input-focus)', position: 'relative' }}>
-            <Image src="/cati-logo.png" alt="Çatı Ocakbaşı Logo" fill style={{ objectFit: 'cover' }} sizes="80px" priority />
+            <Image src="/cati-logo.png" alt="├çat─▒ Ocakba┼ş─▒ Logo" fill style={{ objectFit: 'cover' }} sizes="80px" priority />
           </div>
           <div>
             <h2 className="hero-subtitle" style={{ marginBottom: '4px' }}>Restoran</h2>
-            <h1 className="hero-title" style={{ fontSize: '24px' }}>Çatı Ocakbaşı Osmanbey</h1>
+            <h1 className="hero-title" style={{ fontSize: '24px' }}>├çat─▒ Ocakba┼ş─▒ Osmanbey</h1>
           </div>
         </div>
         <div className="container hero-info" style={{ marginTop: '16px' }}>
@@ -493,15 +493,15 @@ export default function Home() {
           <span className="info-badge"><i className="fa-solid fa-bag-shopping"></i> Gel-al</span>
           <span className="info-badge"><i className="fa-solid fa-motorcycle"></i> Adrese Teslim</span>
         </div>
-        
-        {/* SEARCH BAR (OVERLAPPING PILL) */}
-        <div className="container" style={{ position: 'absolute', bottom: '-24px', left: 0, right: 0, zIndex: 102 }}>
-          <div className="search-bar" style={{ background: 'var(--surface-color)', boxShadow: '0 8px 24px rgba(0,0,0,0.12)', margin: '0 16px', borderRadius: '24px' }}>
-            <i className="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Ürün ara..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-          </div>
-        </div>
       </header>
+
+      {/* SEARCH */}
+      <section className="search-filter-section">
+        <div className="search-bar">
+          <i className="fa-solid fa-magnifying-glass"></i>
+          <input type="text" placeholder="├£r├╝n ara..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+        </div>
+      </section>
 
       {/* STICKY NAV */}
       <nav className="sticky-nav">
@@ -555,8 +555,8 @@ export default function Home() {
                     ))}
                   </div>
                   <div className="banner-footer">
-                    <span className="banner-price">{banner.price} ₺</span>
-                    <button className="btn-large" onClick={() => addToCart(banner)}>Siparişe Ekle</button>
+                    <span className="banner-price">{banner.price} Ôé║</span>
+                    <button className="btn-large" onClick={() => addToCart(banner)}>Sipari┼şe Ekle</button>
                   </div>
                 </div>
               </div>
@@ -580,14 +580,14 @@ export default function Home() {
         </>
       )}
 
-        {/* FEATURED ITEMS (SÜPER LEZZETLER) */}
+        {/* FEATURED ITEMS (S├£PER LEZZETLER) */}
         {!searchQuery && data.featured.length > 0 && (
           <div className="featured-grid">
             {data.featured.map(item => (
               <div key={item.id} className="featured-card">
                 <div className="featured-img-wrapper">
                   <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 50vw, 300px" />
-                  <span className="tag-badge tag-new"><i className="fa-solid fa-star"></i> SÜPER LEZZET</span>
+                  <span className="tag-badge tag-new"><i className="fa-solid fa-star"></i> S├£PER LEZZET</span>
                 </div>
                 <div className="featured-content">
                   <h3 className="featured-title">{item.emoji} {item.title}</h3>
@@ -598,8 +598,8 @@ export default function Home() {
                     ))}
                   </div>
                   <div className="featured-footer">
-                    <span className="price">{item.price} ₺</span>
-                    <button className="btn-add-large" onClick={() => addToCart(item)}>Siparişe Ekle</button>
+                    <span className="price">{item.price} Ôé║</span>
+                    <button className="btn-add-large" onClick={() => addToCart(item)}>Sipari┼şe Ekle</button>
                   </div>
                 </div>
               </div>
@@ -622,84 +622,63 @@ export default function Home() {
             <h2 className="section-title">
               {cat.icon && <i className={cat.icon}></i>} {cat.emoji} {cat.title}
             </h2>
-            <div className="menu-grid">
-              {filteredItems.map(item => (
-                <div key={item.id} className="menu-card" onClick={() => {
-                  setSelectedItem(item);
-                  setIsDetailOpen(true);
-                }}>
-                  <div style={{ position: 'relative', width: '100%', aspectRatio: '1', borderRadius: '50%', overflow: 'hidden', margin: '0 auto', marginBottom: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-                    <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 50vw, 33vw" />
+            
+            {filteredItems.map(item => (
+              item.isHighlight ? (
+                <div key={item.id} className="card-highlight" onClick={() => { setSelectedItem(item); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
+                  <div className="item-badges">
+                    {item.badge && <span className="tag-badge tag-pop"><i className="fa-solid fa-star"></i> {item.badge}</span>}
                   </div>
-                  <h3 style={{ fontSize: '15px', fontWeight: '600', marginBottom: '4px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'var(--text-main)' }}>{item.emoji} {item.title}</h3>
-                  <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '8px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.description || "Harika Lezzet"}</p>
-                  
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                    <span style={{ fontSize: '16px', fontWeight: '700', color: 'var(--text-main)' }}>{item.price} ₺</span>
-                    <button className="add-btn-circle" onClick={(e) => { e.stopPropagation(); addToCart(item); }}>
-                      <i className="fa-solid fa-plus"></i>
-                    </button>
+                  <div className="card-img-wrapper">
+                    <Image src={item.image} alt={item.title} fill className="card-img" style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 50vw, 300px" />
+                  </div>
+                  <div className="card-content">
+                    <h3 className="card-title">{item.emoji} {item.title}</h3>
+                    <p className="item-ingredients">{item.description}</p>
+                    <div className="ingredient-icons">
+                      {item.ingredients?.map((ing, idx) => (
+                        <div key={idx} className={`ing-icon ing-${ing.type}`} title={ing.title}><i className={ing.icon}></i></div>
+                      ))}
+                    </div>
+                    <div className="card-footer" style={{ marginTop: '12px' }}>
+                      <span className="price">{item.price} ₺</span>
+                      <button className="btn-add" onClick={(e) => { e.stopPropagation(); addToCart(item); }}><i className="fa-solid fa-plus"></i></button>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
+              ) : (
+                <div key={item.id} className="list-item" onClick={() => { setSelectedItem(item); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
+                  <div className="list-item-thumb"><Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 50vw, 300px" /></div>
+                  <div className="list-item-content">
+                    <div className="list-item-info">
+                      <h3>{item.emoji} {item.title}</h3>
+                      <p className="item-ingredients">{item.description}</p>
+                      <div className="ingredient-icons">
+                        {item.ingredients?.map((ing, idx) => (
+                          <div key={idx} className={`ing-icon ing-${ing.type}`} title={ing.title}><i className={ing.icon}></i></div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="list-item-bottom">
+                      <div className="list-item-price">{item.price} ₺</div>
+                      <button className="btn-add-small" onClick={(e) => { e.stopPropagation(); addToCart(item); }}><i className="fa-solid fa-plus"></i></button>
+                    </div>
+                  </div>
+                </div>
+              )
+            ))}
           </section>
         );
         })}
 
-        {/* SOSYAL AĞLARIMIZ */}
+        {/* SOSYAL */}
         <div style={{ marginTop: '30px', marginBottom: '24px' }}>
           <h2 className="social-list-title" style={{ fontWeight: 700, fontSize: '20px', marginBottom: '16px' }}>Sosyal Ağlarımız</h2>
-          
           <a href={settings?.socialLinks?.googleReview || '#'} target="_blank" rel="noreferrer" className="contact-card" style={{ display: 'block', textDecoration: 'none', color: 'inherit', marginBottom: '16px', textAlign: 'center', padding: '24px', background: 'var(--surface-color)', borderRadius: '12px', transition: 'transform 0.2s' }}>
-            <h3 className="animate-discount" style={{ fontSize: '16px', marginBottom: '12px', color: 'var(--text-main)' }}><span className="gift-icon">🎁</span> Google yorumu yap, %10 İndirim Kazan!</h3>
+            <h3 className="animate-discount" style={{ fontSize: '16px', marginBottom: '12px', color: 'var(--text-main)' }}>Google yorumu yap, %10 İndirim Kazan!</h3>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', fontSize: '24px', color: '#fbbc05', marginBottom: '8px' }}>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star"></i>
-              <i className="fa-solid fa-star"></i>
+              <i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i><i className="fa-solid fa-star"></i>
             </div>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Yıldıza tıklayarak Google'da bizi puanlayın ve kasada gösterin anında indirimi kapın.</p>
-          </a>
-
-          <a href={settings?.socialLinks?.instagram || '#'} className="social-link-item" style={{ borderRadius: '16px 16px 0 0', textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--surface-color)', padding: '16px', border: '1px solid var(--glass-border)' }}>
-            <div className="social-link-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div className="social-icon instagram" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', background: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)' }}>
-                <i className="fa-brands fa-instagram" style={{ fontSize: '24px' }}></i>
-              </div>
-              <div className="social-info">
-                <h4 style={{ fontSize: '16px', marginBottom: '4px' }}>Instagram</h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Süreci yakından takip edin.</p>
-              </div>
-            </div>
-            <div className="social-arrow" style={{ color: 'var(--text-muted)' }}><i className="fa-solid fa-arrow-right"></i></div>
-          </a>
-
-          <a href={settings?.socialLinks?.whatsapp ? `https://wa.me/${settings.socialLinks.whatsapp.replace(/[^0-9]/g, '')}` : '#'} className="social-link-item" style={{ borderTop: 'none', borderBottom: 'none', textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--surface-color)', padding: '16px', borderLeft: '1px solid var(--glass-border)', borderRight: '1px solid var(--glass-border)' }}>
-            <div className="social-link-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div className="social-icon whatsapp" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', background: '#25d366' }}>
-                <i className="fa-brands fa-whatsapp" style={{ fontSize: '24px' }}></i>
-              </div>
-              <div className="social-info">
-                <h4 style={{ fontSize: '16px', marginBottom: '4px' }}>WhatsApp</h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Hızlı sipariş ve destek için bir mesaj uzağınızdayız.</p>
-              </div>
-            </div>
-            <div className="social-arrow" style={{ color: 'var(--text-muted)' }}><i className="fa-solid fa-arrow-right"></i></div>
-          </a>
-
-          <a href={settings?.socialLinks?.googleReview || '#'} className="social-link-item" style={{ borderRadius: '0 0 16px 16px', textDecoration: 'none', color: 'inherit', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--surface-color)', padding: '16px', border: '1px solid var(--glass-border)' }}>
-            <div className="social-link-left" style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <div className="social-icon google" style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', background: '#ea4335' }}>
-                <i className="fa-brands fa-google" style={{ fontSize: '24px' }}></i>
-              </div>
-              <div className="social-info">
-                <h4 className="animate-discount" style={{ fontSize: '16px', marginBottom: '4px' }}><span className="gift-icon">🎁</span> Google yorumu yap, %10 İndirim Kazan!</h4>
-                <p style={{ fontSize: '13px', color: 'var(--text-muted)' }}>Yorumlarınız bizim için çok önemli.</p>
-              </div>
-            </div>
-            <div className="social-arrow" style={{ color: 'var(--text-muted)' }}><i className="fa-solid fa-arrow-right"></i></div>
           </a>
         </div>
 
@@ -708,121 +687,13 @@ export default function Home() {
           <div className="contact-header" style={{ marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '12px', fontSize: '20px', fontWeight: 700 }}>
             <i className="fa-solid fa-grip" style={{ color: 'var(--text-muted)' }}></i> İletişim
           </div>
-          
           <div className="contact-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid var(--glass-border)' }}>
-            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-alpha-05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-              <i className="fa-solid fa-phone"></i>
-            </div>
-            <div className="contact-info-text" style={{ display: 'flex', flexDirection: 'column' }}>
-              <div className="contact-label" style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '2px' }}>Telefon</div>
-              <a href="tel:05325244906" className="contact-value" style={{ fontSize: '15px', fontWeight: 600, color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color='var(--primary-color)'} onMouseOut={(e) => e.target.style.color='inherit'}>0532 524 49 06</a>
-            </div>
-          </div>
-
-          <div className="contact-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid var(--glass-border)' }}>
-            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-alpha-05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-              <i className="fa-solid fa-mobile-screen"></i>
-            </div>
-            <div className="contact-info-text" style={{ display: 'flex', flexDirection: 'column' }}>
-              <div className="contact-label" style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '2px' }}>WhatsApp</div>
-              <a href={"https://wa.me/" + (settings?.socialLinks?.whatsapp?.replace(/[^0-9]/g, '') || "905325244906")} target="_blank" rel="noreferrer" className="contact-value" style={{ fontSize: '15px', fontWeight: 600, color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color='#25D366'} onMouseOut={(e) => e.target.style.color='inherit'}>0532 524 49 06</a>
-            </div>
-          </div>
-
-          <div className="contact-row" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px 0', borderBottom: '1px solid var(--glass-border)', marginBottom: '24px' }}>
-            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-alpha-05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
-              <i className="fa-regular fa-envelope"></i>
-            </div>
-            <div className="contact-info-text" style={{ display: 'flex', flexDirection: 'column' }}>
-              <div className="contact-label" style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '2px' }}>E-posta</div>
-              <a href="mailto:info@catiocakbasi.com" className="contact-value" style={{ fontSize: '15px', fontWeight: 600, color: 'inherit', textDecoration: 'none', transition: 'color 0.2s' }} onMouseOver={(e) => e.target.style.color='var(--primary-color)'} onMouseOut={(e) => e.target.style.color='inherit'}>info@catiocakbasi.com</a>
-            </div>
-          </div>
-
-          {/* DELIVERY LOGOS */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px', marginBottom: '24px' }}>
-            {settings?.deliveryLinks?.yemeksepeti && settings.deliveryLinks.yemeksepeti !== '#' ? (
-              <a href={settings.deliveryLinks.yemeksepeti} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
-                <div style={{ textAlign: 'center', color: '#ea004b', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Yemeksepeti</div>
-              </a>
-            ) : (
-              <div style={{ textAlign: 'center', color: '#ea004b', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Yemeksepeti</div>
-            )}
-            
-            <div style={{ height: '1px', background: 'var(--glass-border)' }}></div>
-            
-            {settings?.deliveryLinks?.migros && settings.deliveryLinks.migros !== '#' ? (
-              <a href={settings.deliveryLinks.migros} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
-                <div style={{ textAlign: 'center', color: '#ff7c00', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Migros Yemek</div>
-              </a>
-            ) : (
-              <div style={{ textAlign: 'center', color: '#ff7c00', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Migros Yemek</div>
-            )}
-            
-            <div style={{ height: '1px', background: 'var(--glass-border)' }}></div>
-            
-            {settings?.deliveryLinks?.getir && settings.deliveryLinks.getir !== '#' ? (
-              <a href={settings.deliveryLinks.getir} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
-                <div style={{ textAlign: 'center', color: '#5d3ebc', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Getir Yemek</div>
-              </a>
-            ) : (
-              <div style={{ textAlign: 'center', color: '#5d3ebc', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Getir Yemek</div>
-            )}
-            
-            <div style={{ height: '1px', background: 'var(--glass-border)' }}></div>
-            
-            {settings?.deliveryLinks?.trendyolGo && settings.deliveryLinks.trendyolGo !== '#' ? (
-              <a href={settings.deliveryLinks.trendyolGo} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
-                <div style={{ textAlign: 'center', color: '#F27A1A', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Trendyol Go</div>
-              </a>
-            ) : (
-              <div style={{ textAlign: 'center', color: '#F27A1A', fontSize: '24px', fontWeight: 800 }}><i className="fa-solid fa-motorcycle" style={{ marginRight: 8 }}></i> Trendyol Go</div>
-            )}
-          </div>
-
-          {/* MAP */}
-          <div className="map-container" style={{ marginTop: '24px', borderRadius: '12px', overflow: 'hidden', height: '250px', position: 'relative' }}>
-            <iframe 
-              src="https://maps.google.com/maps?q=Cumhuriyet,+Tayyareci+Fehmi+Sok.+No:25/1,+34360+Şişli/İstanbul&t=&z=16&ie=UTF8&iwloc=&output=embed" 
-              style={{ width: '100%', height: '100%', border: 0, pointerEvents: 'auto' }}
-              allowFullScreen="" 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-
-          {/* MAP LINKS */}
-          <div className="map-links" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px', padding: '0 10px' }}>
-            <a href="https://www.google.com/maps/dir/?api=1&destination=Cumhuriyet,+Tayyareci+Fehmi+Sok.+No:25/1,+34360+Şişli/İstanbul" target="_blank" rel="noreferrer" className="map-link-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'var(--text-main)', transition: 'transform 0.2s' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 5L2 8V21L8 18V5Z" fill="#4285F4"/>
-                <path d="M16 8L8 5V18L16 21V8Z" fill="#2B60B8"/>
-                <path d="M22 5L16 8V21L22 18V5Z" fill="#4285F4"/>
-                <path d="M12 12C13.6569 12 15 10.6569 15 9C15 7.34315 13.6569 6 12 6C10.3431 6 9 7.34315 9 9C9 10.6569 10.3431 12 12 12Z" fill="#0055FF"/>
-                <path d="M12 16L9 11H15L12 16Z" fill="#0055FF"/>
-              </svg>
-              <span style={{ fontSize: '13px', fontWeight: 700 }}>Google Maps</span>
-            </a>
-            
-            <a href="https://yandex.com.tr/harita/?text=Cumhuriyet,+Tayyareci+Fehmi+Sok.+No:25/1,+34360+Şişli/İstanbul" target="_blank" rel="noreferrer" className="map-link-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'var(--text-main)', transition: 'transform 0.2s' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="10" r="7" fill="#FF0000" />
-                <rect x="10.5" y="15" width="3" height="7" rx="1.5" fill="#FF0000" />
-                <circle cx="12" cy="10" r="3" fill="#1A1A1A" />
-              </svg>
-              <span style={{ fontSize: '13px', fontWeight: 700 }}>Yandex Maps</span>
-            </a>
-            
-            <a href="http://maps.apple.com/?daddr=Cumhuriyet,+Tayyareci+Fehmi+Sok.+No:25/1,+34360+Şişli/İstanbul&dirflg=d" target="_blank" rel="noreferrer" className="map-link-item" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px', textDecoration: 'none', color: 'var(--text-main)', transition: 'transform 0.2s' }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.5 2.5L2 10.5L10 14L13.5 22L21.5 2.5Z" fill="#007AFF"/>
-              </svg>
-              <span style={{ fontSize: '13px', fontWeight: 700 }}>Apple Maps</span>
-            </a>
+            <div className="contact-icon-box" style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'var(--bg-alpha-05)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}><i className="fa-solid fa-phone"></i></div>
+            <div className="contact-info-text"><div className="contact-label" style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Telefon</div><a href="tel:05325244906" style={{ fontSize: '15px', fontWeight: 600, color: 'inherit' }}>0532 524 49 06</a></div>
           </div>
         </div>
 
-        {/* STATIC SECTIONS */}
+        {/* WORKING HOURS */}
         <div className="working-hours-card" style={{ marginTop: '30px' }}>
           <div className="wh-header">
             <div className="wh-title"><i className="fa-regular fa-clock"></i> Çalışma Saatleri</div>
@@ -845,7 +716,14 @@ export default function Home() {
 
       <div className="bottom-spacer" style={{ height: '100px' }}></div>
 
-      {/* FLOATING CART BTN REMOVED (Replaced by floating bottom nav dock) */}
+      {/* FLOATING CART BTN */}
+      {cart.length > 0 && !isCartOpen && (
+        <div className="floating-cart-btn visible" onClick={() => setIsCartOpen(true)}>
+          <div className="cart-count">{cart.length}</div>
+          <div className="cart-text">Sipari┼şi G├Âr</div>
+          <div className="cart-price">ÔÇó {finalTotal} Ôé║</div>
+        </div>
+      )}
 
       {/* MULTI-STEP CHECKOUT OVERLAY */}
       <div className={`checkout-overlay ${isCartOpen ? 'active' : ''}`} onClick={(e) => {if(e.target.className.includes('checkout-overlay')) setIsCartOpen(false)}}>
@@ -857,7 +735,7 @@ export default function Home() {
               </button>
             )}
             <h3 style={{ margin: 0, fontSize: '18px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <i className="fa-solid fa-cart-shopping"></i> {checkoutStep === 1 ? 'Sipariş Listem' : 'Teslimat & Ödeme'}
+              <i className="fa-solid fa-cart-shopping"></i> {checkoutStep === 1 ? 'Sipari┼ş Listem' : 'Teslimat & ├ûdeme'}
             </h3>
             <i className="fa-solid fa-xmark close-sheet" onClick={() => setIsCartOpen(false)} style={{ cursor: 'pointer', position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', fontSize: '20px' }}></i>
           </div>
@@ -869,15 +747,15 @@ export default function Home() {
               <div className="compact-cart-items">
                 {cart.map((item, index) => {
                   const t = item.title.toLowerCase();
-                  const isMesrubat = t.includes('meşrubat');
-                  const isDrink = !isMesrubat && (t.includes('içecek') || t.includes('su') || t.includes('ayran') || t.includes('kola'));
-                  const editBtnText = (t.includes('kumpir') || t.includes('şefin elinden')) ? 'Kumpir İçeriği' 
-                    : (t.includes('waffle') || t.includes('tatlı şöleni')) ? 'Waffle İçeriği'
-                    : (t.includes('kumru') || t.includes('gecelerin') || t.includes('efsane')) ? 'Kumru İçeriği' 
-                    : t.includes('burger') ? 'Burger İçeriği' 
-                    : (t.includes('tost') || t.includes('sabahın')) ? 'Tost İçeriği' 
-                    : isMesrubat ? 'Meşrubatı Seç'
-                    : 'Malzemeleri Düzenle';
+                  const isMesrubat = t.includes('me┼şrubat');
+                  const isDrink = !isMesrubat && (t.includes('i├ğecek') || t.includes('su') || t.includes('ayran') || t.includes('kola'));
+                  const editBtnText = (t.includes('kumpir') || t.includes('┼şefin elinden')) ? 'Kumpir ─░├ğeri─şi' 
+                    : (t.includes('waffle') || t.includes('tatl─▒ ┼ş├Âleni')) ? 'Waffle ─░├ğeri─şi'
+                    : (t.includes('kumru') || t.includes('gecelerin') || t.includes('efsane')) ? 'Kumru ─░├ğeri─şi' 
+                    : t.includes('burger') ? 'Burger ─░├ğeri─şi' 
+                    : (t.includes('tost') || t.includes('sabah─▒n')) ? 'Tost ─░├ğeri─şi' 
+                    : isMesrubat ? 'Me┼şrubat─▒ Se├ğ'
+                    : 'Malzemeleri D├╝zenle';
                   
                   return (
                   <div key={item.cartId} className="cart-item" style={{ flexDirection: 'column', alignItems: 'flex-start', padding: '12px 0', borderBottom: '1px solid var(--bg-alpha-05)' }}>
@@ -893,19 +771,19 @@ export default function Home() {
                           </button>
                         )}
                         <div className="cart-item-price" style={{ color: 'var(--primary-color)', fontWeight: 'bold' }}>
-                          {item.price} ₺ 
+                          {item.price} Ôé║ 
                           <i className="fa-solid fa-xmark remove-item" onClick={() => removeFromCart(item.cartId)} style={{ cursor: 'pointer', marginLeft: '10px', color: 'var(--text-alpha-50)' }}></i>
                         </div>
                       </div>
                     </div>
                     {item.excludedIngredients.length > 0 && (
                       <div className="cart-item-notes" style={{ width: '100%', fontSize: '11px', color: 'var(--text-alpha-40)', fontStyle: 'italic', marginTop: '4px' }}>
-                        İstemiyor: {item.excludedIngredients.join(', ')}
+                        ─░stemiyor: {item.excludedIngredients.join(', ')}
                       </div>
                     )}
                     {item.selectedDrink && (
                       <div className="cart-item-notes" style={{ width: '100%', fontSize: '11px', color: 'var(--primary-color)', fontStyle: 'italic', marginTop: '4px' }}>
-                        Seçim: {item.selectedDrink}
+                        Se├ğim: {item.selectedDrink}
                       </div>
                     )}
                   </div>
@@ -915,7 +793,7 @@ export default function Home() {
                 {cart.length === 0 && (
                   <div className="cart-empty-state" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '30px 0' }}>
                     <i className="fa-solid fa-basket-shopping" style={{ fontSize: '2.5rem', color: 'var(--bg-alpha-20)', marginBottom: '10px' }}></i>
-                    <p style={{ fontSize: '14px', margin: 0, color: 'var(--text-alpha-50)' }}>Sepetiniz boş.</p>
+                    <p style={{ fontSize: '14px', margin: 0, color: 'var(--text-alpha-50)' }}>Sepetiniz bo┼ş.</p>
                   </div>
                 )}
               </div>
@@ -924,18 +802,18 @@ export default function Home() {
                 <>
                   <div className="cart-total-row compact-total" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', padding: '16px 0', borderTop: '1px dashed var(--bg-alpha-10)' }}>
                     <strong>Ara Toplam</strong>
-                    <strong>{cartTotal} ₺</strong>
+                    <strong>{cartTotal} Ôé║</strong>
                   </div>
                   
                   <div className="delivery-notice compact-notice" style={{ padding: '12px', borderRadius: '8px', background: cartTotal >= threshold ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 193, 7, 0.1)', color: cartTotal >= threshold ? '#4caf50' : 'var(--primary-color)', textAlign: 'center', marginBottom: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                    <span style={{ fontSize: '15px', fontWeight: 'bold' }}><i className="fa-solid fa-motorcycle"></i> {cartTotal >= threshold ? 'Teslimatınız bizden, afiyet bal şeker olsun! 🛵🎉' : `${threshold - cartTotal} ₺ daha ekleyin, teslimat ücretsiz olsun!`}</span>
-                    {cartTotal < threshold && <span style={{ fontSize: '13px', color: '#999', fontStyle: 'italic', fontWeight: '500' }}>Ortalama kurye ücretimiz: {courierFee} ₺'dir.</span>}
+                    <span style={{ fontSize: '15px', fontWeight: 'bold' }}><i className="fa-solid fa-motorcycle"></i> {cartTotal >= threshold ? 'Teslimat─▒n─▒z bizden, afiyet bal ┼şeker olsun! ­şøÁ­şÄë' : `${threshold - cartTotal} Ôé║ daha ekleyin, teslimat ├╝cretsiz olsun!`}</span>
+                    {cartTotal < threshold && <span style={{ fontSize: '13px', color: '#999', fontStyle: 'italic', fontWeight: '500' }}>Ortalama kurye ├╝cretimiz: {courierFee} Ôé║'dir.</span>}
                   </div>
 
                   <button className="btn-checkout-premium compact-btn" onClick={() => {
                     const minAmount = data.settings?.minOrderAmount || 0;
                     if (cartTotal < minAmount) {
-                      alert(`Sipariş verebilmek için minimum sepet tutarı ${minAmount} ₺ olmalıdır. Lütfen sepetinize ürün eklemeye devam ediniz.`);
+                      alert(`Sipari┼ş verebilmek i├ğin minimum sepet tutar─▒ ${minAmount} Ôé║ olmal─▒d─▒r. L├╝tfen sepetinize ├╝r├╝n eklemeye devam ediniz.`);
                       return;
                     }
                     setCheckoutStep(2);
@@ -968,7 +846,7 @@ export default function Home() {
               <div className="checkout-form compact-form">
                 <div className="form-row" style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
                   <div className="form-group" style={{ flex: 1 }}>
-                    <input type="text" placeholder="İsim Soyisim *" required value={customerInfo.name} onChange={e => setCustomerInfo({...customerInfo, name: e.target.value})} className="premium-input" />
+                    <input type="text" placeholder="─░sim Soyisim *" required value={customerInfo.name} onChange={e => setCustomerInfo({...customerInfo, name: e.target.value})} className="premium-input" />
                   </div>
                   <div className="form-group" style={{ flex: 1 }}>
                     <input type="tel" placeholder="Telefon *" required value={customerInfo.phone} onChange={e => setCustomerInfo({...customerInfo, phone: e.target.value})} className="premium-input" />
@@ -978,11 +856,11 @@ export default function Home() {
                   <input type="text" placeholder="Teslimat Adresi (Mahalle, Sokak, Bina No, Daire) *" required value={customerInfo.address} onChange={e => setCustomerInfo({...customerInfo, address: e.target.value})} className="premium-input" />
                 </div>
                 <div className="form-group" style={{ marginBottom: '24px' }}>
-                  <input type="text" placeholder="Sipariş Notu (Opsiyonel)" value={customerInfo.notes} onChange={e => setCustomerInfo({...customerInfo, notes: e.target.value})} className="premium-input" />
+                  <input type="text" placeholder="Sipari┼ş Notu (Opsiyonel)" value={customerInfo.notes} onChange={e => setCustomerInfo({...customerInfo, notes: e.target.value})} className="premium-input" />
                 </div>
               </div>
 
-              <div style={{ marginBottom: '12px', color: 'var(--text-alpha-50)', fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>Ödeme Yöntemi</div>
+              <div style={{ marginBottom: '12px', color: 'var(--text-alpha-50)', fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1px' }}>├ûdeme Y├Ântemi</div>
               <div className="payment-methods compact-payment" style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
                 <button className={`premium-payment-btn ${customerInfo.paymentMethod === 'nakit' ? 'active' : ''}`} onClick={() => setCustomerInfo({...customerInfo, paymentMethod: 'nakit'})}>
                   <i className="fa-solid fa-money-bill-wave" style={{ color: '#2ecc71', fontSize: '22px' }}></i>
@@ -990,7 +868,7 @@ export default function Home() {
                 </button>
                 <button className={`premium-payment-btn ${customerInfo.paymentMethod === 'kredi_karti' ? 'active' : ''}`} onClick={() => setCustomerInfo({...customerInfo, paymentMethod: 'kredi_karti'})}>
                   <i className="fa-solid fa-credit-card" style={{ color: '#3498db', fontSize: '22px' }}></i>
-                  <span style={{ fontSize: '15px' }}>Kredi Kartı</span>
+                  <span style={{ fontSize: '15px' }}>Kredi Kart─▒</span>
                 </button>
               </div>
 
@@ -1001,7 +879,7 @@ export default function Home() {
                   <input 
                     type="text" 
                     className="premium-input" 
-                    placeholder="KUPON KODU GİRİN" 
+                    placeholder="KUPON KODU G─░R─░N" 
                     value={couponCode}
                     onChange={e => setCouponCode(e.target.value)}
                     style={{ width: '100%', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: 600, paddingLeft: '44px', background: 'var(--bg-alpha-05)', border: '1px solid var(--bg-alpha-10)' }}
@@ -1014,14 +892,14 @@ export default function Home() {
               {couponError && <div style={{ color: '#ff6b6b', fontSize: '13px', marginBottom: '12px', paddingLeft: '4px' }}><i className="fa-solid fa-circle-exclamation"></i> {couponError}</div>}
               {appliedCoupon && (
                 <div className="discount-row" style={{ display: 'flex', justifyContent: 'space-between', color: '#2ecc71', marginBottom: '12px', fontWeight: 'bold', background: 'rgba(46, 204, 113, 0.1)', padding: '12px 16px', borderRadius: '8px' }}>
-                  <span><i className="fa-solid fa-tag"></i> İndirim Uygulandı ({appliedCoupon.code})</span>
-                  <span>-{discountAmount} ₺</span>
+                  <span><i className="fa-solid fa-tag"></i> ─░ndirim Uyguland─▒ ({appliedCoupon.code})</span>
+                  <span>-{discountAmount} Ôé║</span>
                 </div>
               )}
               
               <div className="cart-total-row compact-total" style={{ display: 'flex', justifyContent: 'space-between', margin: '20px 0', borderTop: '1px dashed var(--bg-alpha-10)', paddingTop: '20px', alignItems: 'center' }}>
                 <span style={{ fontSize: '16px', color: 'var(--text-alpha-70)', fontWeight: 600 }}>Genel Toplam</span>
-                <strong style={{ color: 'var(--primary-color)', fontSize: '28px', textShadow: '0 2px 10px rgba(212,175,55,0.3)' }}>{finalTotal} ₺</strong>
+                <strong style={{ color: 'var(--primary-color)', fontSize: '28px', textShadow: '0 2px 10px rgba(212,175,55,0.3)' }}>{finalTotal} Ôé║</strong>
               </div>
               
               {checkoutError && (
@@ -1035,17 +913,17 @@ export default function Home() {
                 onClick={() => {
                   setCheckoutError('');
                   if(!customerInfo.name || !customerInfo.phone || !customerInfo.address) {
-                    setCheckoutError('Lütfen ad, soyad, telefon ve adres bilgilerinizi eksiksiz doldurun.'); return;
+                    setCheckoutError('L├╝tfen ad, soyad, telefon ve adres bilgilerinizi eksiksiz doldurun.'); return;
                   }
                   const phoneDigits = customerInfo.phone.replace(/\D/g, '');
                   if(phoneDigits.length < 10) {
-                    setCheckoutError('Lütfen en az 10 haneli geçerli bir telefon numarası girin. (Örn: 0501 161 03 99)'); return;
+                    setCheckoutError('L├╝tfen en az 10 haneli ge├ğerli bir telefon numaras─▒ girin. (├ûrn: 0501 161 03 99)'); return;
                   }
                   setIsConfirmOpen(true);
                 }}
                 style={{ width: '100%', padding: '18px', borderRadius: '14px', background: 'linear-gradient(135deg, var(--primary-color), #f9d423)', color: '#000', fontWeight: 'bold', fontSize: '16px', border: 'none', cursor: 'pointer', boxShadow: '0 6px 20px rgba(212,175,55,0.3)', transition: 'all 0.3s' }}
               >
-                SİPARİŞİ TAMAMLA <i className="fa-solid fa-arrow-right" style={{ marginLeft: '8px' }}></i>
+                S─░PAR─░┼Ş─░ TAMAMLA <i className="fa-solid fa-arrow-right" style={{ marginLeft: '8px' }}></i>
               </button>
             </div>
             
@@ -1058,13 +936,13 @@ export default function Home() {
         <div className="edit-item-sheet" style={{ background: 'var(--surface-color)', padding: '20px', borderRadius: '16px', width: '90%', maxWidth: '350px', border: '1px solid var(--glass-border)' }}>
           <div className="edit-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '18px' }}>
-              {cart[editingCartIndex]?.title?.toLowerCase().includes('meşrubat') ? 'Meşrubat Seçimi' : 'Ürün Malzemeleri'}
+              {cart[editingCartIndex]?.title?.toLowerCase().includes('me┼şrubat') ? 'Me┼şrubat Se├ğimi' : '├£r├╝n Malzemeleri'}
             </h4>
             <i className="fa-solid fa-xmark close-edit" onClick={() => setIsEditOpen(false)} style={{ cursor: 'pointer', fontSize: '20px', color: 'var(--text-alpha-50)' }}></i>
           </div>
           <div className="edit-body" style={{ marginBottom: '20px' }}>
-            {cart[editingCartIndex]?.title?.toLowerCase().includes('meşrubat') ? (
-              ['Kola', 'Fanta', 'Sprite', 'Ice Tea Limon', 'Ice Tea Şeftali'].map(drink => (
+            {cart[editingCartIndex]?.title?.toLowerCase().includes('me┼şrubat') ? (
+              ['Kola', 'Fanta', 'Sprite', 'Ice Tea Limon', 'Ice Tea ┼Şeftali'].map(drink => (
                 <div key={drink} className="ingredient-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 0', borderBottom: '1px solid var(--bg-alpha-05)' }}>
                   <span className="ingredient-name">{drink}</span>
                   <input 
@@ -1108,10 +986,10 @@ export default function Home() {
       {/* DOUBLE CONFIRMATION MODAL */}
       <div className={`custom-modal-overlay ${isConfirmOpen ? 'active' : ''}`}>
         <div className="custom-modal-content">
-          <h3>Siparişi Onayla</h3>
-          <p>Siparişinizi onaylıyor musunuz? Onayladığınız an siparişiniz bize ulaşır ve anında hazırlamaya başlarız. En kısa sürede kapınıza geliyor! Afiyet olsun şimdiden, sizi her zaman bekleriz! 😇</p>
+          <h3>Sipari┼şi Onayla</h3>
+          <p>Sipari┼şinizi onayl─▒yor musunuz? Onaylad─▒─ş─▒n─▒z an sipari┼şiniz bize ula┼ş─▒r ve an─▒nda haz─▒rlamaya ba┼şlar─▒z. En k─▒sa s├╝rede kap─▒n─▒za geliyor! Afiyet olsun ┼şimdiden, sizi her zaman bekleriz! ­şİç</p>
           <div className="modal-actions">
-            <button className="btn-modal-secondary" onClick={() => setIsConfirmOpen(false)}>İptal</button>
+            <button className="btn-modal-secondary" onClick={() => setIsConfirmOpen(false)}>─░ptal</button>
             <button className="btn-modal-primary" onClick={submitOrder}>Onayla</button>
           </div>
         </div>
@@ -1120,13 +998,13 @@ export default function Home() {
       {/* ORDER TRACKING MODAL */}
       <div className={`custom-modal-overlay ${isTrackingOpen ? 'active' : ''}`}>
         <div className="custom-modal-content" style={{ maxWidth: 500, padding: 30, maxHeight: '90vh', overflowY: 'auto' }}>
-          <h3>Sipariş Takibi</h3>
-          <p style={{ marginBottom: 20 }}>Sipariş Numaranız: <strong>{trackingOrder?.id}</strong></p>
+          <h3>Sipari┼ş Takibi</h3>
+          <p style={{ marginBottom: 20 }}>Sipari┼ş Numaran─▒z: <strong>{trackingOrder?.id}</strong></p>
 
           {trackingOrder && trackingOrder.items && (
             <div style={{ background: 'var(--bg-alpha-03)', border: '1px solid var(--bg-alpha-10)', borderRadius: 12, padding: 16, marginBottom: 24, textAlign: 'left', fontSize: 14 }}>
               <div style={{ fontWeight: 700, color: 'var(--primary-color)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <i className="fa-solid fa-receipt"></i> Sipariş Özeti
+                <i className="fa-solid fa-receipt"></i> Sipari┼ş ├ûzeti
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
                 {trackingOrder.items.map((item, idx) => (
@@ -1134,23 +1012,23 @@ export default function Home() {
                     <div style={{ flex: 1, paddingRight: 10 }}>
                       <span style={{ fontWeight: 600 }}>{item.quantity || 1}x</span> {item.title || item.name}
                       {item.selectedDrink && <div style={{ color: '#3498db', fontSize: 12, marginTop: 2 }}><i className="fa-solid fa-bottle-droplet" style={{marginRight: 4}}></i>{item.selectedDrink}</div>}
-                      {item.excludedIngredients && item.excludedIngredients.length > 0 && <div style={{ color: '#e74c3c', fontSize: 12, marginTop: 2 }}><i className="fa-solid fa-ban" style={{marginRight: 4}}></i>Çıkarılan: {item.excludedIngredients.join(', ')}</div>}
+                      {item.excludedIngredients && item.excludedIngredients.length > 0 && <div style={{ color: '#e74c3c', fontSize: 12, marginTop: 2 }}><i className="fa-solid fa-ban" style={{marginRight: 4}}></i>├ç─▒kar─▒lan: {item.excludedIngredients.join(', ')}</div>}
                     </div>
                     <span style={{ fontWeight: 600, whiteSpace: 'nowrap' }}>{(item.price * (item.quantity || 1)).toFixed(2)} TL</span>
                   </div>
                 ))}
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: '1px solid var(--bg-alpha-10)', paddingTop: 12, marginBottom: 8 }}>
-                <span style={{ color: 'var(--text-muted)' }}>Ödeme Yöntemi:</span>
+                <span style={{ color: 'var(--text-muted)' }}>├ûdeme Y├Ântemi:</span>
                 <span style={{ fontWeight: 600 }}>
-                  {trackingOrder.customerInfo?.paymentMethod === 'nakit' ? 'Kapıda Nakit' : 
-                   trackingOrder.customerInfo?.paymentMethod === 'kredi_karti' ? 'Kapıda Kredi Kartı' : 
-                   trackingOrder.customerInfo?.paymentMethod === 'online' ? 'Online Ödeme' : trackingOrder.customerInfo?.paymentMethod || 'Belirtilmedi'}
+                  {trackingOrder.customerInfo?.paymentMethod === 'nakit' ? 'Kap─▒da Nakit' : 
+                   trackingOrder.customerInfo?.paymentMethod === 'kredi_karti' ? 'Kap─▒da Kredi Kart─▒' : 
+                   trackingOrder.customerInfo?.paymentMethod === 'online' ? 'Online ├ûdeme' : trackingOrder.customerInfo?.paymentMethod || 'Belirtilmedi'}
                 </span>
               </div>
               {trackingOrder.discount > 0 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                  <span style={{ color: 'var(--text-muted)' }}>Kupon İndirimi{trackingOrder.couponCode ? ` (${trackingOrder.couponCode})` : ''}:</span>
+                  <span style={{ color: 'var(--text-muted)' }}>Kupon ─░ndirimi{trackingOrder.couponCode ? ` (${trackingOrder.couponCode})` : ''}:</span>
                   <span style={{ color: '#2ecc71', fontWeight: 600 }}>-{trackingOrder.discount} TL</span>
                 </div>
               )}
@@ -1163,12 +1041,12 @@ export default function Home() {
           
           {trackingOrder?.status === 'cancelled' ? (
             <div style={{ background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.3)', borderRadius: 12, padding: 24, textAlign: 'center', marginBottom: 24 }}>
-              <div style={{ fontSize: 48, marginBottom: 12 }}>😔</div>
-              <h4 style={{ color: '#e74c3c', fontSize: 18, marginBottom: 8, fontWeight: 700 }}>Siparişiniz İptal Edildi</h4>
-              <p style={{ color: 'var(--text-main)', fontSize: 14, marginBottom: 16, lineHeight: 1.5 }}>Çok özür dileriz ama maalesef siparişiniz iptal oldu.</p>
+              <div style={{ fontSize: 48, marginBottom: 12 }}>­şİö</div>
+              <h4 style={{ color: '#e74c3c', fontSize: 18, marginBottom: 8, fontWeight: 700 }}>Sipari┼şiniz ─░ptal Edildi</h4>
+              <p style={{ color: 'var(--text-main)', fontSize: 14, marginBottom: 16, lineHeight: 1.5 }}>├çok ├Âz├╝r dileriz ama maalesef sipari┼şiniz iptal oldu.</p>
               {trackingOrder.statusHistory?.find(h => h.status === 'cancelled')?.note && (
                 <div style={{ background: 'var(--bg-alpha-06)', padding: 12, borderRadius: 8, textAlign: 'left', borderLeft: '3px solid #e74c3c' }}>
-                  <div style={{ color: '#e74c3c', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>İptal Notu:</div>
+                  <div style={{ color: '#e74c3c', fontSize: 12, fontWeight: 600, marginBottom: 4 }}>─░ptal Notu:</div>
                   <div style={{ color: 'var(--text-muted)', fontSize: 13, fontStyle: 'italic' }}>{trackingOrder.statusHistory.find(h => h.status === 'cancelled').note}</div>
                 </div>
               )}
@@ -1178,36 +1056,36 @@ export default function Home() {
               <div className={`tracking-step ${getStepClass('received')}`}>
                 <div className="step-icon"><i className="fa-solid fa-check"></i></div>
                 <div className="step-info">
-                  <div className="step-title">Siparişiniz Alındı</div>
-                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Lezzetli siparişiniz ışık hızında bizlere ulaştı.</div>
+                  <div className="step-title">Sipari┼şiniz Al─▒nd─▒</div>
+                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Lezzetli sipari┼şiniz ─▒┼ş─▒k h─▒z─▒nda bizlere ula┼şt─▒.</div>
                 </div>
               </div>
               <div className={`tracking-step ${getStepClass('preparing')}`}>
-                <div className="step-icon">👨‍🍳</div>
+                <div className="step-icon">­şæ¿ÔÇı­şı│</div>
                 <div className="step-info">
-                  <div className="step-title">Hazırlanıyor</div>
-                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Siparişiniz en lezzetli şekilde özel şef ustalarımız tarafından sizler için hazırlanıyorlar.</div>
+                  <div className="step-title">Haz─▒rlan─▒yor</div>
+                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Sipari┼şiniz en lezzetli ┼şekilde ├Âzel ┼şef ustalar─▒m─▒z taraf─▒ndan sizler i├ğin haz─▒rlan─▒yorlar.</div>
                 </div>
               </div>
               <div className={`tracking-step ${getStepClass('courier')}`}>
-                <div className="step-icon">🏍️</div>
+                <div className="step-icon">­şÅı´©Å</div>
                 <div className="step-info">
                   <div className="step-title">Kuryeye Teslim Edildi</div>
-                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Kuryelerimiz bu özel paketi sizlere ulaştırmak için hazırda bekliyor.</div>
+                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Kuryelerimiz bu ├Âzel paketi sizlere ula┼şt─▒rmak i├ğin haz─▒rda bekliyor.</div>
                 </div>
               </div>
               <div className={`tracking-step ${getStepClass('onway')}`}>
                 <div className="step-icon"><i className="fa-solid fa-road"></i></div>
                 <div className="step-info">
-                  <div className="step-title">Yola Çıktı</div>
-                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Siparişiniz size ulaşıp bu eşsiz lezzeti deneyimlemeniz için yola çıktı ve adım adım sizlere yaklaşıyor.</div>
+                  <div className="step-title">Yola ├ç─▒kt─▒</div>
+                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Sipari┼şiniz size ula┼ş─▒p bu e┼şsiz lezzeti deneyimlemeniz i├ğin yola ├ğ─▒kt─▒ ve ad─▒m ad─▒m sizlere yakla┼ş─▒yor.</div>
                 </div>
               </div>
               <div className={`tracking-step ${getStepClass('delivered')}`}>
-                <div className="step-icon">📦</div>
+                <div className="step-icon">­şôĞ</div>
                 <div className="step-info">
                   <div className="step-title">Teslim Edildi</div>
-                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Sevgiyle hazırladık, keyifle yemeniz dileğiyle. Afiyet, bal, şeker olsun!</div>
+                  <div className="step-time" style={{ fontSize: 13, lineHeight: 1.4 }}>Sevgiyle haz─▒rlad─▒k, keyifle yemeniz dile─şiyle. Afiyet, bal, ┼şeker olsun!</div>
                 </div>
               </div>
             </div>
@@ -1228,18 +1106,18 @@ export default function Home() {
       {/* ADMIN LOGIN MODAL */}
       <div className={`custom-modal-overlay ${isLoginOpen ? 'active' : ''}`}>
         <div className="custom-modal-content">
-          <h3>Admin Girişi</h3>
+          <h3>Admin Giri┼şi</h3>
           <input 
             type="password" 
             className="custom-modal-input" 
-            placeholder="Şifre" 
+            placeholder="┼Şifre" 
             value={loginPassword}
             onChange={e => setLoginPassword(e.target.value)}
           />
           {loginError && <p style={{ color: '#f44336', margin: '-10px 0 15px 0', fontSize: '13px' }}>{loginError}</p>}
           <div className="modal-actions">
-            <button className="btn-modal-secondary" onClick={() => setIsLoginOpen(false)}>İptal</button>
-            <button className="btn-modal-primary" onClick={handleLogin}>Giriş Yap</button>
+            <button className="btn-modal-secondary" onClick={() => setIsLoginOpen(false)}>─░ptal</button>
+            <button className="btn-modal-primary" onClick={handleLogin}>Giri┼ş Yap</button>
           </div>
         </div>
       </div>
@@ -1248,10 +1126,10 @@ export default function Home() {
       {!isStoreOpen && (
         <div className="store-closed-overlay" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', zIndex: 99999, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', padding: '20px', textAlign: 'center', backdropFilter: 'blur(10px)' }}>
           <i className="fa-solid fa-store-slash" style={{ fontSize: 64, color: 'var(--primary-color)', marginBottom: 20 }}></i>
-          <h2 style={{ fontSize: 28, marginBottom: 10 }}>Şu An Kapalıyız</h2>
+          <h2 style={{ fontSize: 28, marginBottom: 10 }}>┼Şu An Kapal─▒y─▒z</h2>
           <p style={{ color: '#ccc', maxWidth: 450, lineHeight: 1.6, fontSize: '15px' }}>
-            Değerli müşterimiz, şu anda sipariş alamıyoruz. Anlayışınız için teşekkür ederiz.
-            {settings?.workingHours && <><br/><br/>Çalışma saatlerimiz: <strong>{settings.workingHours}</strong></>}
+            De─şerli m├╝┼şterimiz, ┼şu anda sipari┼ş alam─▒yoruz. Anlay─▒┼ş─▒n─▒z i├ğin te┼şekk├╝r ederiz.
+            {settings?.workingHours && <><br/><br/>├çal─▒┼şma saatlerimiz: <strong>{settings.workingHours}</strong></>}
           </p>
         </div>
       )}
@@ -1275,7 +1153,7 @@ export default function Home() {
             <i className="fa-solid fa-xmark toast-close" onClick={() => setToast(null)}></i>
             <div className="toast-header">
               <i className="fa-solid fa-bell" style={{ animation: 'ring 2s infinite', color: 'var(--primary-color)' }}></i>
-              Bunu denemiş miydiniz?
+              Bunu denemi┼ş miydiniz?
             </div>
             
             <div className="toast-body">
@@ -1291,7 +1169,7 @@ export default function Home() {
                 <div className="toast-item-title">{toast.title}</div>
                 <div className="toast-msg">"{toast.msg}"</div>
                 <div className="toast-footer">
-                  <span className="toast-price">{toast.price} ₺</span>
+                  <span className="toast-price">{toast.price} Ôé║</span>
                   <button className="btn-toast-add" onClick={(e) => {
                     e.stopPropagation();
                     addToCart(toast.originalItem);

@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   /* DARK MODE (Default) */
   --bg-color: #0d0d0d;
   --surface-color: #1a1a1a;
@@ -96,15 +96,12 @@ h1, h2, h3, h4 {
 
 /* Header / Hero */
 .hero {
-  padding: 24px 0 32px 0;
+  padding: 24px 0 16px 0;
   background-color: var(--glass-bg);
   background-image: linear-gradient(180deg, rgba(212, 175, 55, 0.15) 0%, transparent 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   position: relative;
-  border-radius: 0 0 32px 32px;
-  margin-bottom: 32px;
-  z-index: 101;
 }
 
 .hero-title {
@@ -250,9 +247,13 @@ body.light-mode .nav-item.active {
 /* Sticky Navigation (Categories) */
 .sticky-nav {
   position: sticky;
-  top: 16px;
+  top: 64px; /* fixed 2px gap */
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   z-index: 99;
-  padding: 8px 0;
+  border-bottom: 1px solid var(--glass-border);
+  padding: 12px 0;
   margin-bottom: 24px;
 }
 
@@ -274,15 +275,13 @@ body.light-mode .nav-item.active {
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  padding: 10px 24px;
-  border-radius: 24px;
-  background: var(--surface-color);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: var(--bg-alpha-06);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--glass-border);
   transition: all 0.3s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .nav-item.active {
@@ -2345,55 +2344,6 @@ input:checked + .slider:before {
   cursor: pointer;
   border: 1px solid var(--glass-border);
   transition: all 0.3s ease;
-}
-.menu-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  padding-bottom: 100px;
-}
-
-@media (min-width: 768px) {
-  .menu-grid {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-}
-
-.menu-card {
-  background: var(--surface-color);
-  border-radius: 20px;
-  padding: 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  border: 1px solid var(--glass-border);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-.menu-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
-}
-
-.add-btn-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
-  transition: transform 0.2s;
-}
-.add-btn-circle:hover {
-  transform: scale(1.1);
 }
 .btn-modal-secondary:hover {
   background: var(--bg-alpha-10);
