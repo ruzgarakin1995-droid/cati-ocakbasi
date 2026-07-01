@@ -32,6 +32,39 @@ export default function Home() {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [detailQuantity, setDetailQuantity] = useState(1);
+  const [recommendation, setRecommendation] = useState(null);
+
+  useEffect(() => {
+    if (isDetailOpen && selectedItem) {
+      if (data.categories && data.categories.length > 0) {
+        const otherCats = data.categories.filter(c => c.id !== selectedItem.categoryId);
+        const validCats = otherCats.filter(c => c.items && c.items.some(i => i && i.title && i.price));
+        if (validCats.length > 0) {
+          const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
+          const validItems = randomCat.items.filter(i => i && i.title && i.price);
+          const suggestion = validItems[Math.floor(Math.random() * validItems.length)];
+          const phrases = [
+            "Bunun yanında şu da çok iyi gider;",
+            "Bunun yanında genellikle bu eksiksiz olmaz;",
+            "Damak çatlatan uyum için önerimiz:",
+            "Bu lezzeti şununla taçlandırın:",
+            "Yanında bir de bu olsa harika olmaz mı?",
+            "Lezzet şölenini tamamlamak için ideal:",
+            "Bunun yanına en çok yakışan lezzet:",
+            "Şefin özel tavsiyesi;",
+            "Yemeğin keyfini ikiye katlamak için:",
+            "Bunu deneyenler genelde bunu da sepete ekliyor:"
+          ];
+          const randomPhrase = phrases[Math.floor(Math.random() * phrases.length)];
+          setRecommendation({ item: suggestion, phrase: randomPhrase });
+        } else {
+          setRecommendation(null);
+        }
+      }
+    } else {
+      setRecommendation(null);
+    }
+  }, [isDetailOpen, selectedItem, data]);
   
   useEffect(() => {
     const savedFavs = localStorage.getItem('appFavs');
@@ -1434,13 +1467,13 @@ export default function Home() {
         </button>
         <button onClick={() => { setIsCartOpen(true); }} style={{ position: 'relative', background: activeNav === 'cart' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'cart' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <i className="fa-solid fa-cart-shopping"></i>
-          {cart.length > 0 && <span style={{ position: 'absolute', top: -2, right: -2, background: '#ef4444', color: '#fff', fontSize: '11px', width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', border: '2px solid var(--bg-main)' }}>{cart.length}</span>}
+          {cart.length > 0 && <span style={{ position: 'absolute', top: -2, right: -2, background: '#ef4444', color: '#fff', fontSize: '11px', width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', border: '2px solid var(--bg-color)' }}>{cart.length}</span>}
         </button>
       </div>
 
       {/* PRODUCT DETAILS MODAL (FULL SCREEN SHEET) */}
       <div className={`checkout-overlay ${isDetailOpen ? 'active' : ''}`} onClick={(e) => { if(e.target.className.includes('checkout-overlay')) { setIsDetailOpen(false); setDetailQuantity(1); } }}>
-        <div className={`checkout-sheet ${isDetailOpen ? 'open' : ''}`} style={{ background: 'var(--bg-main)', height: '85vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column' }}>
+        <div className={`checkout-sheet ${isDetailOpen ? 'open' : ''}`} style={{ background: 'var(--bg-color)', height: '85vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column' }}>
           {selectedItem && (
             <>
               {/* Header */}
@@ -1468,7 +1501,7 @@ export default function Home() {
                   </div>
                   
                   {/* Quantity Selector */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', background: 'var(--bg-main)', padding: '8px 16px', borderRadius: '24px', border: '1px solid var(--glass-border)' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', background: 'var(--bg-color)', padding: '8px 16px', borderRadius: '24px', border: '1px solid var(--glass-border)' }}>
                     <button onClick={() => setDetailQuantity(Math.max(1, detailQuantity - 1))} style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', fontSize: '18px' }}>-</button>
                     <span style={{ fontWeight: '600', width: '20px', textAlign: 'center' }}>{detailQuantity}</span>
                     <button onClick={() => setDetailQuantity(detailQuantity + 1)} style={{ background: 'var(--primary-color)', border: 'none', color: '#fff', width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
@@ -1488,9 +1521,31 @@ export default function Home() {
                   </div>
                 </div>
 
-                <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '15px', flex: 1, overflowY: 'auto' }}>
-                  {selectedItem.description || "Harika malzemelerle usta ellerden çıkan enfes lezzet. Şimdiden afiyet olsun!"}
-                </p>
+                {/* Description */}
+                <div style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '15px', flex: 1, overflowY: 'auto' }}>
+                  {selectedItem.description || "Gerçek Adana usulü acı ve baharat dengesiyle mangalda nar gibi kızarmış, damak çatlatan klasik lezzet."}
+                </div>
+
+                {/* Recommendation Section */}
+                {recommendation && (
+                  <div style={{ marginTop: '24px', padding: '16px', borderRadius: '20px', background: 'var(--bg-color)', border: '1px solid var(--glass-border)' }}>
+                    <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--primary-color)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <i className="fa-solid fa-lightbulb"></i> {recommendation.phrase}
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                      <div style={{ width: '56px', height: '56px', borderRadius: '12px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+                        <Image src={recommendation.item.image} alt={recommendation.item.title} fill style={{ objectFit: 'cover' }} sizes="56px" />
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-main)', marginBottom: '2px' }}>{recommendation.item.title}</div>
+                        <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{recommendation.item.price} ₺</div>
+                      </div>
+                      <button onClick={(e) => { e.stopPropagation(); addToCart(recommendation.item); setToast({message: 'Öneri sepete eklendi!', originalItem: recommendation.item}); }} style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--primary-color)', color: '#000', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                        <i className="fa-solid fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                )}
 
                 {/* Bottom Add to Cart */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--glass-border)' }}>
