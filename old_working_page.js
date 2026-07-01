@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
@@ -19,11 +19,6 @@ export default function Home() {
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [theme, setTheme] = useState('dark');
-  
-  // Details Modal State
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [detailQuantity, setDetailQuantity] = useState(1);
   
   useEffect(() => {
     const savedTheme = localStorage.getItem('appTheme') || 'dark';
@@ -584,7 +579,7 @@ export default function Home() {
         {!searchQuery && data.featured.length > 0 && (
           <div className="featured-grid">
             {data.featured.map(item => (
-              <div key={item.id} className="featured-card" onClick={() => { setSelectedItem(item); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
+              <div key={item.id} className="featured-card">
                 <div className="featured-img-wrapper">
                   <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 50vw, 300px" />
                   <span className="tag-badge tag-new"><i className="fa-solid fa-star"></i> S├£PER LEZZET</span>
@@ -599,7 +594,7 @@ export default function Home() {
                   </div>
                   <div className="featured-footer">
                     <span className="price">{item.price} Ôé║</span>
-                    <button className="btn-add-large" onClick={(e) => { e.stopPropagation(); addToCart(item); }}>Sipari┼şe Ekle</button>
+                    <button className="btn-add-large" onClick={() => addToCart(item)}>Sipari┼şe Ekle</button>
                   </div>
                 </div>
               </div>
@@ -625,7 +620,7 @@ export default function Home() {
             
             {filteredItems.map(item => (
               item.isHighlight ? (
-                <div key={item.id} className="card-highlight" onClick={() => { setSelectedItem(item); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
+                <div key={item.id} className="card-highlight">
                   <div className="item-badges">
                     {item.badge && <span className="tag-badge tag-pop"><i className="fa-solid fa-star"></i> {item.badge}</span>}
                   </div>
@@ -642,12 +637,12 @@ export default function Home() {
                     </div>
                     <div className="card-footer" style={{ marginTop: '12px' }}>
                       <span className="price">{item.price} Ôé║</span>
-                      <button className="btn-add" onClick={(e) => { e.stopPropagation(); addToCart(item); }}><i className="fa-solid fa-plus"></i></button>
+                      <button className="btn-add" onClick={() => addToCart(item)}><i className="fa-solid fa-plus"></i></button>
                     </div>
                   </div>
                 </div>
               ) : (
-                <div key={item.id} className="list-item" onClick={() => { setSelectedItem(item); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
+                <div key={item.id} className="list-item">
                   <div className="list-item-thumb"><Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 50vw, 300px" /></div>
                   <div className="list-item-content">
                     <div className="list-item-info">
@@ -661,7 +656,7 @@ export default function Home() {
                     </div>
                     <div className="list-item-bottom">
                       <div className="list-item-price">{item.price} Ôé║</div>
-                      <button className="btn-add-small" onClick={(e) => { e.stopPropagation(); addToCart(item); }}><i className="fa-solid fa-plus"></i></button>
+                      <button className="btn-add-small" onClick={() => addToCart(item)}><i className="fa-solid fa-plus"></i></button>
                     </div>
                   </div>
                 </div>
@@ -869,7 +864,14 @@ export default function Home() {
 
       <div className="bottom-spacer" style={{ height: '100px' }}></div>
 
-      {/* FLOATING CART BTN REMOVED IN FAVOR OF BOTTOM NAV */}
+      {/* FLOATING CART BTN */}
+      {cart.length > 0 && !isCartOpen && (
+        <div className="floating-cart-btn visible" onClick={() => setIsCartOpen(true)}>
+          <div className="cart-count">{cart.length}</div>
+          <div className="cart-text">Sipari┼şi G├Âr</div>
+          <div className="cart-price">ÔÇó {finalTotal} Ôé║</div>
+        </div>
+      )}
 
       {/* MULTI-STEP CHECKOUT OVERLAY */}
       <div className={`checkout-overlay ${isCartOpen ? 'active' : ''}`} onClick={(e) => {if(e.target.className.includes('checkout-overlay')) setIsCartOpen(false)}}>
@@ -1328,93 +1330,6 @@ export default function Home() {
             </div>
           </>
         )}
-      </div>
-
-      {/* FLOATING BOTTOM NAV */}
-      <div className="floating-bottom-nav" style={{ position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, background: 'var(--surface-color)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '32px', padding: '8px 24px', display: 'flex', gap: '32px', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)' }}>
-        <button style={{ background: 'transparent', border: 'none', color: 'var(--primary-color)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-house"></i></button>
-        <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-heart"></i></button>
-        <button style={{ background: 'var(--primary-color)', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '-24px', boxShadow: '0 8px 20px rgba(212, 175, 55, 0.4)' }} onClick={() => setIsCartOpen(true)}>
-          <i className="fa-solid fa-cart-shopping"></i>
-          {cart.length > 0 && <span style={{ position: 'absolute', top: -4, right: -4, background: '#ef4444', color: '#fff', fontSize: '10px', width: 20, height: 20, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>{cart.length}</span>}
-        </button>
-        <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer' }} onClick={() => setIsLoginOpen(true)}><i className="fa-solid fa-user"></i></button>
-      </div>
-
-      {/* PRODUCT DETAILS MODAL (FULL SCREEN SHEET) */}
-      <div className={`checkout-overlay ${isDetailOpen ? 'active' : ''}`} onClick={(e) => { if(e.target.className.includes('checkout-overlay')) { setIsDetailOpen(false); setDetailQuantity(1); } }}>
-        <div className={`checkout-sheet ${isDetailOpen ? 'open' : ''}`} style={{ background: 'var(--bg-main)', height: '85vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column' }}>
-          {selectedItem && (
-            <>
-              {/* Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '24px 24px 0 24px' }}>
-                <button onClick={() => { setIsDetailOpen(false); setDetailQuantity(1); }} style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--surface-color)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', cursor: 'pointer' }}>
-                  <i className="fa-solid fa-arrow-left"></i>
-                </button>
-                <div style={{ fontSize: '18px', fontWeight: '600' }}>Detaylar</div>
-                <button style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--surface-color)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', cursor: 'pointer' }}>
-                  <i className="fa-solid fa-heart"></i>
-                </button>
-              </div>
-
-              {/* Huge Image */}
-              <div style={{ position: 'relative', width: '250px', height: '250px', margin: '24px auto', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
-                <Image src={selectedItem.image} alt={selectedItem.title} fill style={{ objectFit: 'cover' }} sizes="250px" />
-              </div>
-
-              {/* Content */}
-              <div style={{ flex: 1, background: 'var(--surface-color)', borderRadius: '32px 32px 0 0', padding: '32px 24px', display: 'flex', flexDirection: 'column', boxShadow: '0 -10px 30px rgba(0,0,0,0.05)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
-                  <div>
-                    <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px' }}>{selectedItem.emoji} {selectedItem.title}</h2>
-                    <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}><i className="fa-solid fa-location-dot"></i> Çatı Ocakbaşı, Osmanbey</div>
-                  </div>
-                  
-                  {/* Quantity Selector */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px', background: 'var(--bg-main)', padding: '8px 16px', borderRadius: '24px', border: '1px solid var(--glass-border)' }}>
-                    <button onClick={() => setDetailQuantity(Math.max(1, detailQuantity - 1))} style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', cursor: 'pointer', fontSize: '18px' }}>-</button>
-                    <span style={{ fontWeight: '600', width: '20px', textAlign: 'center' }}>{detailQuantity}</span>
-                    <button onClick={() => setDetailQuantity(detailQuantity + 1)} style={{ background: 'var(--primary-color)', border: 'none', color: '#fff', width: '28px', height: '28px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>+</button>
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#22c55e', fontSize: '14px', fontWeight: '500' }}>
-                    <i className="fa-regular fa-face-smile"></i> Lezzetli
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#3b82f6', fontSize: '14px', fontWeight: '500' }}>
-                    <i className="fa-regular fa-clock"></i> 10-15 dk
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary-color)', fontSize: '14px', fontWeight: '500' }}>
-                    <i className="fa-solid fa-star"></i> 4.8 Puan
-                  </div>
-                </div>
-
-                <p style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '15px', flex: 1, overflowY: 'auto' }}>
-                  {selectedItem.description || "Harika malzemelerle usta ellerden çıkan enfes lezzet. Şimdiden afiyet olsun!"}
-                </p>
-
-                {/* Bottom Add to Cart */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--glass-border)' }}>
-                  <div>
-                    <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>Toplam Tutar</div>
-                    <div style={{ fontSize: '28px', fontWeight: '700' }}>{selectedItem.price * detailQuantity} ₺</div>
-                  </div>
-                  <button onClick={() => {
-                    for(let i=0; i<detailQuantity; i++) {
-                      addToCart(selectedItem);
-                    }
-                    setIsDetailOpen(false);
-                    setDetailQuantity(1);
-                  }} style={{ background: 'var(--text-main)', color: 'var(--bg-main)', padding: '16px 32px', borderRadius: '32px', fontSize: '16px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}>
-                    Sepete Ekle
-                  </button>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
       </div>
 
     </>
