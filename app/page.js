@@ -21,6 +21,11 @@ export default function Home() {
   const [theme, setTheme] = useState('dark');
   
   // Details Modal State
+  const [activeNav, setActiveNav] = useState('home');
+  useEffect(() => {
+    if (!isCartOpen && activeNav === 'cart') setActiveNav('home');
+    if (isCartOpen) setActiveNav('cart');
+  }, [isCartOpen, activeNav]);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [detailQuantity, setDetailQuantity] = useState(1);
@@ -1331,12 +1336,16 @@ export default function Home() {
       </div>
 
       {/* FLOATING BOTTOM NAV */}
-      <div className="floating-bottom-nav" style={{ position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, background: 'var(--surface-color)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '32px', padding: '8px 24px', display: 'flex', gap: '32px', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)' }}>
-        <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} style={{ background: 'transparent', border: 'none', color: 'var(--primary-color)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-house"></i></button>
-        <button onClick={() => alert('Favoriler yakında eklenecek!')} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-heart"></i></button>
-        <button style={{ background: 'var(--primary-color)', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '-24px', boxShadow: '0 8px 20px rgba(212, 175, 55, 0.4)' }} onClick={() => setIsCartOpen(true)}>
+      <div className="floating-bottom-nav" style={{ position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, background: 'var(--glass-bg)', backdropFilter: 'blur(24px) saturate(200%)', WebkitBackdropFilter: 'blur(24px) saturate(200%)', borderRadius: '40px', padding: '12px 24px', display: 'flex', gap: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)', border: '1px solid var(--glass-border)' }}>
+        <button onClick={() => { setActiveNav('home'); window.scrollTo({top: 0, behavior: 'smooth'}); }} style={{ background: activeNav === 'home' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'home' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
+          <i className="fa-solid fa-house"></i>
+        </button>
+        <button onClick={() => { setActiveNav('favorites'); alert('Favoriler yakında eklenecek!'); setTimeout(() => setActiveNav('home'), 1000); }} style={{ background: activeNav === 'favorites' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'favorites' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
+          <i className="fa-solid fa-heart"></i>
+        </button>
+        <button onClick={() => { setIsCartOpen(true); }} style={{ position: 'relative', background: activeNav === 'cart' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'cart' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <i className="fa-solid fa-cart-shopping"></i>
-          {cart.length > 0 && <span style={{ position: 'absolute', top: -4, right: -4, background: '#ef4444', color: '#fff', fontSize: '10px', width: 20, height: 20, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>{cart.length}</span>}
+          {cart.length > 0 && <span style={{ position: 'absolute', top: -2, right: -2, background: '#ef4444', color: '#fff', fontSize: '11px', width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', border: '2px solid var(--bg-main)' }}>{cart.length}</span>}
         </button>
       </div>
 
