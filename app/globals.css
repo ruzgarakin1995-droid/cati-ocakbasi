@@ -89,8 +89,8 @@ body::before {
   top: 0;
   left: 0;
   right: 0;
-  height: 400px;
-  background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.15), transparent 70%);
+  height: 500px;
+  background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.45) 0%, rgba(212, 175, 55, 0.15) 40%, transparent 80%);
   pointer-events: none;
   z-index: -1;
 }
