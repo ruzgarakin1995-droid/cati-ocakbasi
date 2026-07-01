@@ -21,16 +21,23 @@ export default function Home() {
   const [theme, setTheme] = useState('dark');
   
   // Details Modal State
+  const [favorites, setFavorites] = useState([]);
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
   const [activeNav, setActiveNav] = useState('home');
   useEffect(() => {
-    if (!isCartOpen && activeNav === 'cart') setActiveNav('home');
+    if (!isCartOpen && !isFavoritesOpen && (activeNav === 'cart' || activeNav === 'favorites')) setActiveNav('home');
     if (isCartOpen) setActiveNav('cart');
-  }, [isCartOpen, activeNav]);
+    if (isFavoritesOpen) setActiveNav('favorites');
+  }, [isCartOpen, isFavoritesOpen, activeNav]);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [detailQuantity, setDetailQuantity] = useState(1);
   
   useEffect(() => {
+    const savedFavs = localStorage.getItem('appFavs');
+    if (savedFavs) {
+      try { setFavorites(JSON.parse(savedFavs)); } catch(e){}
+    }
     const savedTheme = localStorage.getItem('appTheme') || 'dark';
     setTheme(savedTheme);
     if (savedTheme === 'light') {
@@ -153,6 +160,19 @@ export default function Home() {
   const finalTotal = cartTotal - discountAmount;
 
   // --- Cart Actions ---
+  const toggleFavorite = (item) => {
+    let newFavs;
+    if (favorites.some(f => f.id === item.id)) {
+      newFavs = favorites.filter(f => f.id !== item.id);
+      setToast({ message: 'Ürün favorilerden çıkarıldı', originalItem: item });
+    } else {
+      newFavs = [...favorites, item];
+      setToast({ message: 'Ürün favorilere eklendi!', originalItem: item });
+    }
+    setFavorites(newFavs);
+    localStorage.setItem('appFavs', JSON.stringify(newFavs));
+  };
+
   const addToCart = (item) => {
     const isMesrubat = item.title?.toLowerCase().includes('meşrubat');
     setCart([...cart, { ...item, cartId: Date.now() + Math.random(), excludedIngredients: [], selectedDrink: isMesrubat ? 'Kola' : null }]);
@@ -876,6 +896,47 @@ export default function Home() {
 
       {/* FLOATING CART BTN REMOVED IN FAVOR OF BOTTOM NAV */}
 
+      {/* FAVORITES OVERLAY */}
+      <div className={`checkout-overlay ${isFavoritesOpen ? 'active' : ''}`} onClick={(e) => {if(e.target.className.includes('checkout-overlay')) setIsFavoritesOpen(false)}}>
+        <div className="checkout-sheet single-page-compact">
+          <div className="sheet-header compact-header" style={{ position: 'relative', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <h2 className="sheet-title" style={{ fontSize: '18px', margin: 0, textAlign: 'center' }}>
+              <i className="fa-solid fa-heart" style={{ marginRight: '8px', color: '#ef4444' }}></i> Favorilerim
+            </h2>
+            <i className="fa-solid fa-xmark close-sheet" onClick={() => setIsFavoritesOpen(false)} style={{ cursor: 'pointer', position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', fontSize: '20px' }}></i>
+          </div>
+          
+          <div className="sheet-body compact-body" style={{ padding: '16px' }}>
+            {favorites.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '40px 20px', color: 'var(--text-muted)' }}>
+                <i className="fa-regular fa-heart" style={{ fontSize: '48px', marginBottom: '16px', opacity: 0.5 }}></i>
+                <p>Henüz favori ürününüz yok.</p>
+              </div>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {favorites.map(item => (
+                  <div key={item.id} className="list-item" onClick={() => { setSelectedItem(item); setIsDetailOpen(true); setIsFavoritesOpen(false); }} style={{ cursor: 'pointer', background: 'var(--surface-color)', borderRadius: '16px', padding: '12px', display: 'flex', gap: '12px', alignItems: 'center', border: '1px solid var(--glass-border)' }}>
+                    <div className="list-item-thumb" style={{ width: '64px', height: '64px', position: 'relative', borderRadius: '12px', overflow: 'hidden', flexShrink: 0 }}>
+                      <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="64px" />
+                    </div>
+                    <div className="list-item-content" style={{ flex: 1 }}>
+                      <div className="list-item-title" style={{ fontSize: '15px', fontWeight: '600', color: 'var(--text-main)', marginBottom: '4px' }}>{item.title}</div>
+                      <div className="list-item-price" style={{ fontSize: '14px', color: 'var(--primary-color)', fontWeight: '700' }}>{item.price} ₺</div>
+                    </div>
+                    <button onClick={(e) => { e.stopPropagation(); toggleFavorite(item); }} style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.1)', border: 'none', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                      <i className="fa-solid fa-heart"></i>
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); addToCart(item); }} style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary-color)', border: 'none', color: '#000', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                      <i className="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* MULTI-STEP CHECKOUT OVERLAY */}
       <div className={`checkout-overlay ${isCartOpen ? 'active' : ''}`} onClick={(e) => {if(e.target.className.includes('checkout-overlay')) setIsCartOpen(false)}}>
         <div className="checkout-sheet single-page-compact">
@@ -1340,7 +1401,7 @@ export default function Home() {
         <button onClick={() => { setActiveNav('home'); window.scrollTo({top: 0, behavior: 'smooth'}); }} style={{ background: activeNav === 'home' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'home' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <i className="fa-solid fa-house"></i>
         </button>
-        <button onClick={() => { setActiveNav('favorites'); alert('Favoriler yakında eklenecek!'); setTimeout(() => setActiveNav('home'), 1000); }} style={{ background: activeNav === 'favorites' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'favorites' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
+        <button onClick={() => { setIsFavoritesOpen(true); }} style={{ background: activeNav === 'favorites' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'favorites' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <i className="fa-solid fa-heart"></i>
         </button>
         <button onClick={() => { setIsCartOpen(true); }} style={{ position: 'relative', background: activeNav === 'cart' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'cart' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
@@ -1360,8 +1421,8 @@ export default function Home() {
                   <i className="fa-solid fa-arrow-left"></i>
                 </button>
                 <div style={{ fontSize: '18px', fontWeight: '600' }}>Detaylar</div>
-                <button style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--surface-color)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444', cursor: 'pointer' }}>
-                  <i className="fa-solid fa-heart"></i>
+                <button onClick={() => toggleFavorite(selectedItem)} style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--surface-color)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: favorites.some(f => f.id === selectedItem.id) ? '#ef4444' : 'var(--text-muted)', cursor: 'pointer', transition: 'all 0.3s ease' }}>
+                  <i className={favorites.some(f => f.id === selectedItem.id) ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
                 </button>
               </div>
 
