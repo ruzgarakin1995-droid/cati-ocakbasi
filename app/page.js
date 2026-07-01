@@ -36,6 +36,7 @@ export default function Home() {
 
   useEffect(() => {
     if (isDetailOpen && selectedItem) {
+      if (data.categories && data.categories.length > 0) {
         const currentCategory = data.categories.find(c => c.id === selectedItem.categoryId);
         const currentTitle = currentCategory ? (currentCategory.title || '').toLowerCase() : '';
         const isYemek = currentTitle.includes('kebap') || currentTitle.includes('ızgara') || currentTitle.includes('menü') || currentTitle.includes('dürüm') || currentTitle.includes('ana') || currentTitle.includes('döner');
