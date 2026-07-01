@@ -1491,11 +1491,11 @@ export default function Home() {
 
       {/* PRODUCT DETAILS MODAL (FULL SCREEN SHEET) */}
       <div className={`checkout-overlay ${isDetailOpen ? 'active' : ''}`} onClick={(e) => { if(e.target.className.includes('checkout-overlay')) { setIsDetailOpen(false); setDetailQuantity(1); } }}>
-        <div className={`checkout-sheet ${isDetailOpen ? 'open' : ''}`} style={{ background: 'var(--bg-color)', height: '90vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column' }}>
+        <div className={`checkout-sheet ${isDetailOpen ? 'open' : ''}`} style={{ background: 'var(--bg-color)', minHeight: '60vh', maxHeight: '95vh', height: 'auto', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column' }}>
           {selectedItem && (
             <>
               {/* Header */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '24px 24px 0 24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', padding: '20px 20px 0 20px' }}>
                 <button onClick={() => { setIsDetailOpen(false); setDetailQuantity(1); }} style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--surface-color)', border: '1px solid var(--glass-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-main)', cursor: 'pointer' }}>
                   <i className="fa-solid fa-arrow-left"></i>
                 </button>
@@ -1506,15 +1506,15 @@ export default function Home() {
               </div>
 
               {/* Huge Image */}
-              <div style={{ position: 'relative', width: '90%', height: '240px', margin: '24px auto', borderRadius: '24px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
+              <div style={{ position: 'relative', width: '90%', height: '180px', margin: '16px auto', borderRadius: '20px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
                 <Image src={selectedItem.image} alt={selectedItem.title} fill style={{ objectFit: 'cover' }} sizes="400px" />
               </div>
 
               {/* Content */}
               <div style={{ flex: 1, background: 'var(--surface-color)', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column', boxShadow: '0 -10px 30px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
                 
-                <div style={{ flex: 1, overflowY: 'auto', padding: '32px 24px 24px 24px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                <div style={{ flex: 1, padding: '20px 20px 16px 20px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                   <div>
                     <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px' }}>{selectedItem.emoji} {selectedItem.title}</h2>
                     <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}><i className="fa-solid fa-location-dot"></i> Çatı Ocakbaşı, Osmanbey</div>
@@ -1529,7 +1529,7 @@ export default function Home() {
                 </div>
 
                 {/* Tags */}
-                <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', gap: '16px', marginBottom: '16px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#22c55e', fontSize: '14px', fontWeight: '500' }}>
                     <i className="fa-regular fa-face-smile"></i> Lezzetli
                   </div>
@@ -1542,25 +1542,25 @@ export default function Home() {
                 </div>
 
                 {/* Description */}
-                <div style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '15px', marginBottom: '24px' }}>
+                <div style={{ color: 'var(--text-muted)', lineHeight: '1.4', fontSize: '14px', marginBottom: '16px' }}>
                   {selectedItem.description || "Gerçek Adana usulü acı ve baharat dengesiyle mangalda nar gibi kızarmış, damak çatlatan klasik lezzet."}
                 </div>
 
                 {/* Recommendation Section */}
                 {recommendation && (
-                  <div style={{ marginTop: '24px', padding: '16px', borderRadius: '20px', background: 'var(--bg-color)', border: '1px solid var(--glass-border)' }}>
+                  <div style={{ marginTop: '0px', padding: '12px 16px', borderRadius: '16px', background: 'var(--bg-color)', border: '1px solid var(--glass-border)' }}>
                     <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--primary-color)', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <i className="fa-solid fa-lightbulb"></i> {recommendation.phrase}
                     </div>
-                    <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                      <div style={{ width: '56px', height: '56px', borderRadius: '12px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
-                        <Image src={recommendation.item.image} alt={recommendation.item.title} fill style={{ objectFit: 'cover' }} sizes="56px" />
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                      <div style={{ width: '48px', height: '48px', borderRadius: '8px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+                        <Image src={recommendation.item.image} alt={recommendation.item.title} fill style={{ objectFit: 'cover' }} sizes="48px" />
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontSize: '14px', fontWeight: '600', color: 'var(--text-main)', marginBottom: '2px' }}>{recommendation.item.title}</div>
-                        <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{recommendation.item.price} ₺</div>
+                        <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-main)', marginBottom: '2px' }}>{recommendation.item.title}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{recommendation.item.price} ₺</div>
                       </div>
-                      <button onClick={(e) => { e.stopPropagation(); addToCart(recommendation.item); setToast({message: 'Öneri sepete eklendi!', originalItem: recommendation.item}); }} style={{ width: '36px', height: '36px', borderRadius: '50%', background: 'var(--primary-color)', color: '#000', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                      <button onClick={(e) => { e.stopPropagation(); addToCart(recommendation.item); setToast({message: 'Öneri sepete eklendi!', originalItem: recommendation.item}); }} style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary-color)', color: '#000', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
                         <i className="fa-solid fa-plus"></i>
                       </button>
                     </div>
@@ -1569,10 +1569,10 @@ export default function Home() {
                 </div>
 
                 {/* Bottom Add to Cart */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px', borderTop: '1px solid var(--glass-border)', background: 'var(--surface-color)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', borderTop: '1px solid var(--glass-border)', background: 'var(--surface-color)' }}>
                   <div>
-                    <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>Toplam Tutar</div>
-                    <div style={{ fontSize: '28px', fontWeight: '700' }}>{selectedItem.price * detailQuantity} ₺</div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginBottom: '4px' }}>Toplam Tutar</div>
+                    <div style={{ fontSize: '24px', fontWeight: '700' }}>{selectedItem.price * detailQuantity} ₺</div>
                   </div>
                   <button onClick={() => {
                     for(let i=0; i<detailQuantity; i++) {
@@ -1580,7 +1580,7 @@ export default function Home() {
                     }
                     setIsDetailOpen(false);
                     setDetailQuantity(1);
-                  }} style={{ background: 'var(--primary-color)', color: '#000', padding: '16px 32px', borderRadius: '32px', fontSize: '16px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}>
+                  }} style={{ background: 'var(--primary-color)', color: '#000', padding: '12px 24px', borderRadius: '24px', fontSize: '15px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}>
                     Sepete Ekle
                   </button>
                 </div>
