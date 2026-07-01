@@ -176,6 +176,34 @@ export default function Home() {
   const addToCart = (item) => {
     const isMesrubat = item.title?.toLowerCase().includes('meşrubat');
     setCart([...cart, { ...item, cartId: Date.now() + Math.random(), excludedIngredients: [], selectedDrink: isMesrubat ? 'Kola' : null }]);
+    
+    // Suggest a random item from a different category
+    let foundSuggestion = false;
+    if (data.categories && data.categories.length > 0) {
+      const otherCats = data.categories.filter(c => c.id !== item.categoryId);
+      if (otherCats.length > 0) {
+        const validCats = otherCats.filter(c => c.items && c.items.some(i => i && i.title && i.price));
+        if (validCats.length > 0) {
+          const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
+          const validItems = randomCat.items.filter(i => i && i.title && i.price);
+          const suggestion = validItems[Math.floor(Math.random() * validItems.length)];
+          setToast({
+            message: 'Sepete Eklendi',
+            suggestion: suggestion,
+            originalItem: item
+          });
+          foundSuggestion = true;
+        }
+      }
+    }
+    
+    if (!foundSuggestion) {
+      setToast({
+        message: 'Sepete Eklendi',
+        originalItem: item
+      });
+    }
+    setTimeout(() => setToast(null), 8000);
   };
 
   const removeFromCart = (cartId) => {
