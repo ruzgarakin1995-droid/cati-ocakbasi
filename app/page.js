@@ -664,7 +664,7 @@ export default function Home() {
               }}
             >
               {data.banners.map((banner, i) => (
-                <div key={banner.id} className="banner-card">
+                <div key={banner.id} className="banner-card" onClick={() => { setSelectedItem(banner); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
                   <div className="item-badges">
                   {banner.badge && <span className="tag-badge tag-pop" style={{ fontSize: '12px', padding: '6px 12px' }}><i className="fa-solid fa-star"></i> {banner.badge}</span>}
                 </div>
@@ -681,7 +681,7 @@ export default function Home() {
                   </div>
                   <div className="banner-footer">
                     <span className="banner-price">{banner.price} ₺</span>
-                    <button className="btn-large" onClick={() => addToCart(banner)}>Siparişe Ekle</button>
+                    <button className="btn-large" onClick={(e) => { e.stopPropagation(); addToCart(banner); }}>Siparişe Ekle</button>
                   </div>
                 </div>
               </div>
