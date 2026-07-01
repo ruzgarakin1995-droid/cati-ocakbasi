@@ -83,6 +83,18 @@ body {
   padding-bottom: 80px; /* Space for scroll */
 }
 
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 400px;
+  background: radial-gradient(ellipse at top, rgba(212, 175, 55, 0.15), transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+
 .container {
   padding: 0 16px;
   max-width: 600px;
