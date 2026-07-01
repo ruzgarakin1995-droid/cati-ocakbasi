@@ -36,15 +36,26 @@ export default function Home() {
 
   useEffect(() => {
     if (isDetailOpen && selectedItem) {
-      if (data.categories && data.categories.length > 0) {
-        let targetCatIds = [];
-        if (selectedItem.categoryId === 'kebaplar') {
-          targetCatIds = ['baslangic_ve_ara_sicaklar', 'icecekler'];
-        } else {
-          targetCatIds = ['kebaplar'];
+        const currentCategory = data.categories.find(c => c.id === selectedItem.categoryId);
+        const currentTitle = currentCategory ? (currentCategory.title || '').toLowerCase() : '';
+        const isYemek = currentTitle.includes('kebap') || currentTitle.includes('ızgara') || currentTitle.includes('menü') || currentTitle.includes('dürüm') || currentTitle.includes('ana') || currentTitle.includes('döner');
+        
+        let validCats = data.categories.filter(c => {
+          if (c.id === selectedItem.categoryId) return false;
+          const cTitle = (c.title || '').toLowerCase();
+          const isCatYemek = cTitle.includes('kebap') || cTitle.includes('ızgara') || cTitle.includes('menü') || cTitle.includes('dürüm') || cTitle.includes('ana') || cTitle.includes('döner');
+          const isCatSide = cTitle.includes('ara') || cTitle.includes('başlangıç') || cTitle.includes('meze') || cTitle.includes('içecek') || cTitle.includes('tatlı');
+          
+          if (isYemek) return isCatSide;
+          return isCatYemek;
+        });
+
+        validCats = validCats.filter(c => c.items && c.items.some(i => i && i.title && i.price));
+
+        if (validCats.length === 0) {
+          validCats = data.categories.filter(c => c.id !== selectedItem.categoryId && c.items && c.items.some(i => i && i.title && i.price));
         }
 
-        const validCats = data.categories.filter(c => targetCatIds.includes(c.id) && c.items && c.items.some(i => i && i.title && i.price));
         if (validCats.length > 0) {
           const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
           const validItems = randomCat.items.filter(i => i && i.title && i.price);
@@ -1479,7 +1490,7 @@ export default function Home() {
 
       {/* PRODUCT DETAILS MODAL (FULL SCREEN SHEET) */}
       <div className={`checkout-overlay ${isDetailOpen ? 'active' : ''}`} onClick={(e) => { if(e.target.className.includes('checkout-overlay')) { setIsDetailOpen(false); setDetailQuantity(1); } }}>
-        <div className={`checkout-sheet ${isDetailOpen ? 'open' : ''}`} style={{ background: 'var(--bg-color)', height: '85vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column' }}>
+        <div className={`checkout-sheet ${isDetailOpen ? 'open' : ''}`} style={{ background: 'var(--bg-color)', height: '90vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column' }}>
           {selectedItem && (
             <>
               {/* Header */}
@@ -1499,8 +1510,10 @@ export default function Home() {
               </div>
 
               {/* Content */}
-              <div style={{ flex: 1, background: 'var(--surface-color)', borderRadius: '32px 32px 0 0', padding: '32px 24px', display: 'flex', flexDirection: 'column', boxShadow: '0 -10px 30px rgba(0,0,0,0.05)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+              <div style={{ flex: 1, background: 'var(--surface-color)', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column', boxShadow: '0 -10px 30px rgba(0,0,0,0.05)', overflow: 'hidden' }}>
+                
+                <div style={{ flex: 1, overflowY: 'auto', padding: '32px 24px 24px 24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <div>
                     <h2 style={{ fontSize: '24px', fontWeight: '700', marginBottom: '8px' }}>{selectedItem.emoji} {selectedItem.title}</h2>
                     <div style={{ color: 'var(--text-muted)', fontSize: '14px' }}><i className="fa-solid fa-location-dot"></i> Çatı Ocakbaşı, Osmanbey</div>
@@ -1528,7 +1541,7 @@ export default function Home() {
                 </div>
 
                 {/* Description */}
-                <div style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '15px', flex: 1, overflowY: 'auto' }}>
+                <div style={{ color: 'var(--text-muted)', lineHeight: '1.6', fontSize: '15px', marginBottom: '24px' }}>
                   {selectedItem.description || "Gerçek Adana usulü acı ve baharat dengesiyle mangalda nar gibi kızarmış, damak çatlatan klasik lezzet."}
                 </div>
 
@@ -1552,9 +1565,10 @@ export default function Home() {
                     </div>
                   </div>
                 )}
+                </div>
 
                 {/* Bottom Add to Cart */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px', paddingTop: '24px', borderTop: '1px solid var(--glass-border)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '24px', borderTop: '1px solid var(--glass-border)', background: 'var(--surface-color)' }}>
                   <div>
                     <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginBottom: '4px' }}>Toplam Tutar</div>
                     <div style={{ fontSize: '28px', fontWeight: '700' }}>{selectedItem.price * detailQuantity} ₺</div>
