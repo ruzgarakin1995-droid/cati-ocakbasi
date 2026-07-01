@@ -1336,7 +1336,7 @@ export default function Home() {
       </div>
 
       {/* FLOATING BOTTOM NAV */}
-      <div className="floating-bottom-nav" style={{ position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, background: 'var(--glass-bg)', backdropFilter: 'blur(24px) saturate(200%)', WebkitBackdropFilter: 'blur(24px) saturate(200%)', borderRadius: '40px', padding: '12px 24px', display: 'flex', gap: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)', border: '1px solid var(--glass-border)' }}>
+      <div className="floating-bottom-nav" style={{ position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 1000, background: 'var(--glass-bg)', backdropFilter: 'blur(24px) saturate(200%)', WebkitBackdropFilter: 'blur(24px) saturate(200%)', borderRadius: '40px', padding: '12px 24px', display: 'flex', gap: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)', border: '1px solid var(--glass-border)' }}>
         <button onClick={() => { setActiveNav('home'); window.scrollTo({top: 0, behavior: 'smooth'}); }} style={{ background: activeNav === 'home' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'home' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <i className="fa-solid fa-house"></i>
         </button>
