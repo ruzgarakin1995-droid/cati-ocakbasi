@@ -1332,13 +1332,12 @@ export default function Home() {
 
       {/* FLOATING BOTTOM NAV */}
       <div className="floating-bottom-nav" style={{ position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)', zIndex: 9999, background: 'var(--surface-color)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', borderRadius: '32px', padding: '8px 24px', display: 'flex', gap: '32px', boxShadow: '0 10px 40px rgba(0,0,0,0.15)', border: '1px solid var(--glass-border)' }}>
-        <button style={{ background: 'transparent', border: 'none', color: 'var(--primary-color)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-house"></i></button>
-        <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-heart"></i></button>
+        <button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} style={{ background: 'transparent', border: 'none', color: 'var(--primary-color)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-house"></i></button>
+        <button onClick={() => alert('Favoriler yakında eklenecek!')} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer' }}><i className="fa-solid fa-heart"></i></button>
         <button style={{ background: 'var(--primary-color)', border: 'none', color: '#fff', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '-24px', boxShadow: '0 8px 20px rgba(212, 175, 55, 0.4)' }} onClick={() => setIsCartOpen(true)}>
           <i className="fa-solid fa-cart-shopping"></i>
           {cart.length > 0 && <span style={{ position: 'absolute', top: -4, right: -4, background: '#ef4444', color: '#fff', fontSize: '10px', width: 20, height: 20, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold' }}>{cart.length}</span>}
         </button>
-        <button style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer' }} onClick={() => setIsLoginOpen(true)}><i className="fa-solid fa-user"></i></button>
       </div>
 
       {/* PRODUCT DETAILS MODAL (FULL SCREEN SHEET) */}
@@ -1358,8 +1357,8 @@ export default function Home() {
               </div>
 
               {/* Huge Image */}
-              <div style={{ position: 'relative', width: '250px', height: '250px', margin: '24px auto', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
-                <Image src={selectedItem.image} alt={selectedItem.title} fill style={{ objectFit: 'cover' }} sizes="250px" />
+              <div style={{ position: 'relative', width: '90%', height: '240px', margin: '24px auto', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
+                <Image src={selectedItem.image} alt={selectedItem.title} fill style={{ objectFit: 'cover' }} sizes="400px" />
               </div>
 
               {/* Content */}
@@ -1387,7 +1386,7 @@ export default function Home() {
                     <i className="fa-regular fa-clock"></i> 10-15 dk
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary-color)', fontSize: '14px', fontWeight: '500' }}>
-                    <i className="fa-solid fa-star"></i> 4.8 Puan
+                    <i className="fa-solid fa-star"></i> 5.0 Puan
                   </div>
                 </div>
 
@@ -1407,7 +1406,7 @@ export default function Home() {
                     }
                     setIsDetailOpen(false);
                     setDetailQuantity(1);
-                  }} style={{ background: 'var(--text-main)', color: 'var(--bg-main)', padding: '16px 32px', borderRadius: '32px', fontSize: '16px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}>
+                  }} style={{ background: 'var(--primary-color)', color: '#000', padding: '16px 32px', borderRadius: '32px', fontSize: '16px', fontWeight: '600', border: 'none', cursor: 'pointer', boxShadow: '0 10px 20px rgba(0,0,0,0.1)' }}>
                     Sepete Ekle
                   </button>
                 </div>
