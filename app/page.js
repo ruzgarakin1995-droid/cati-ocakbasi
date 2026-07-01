@@ -37,8 +37,14 @@ export default function Home() {
   useEffect(() => {
     if (isDetailOpen && selectedItem) {
       if (data.categories && data.categories.length > 0) {
-        const otherCats = data.categories.filter(c => c.id !== selectedItem.categoryId);
-        const validCats = otherCats.filter(c => c.items && c.items.some(i => i && i.title && i.price));
+        let targetCatIds = [];
+        if (selectedItem.categoryId === 'kebaplar') {
+          targetCatIds = ['baslangic_ve_ara_sicaklar', 'icecekler'];
+        } else {
+          targetCatIds = ['kebaplar'];
+        }
+
+        const validCats = data.categories.filter(c => targetCatIds.includes(c.id) && c.items && c.items.some(i => i && i.title && i.price));
         if (validCats.length > 0) {
           const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
           const validItems = randomCat.items.filter(i => i && i.title && i.price);
@@ -1488,7 +1494,7 @@ export default function Home() {
               </div>
 
               {/* Huge Image */}
-              <div style={{ position: 'relative', width: '90%', height: '240px', margin: '24px auto', borderRadius: '50%', overflow: 'hidden', boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
+              <div style={{ position: 'relative', width: '90%', height: '240px', margin: '24px auto', borderRadius: '24px', overflow: 'hidden', flexShrink: 0, boxShadow: '0 20px 40px rgba(0,0,0,0.15)' }}>
                 <Image src={selectedItem.image} alt={selectedItem.title} fill style={{ objectFit: 'cover' }} sizes="400px" />
               </div>
 
