@@ -37,6 +37,27 @@ export default function Home() {
   useEffect(() => {
     if (isDetailOpen && selectedItem) {
       if (data.categories && data.categories.length > 0) {
+        
+        // 1. Ozel (Custom) Cross-Sell Kontrolu
+        if (selectedItem.crossSellItemId && selectedItem.crossSellItemId !== 'auto') {
+          let customRecItem = null;
+          data.categories.forEach(c => {
+            if (c.items) {
+              const found = c.items.find(i => i.id === selectedItem.crossSellItemId);
+              if (found) customRecItem = found;
+            }
+          });
+          
+          if (customRecItem) {
+            setRecommendation({
+              item: customRecItem,
+              phrase: "Bunun yanına şu çok iyi gider!"
+            });
+            return;
+          }
+        }
+
+        // 2. Otomatik Cross-Sell (Fallback)
         const currentCategory = data.categories.find(c => c.id === selectedItem.categoryId);
         const currentTitle = currentCategory ? (currentCategory.title || '').toLowerCase() : '';
         const isYemek = currentTitle.includes('kebap') || currentTitle.includes('ızgara') || currentTitle.includes('menü') || currentTitle.includes('dürüm') || currentTitle.includes('ana') || currentTitle.includes('döner');

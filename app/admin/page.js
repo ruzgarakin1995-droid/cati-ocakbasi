@@ -1126,12 +1126,13 @@ function CustomizableOptionsEditor({ options, onChange }) {
 // ============================================================
 // ITEM FORM (shared for banner/featured/menu)
 // ============================================================
-function ItemForm({ item, onSave, onCancel, showBadge = true, showHighlight = false }) {
+function ItemForm({ item, onSave, onCancel, showBadge = true, showHighlight = false, allCategories = [] }) {
   const [form, setForm] = useState({
     title: item?.title || '', emoji: item?.emoji || '', description: item?.description || '',
     price: item?.price || '', image: item?.image || '', badge: item?.badge || '',
     isHighlight: item?.isHighlight || false, ingredients: item?.ingredients || [],
     customizableIngredients: item?.customizableIngredients || [],
+    crossSellItemId: item?.crossSellItemId || 'auto'
   });
   const [uploading, setUploading] = useState(false);
 
@@ -1203,6 +1204,21 @@ function ItemForm({ item, onSave, onCancel, showBadge = true, showHighlight = fa
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 24 }}>
             <input type="checkbox" className="admin-checkbox" checked={form.isHighlight} onChange={e => setForm({ ...form, isHighlight: e.target.checked })} />
             <label style={{ fontSize: 14, color: colors.textMuted }}>Öne Çıkar (isHighlight)</label>
+          </div>
+        )}
+        {allCategories && allCategories.length > 0 && (
+          <div style={{ gridColumn: '1 / -1' }}>
+            <label className="admin-label">Çapraz Satış Önerisi</label>
+            <select className="admin-select" value={form.crossSellItemId} onChange={e => setForm({ ...form, crossSellItemId: e.target.value })}>
+              <option value="auto">Rastgele / Otomatik</option>
+              {allCategories.map(cat => (
+                <optgroup key={cat.id} label={cat.title}>
+                  {cat.items?.map(it => (
+                    <option key={it.id} value={it.id}>{it.title}</option>
+                  ))}
+                </optgroup>
+              ))}
+            </select>
           </div>
         )}
       </div>
@@ -1449,7 +1465,7 @@ function MenuTab({ categories, reload }) {
       </div>
 
       {editing && (
-        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={true} />
+        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={true} allCategories={categories} />
       )}
 
       <div style={{ display: 'grid', gap: 12 }}>
