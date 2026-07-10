@@ -29,6 +29,7 @@ export default function Home() {
     if (isCartOpen) setActiveNav('cart');
     if (isFavoritesOpen) setActiveNav('favorites');
   }, [isCartOpen, isFavoritesOpen, activeNav]);
+  const [showMinCartAlert, setShowMinCartAlert] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [detailQuantity, setDetailQuantity] = useState(1);
@@ -614,7 +615,7 @@ export default function Home() {
           </div>
         </div>
         <div className="container hero-info" style={{ marginTop: '16px' }}>
-          <span className="info-badge rating"><i className="fa-solid fa-star"></i> {data.settings?.ratingValue || '5.0'} ({data.settings?.ratingCount || '60'} Yorum)</span>
+          <span className="info-badge rating"><i className="fa-brands fa-google" style={{ color: '#ea4335' }}></i> {data.settings?.ratingValue || '5.0'} ({data.settings?.ratingCount || '60'} Yorum)</span>
           <span className="info-badge"><i className="fa-solid fa-bag-shopping"></i> Gel-al</span>
           <span className="info-badge"><i className="fa-solid fa-motorcycle"></i> Adrese Teslim</span>
         </div>
@@ -1123,9 +1124,9 @@ export default function Home() {
                   </div>
 
                   <button className="btn-checkout-premium compact-btn" onClick={() => {
-                    const minAmount = data.settings?.minOrderAmount || 0;
+                    const minAmount = data.settings?.minOrderAmount || 200;
                     if (cartTotal < minAmount) {
-                      alert(`Sipariş verebilmek için minimum sepet tutarı ${minAmount} ₺ olmalıdır. Lütfen sepetinize ürün eklemeye devam ediniz.`);
+                      setShowMinCartAlert(true);
                       return;
                     }
                     setCheckoutStep(2);
@@ -1608,6 +1609,23 @@ export default function Home() {
               </div>
             </>
           )}
+        </div>
+      </div>
+
+      {/* MIN CART ALERT MODAL */}
+      <div className={`modal-overlay ${showMinCartAlert ? 'active' : ''}`} onClick={(e) => { if (e.target.className.includes('modal-overlay')) setShowMinCartAlert(false); }} style={{ zIndex: 10002 }}>
+        <div className={`modal-content ${showMinCartAlert ? 'open' : ''}`} style={{ maxWidth: '400px', textAlign: 'center', background: 'var(--surface-color)', borderRadius: '24px', padding: '32px 24px', border: '1px solid var(--glass-border)' }}>
+          <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: 'rgba(212, 175, 55, 0.1)', color: 'var(--primary-color)', fontSize: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 16px' }}>
+            <i className="fa-solid fa-basket-shopping"></i>
+          </div>
+          <h2 style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '12px', color: 'var(--text-main)' }}>Minimum Sepet Tutarı</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: '1.5', marginBottom: '24px' }}>
+            Sipariş verebilmek için sepet tutarınız en az <strong style={{ color: 'var(--primary-color)' }}>{data.settings?.minOrderAmount || 200} ₺</strong> olmalıdır.<br/><br/>
+            Şu anki tutar: <strong>{cartTotal} ₺</strong>
+          </p>
+          <button onClick={() => setShowMinCartAlert(false)} className="btn-primary" style={{ width: '100%', padding: '14px', borderRadius: '12px', fontSize: '15px', fontWeight: '600' }}>
+            Alışverişe Devam Et
+          </button>
         </div>
       </div>
 
