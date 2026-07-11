@@ -797,6 +797,35 @@ export default function Home() {
         );
         })}
 
+        {/* WIFI BILGILERI */}
+        {data.settings?.wifi?.name && (
+          <div style={{ marginTop: '30px', marginBottom: '8px' }}>
+            <div className="contact-card" style={{ display: 'flex', flexDirection: 'column', gap: '12px', padding: '24px', background: 'var(--surface-color)', borderRadius: '16px', border: '1px solid var(--glass-border)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div style={{ width: '48px', height: '48px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', background: 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)', boxShadow: '0 4px 10px rgba(52, 152, 219, 0.3)' }}>
+                  <i className="fa-solid fa-wifi" style={{ fontSize: '20px' }}></i>
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '18px', margin: 0, color: 'var(--text-main)', fontWeight: 700 }}>Ücretsiz WiFi</h3>
+                  <p style={{ fontSize: '13px', margin: '4px 0 0 0', color: 'var(--text-muted)' }}>İnternete anında bağlanın</p>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                <div style={{ flex: 1, background: 'var(--bg-color)', padding: '12px', borderRadius: '10px', border: '1px dashed var(--glass-border)' }}>
+                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}><i className="fa-solid fa-network-wired"></i> Ağ Adı</div>
+                  <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-main)', wordBreak: 'break-all' }}>{data.settings.wifi.name}</div>
+                </div>
+                {data.settings.wifi.password && (
+                  <div style={{ flex: 1, background: 'var(--bg-color)', padding: '12px', borderRadius: '10px', border: '1px dashed var(--glass-border)' }}>
+                    <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}><i className="fa-solid fa-key"></i> Şifre</div>
+                    <div style={{ fontSize: '15px', fontWeight: 600, color: 'var(--text-main)', wordBreak: 'break-all' }}>{data.settings.wifi.password}</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* SOSYAL AĞLARIMIZ */}
         <div style={{ marginTop: '30px', marginBottom: '24px' }}>
           <h2 className="social-list-title" style={{ fontWeight: 700, fontSize: '20px', marginBottom: '16px' }}>Sosyal Ağlarımız</h2>

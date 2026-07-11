@@ -2060,6 +2060,25 @@ function SettingsTab({ settings, reload }) {
             <input type="text" className="admin-input" value={form.socialLinks?.googleReview || ''} onChange={e => setForm({...form, socialLinks: {...form.socialLinks, googleReview: e.target.value}})} placeholder="https://..." />
           </label>
 
+          <h3 style={{ fontSize: 16, color: colors.gold, marginTop: 32, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Mağaza WiFi Bilgileri</h3>
+          
+          <label style={{ display: 'block', marginBottom: 16 }}>
+            <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}><i className="fa-solid fa-wifi" style={{color: '#3498db'}}></i> WiFi Ağ Adı</div>
+            <input type="text" className="admin-input" value={form.wifi?.name || ''} onChange={e => setForm({...form, wifi: {...form.wifi, name: e.target.value}})} placeholder="Ağ Adı" />
+          </label>
+          <label style={{ display: 'block', marginBottom: 16 }}>
+            <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}><i className="fa-solid fa-key" style={{color: '#f1c40f'}}></i> WiFi Şifresi</div>
+            <input type="text" className="admin-input" value={form.wifi?.password || ''} onChange={e => setForm({...form, wifi: {...form.wifi, password: e.target.value}})} placeholder="Şifre" />
+          </label>
+
+          <h3 style={{ fontSize: 16, color: colors.gold, marginTop: 32, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Yapay Zeka (AI) Entegrasyonu</h3>
+          
+          <label style={{ display: 'block', marginBottom: 16 }}>
+            <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}><i className="fa-solid fa-wand-magic-sparkles" style={{color: '#9b59b6'}}></i> Google Gemini API Key</div>
+            <input type="password" className="admin-input" value={form.ai?.geminiApiKey || ''} onChange={e => setForm({...form, ai: {...form.ai, geminiApiKey: e.target.value}})} placeholder="AIzaSy..." />
+            <div style={{ marginTop: 6, fontSize: 11, color: colors.textMuted }}>Menü eklerken veya düzenlerken yapay zeka desteğini kullanmak için geçerli bir Gemini API Key girin.</div>
+          </label>
+
         </div>
       </div>
     </div>
