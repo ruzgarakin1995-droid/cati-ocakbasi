@@ -18,12 +18,8 @@ export async function POST(request) {
     // Login
     const adminPassword = process.env.ADMIN_PASSWORD || 'ocakbasi0123';
     
-    // Check if token matches our static format
-    if (token && token.startsWith('static-admin-token-')) {
-      const tokenPass = token.replace('static-admin-token-', '');
-      if (tokenPass === adminPassword) {
-        return NextResponse.json({ success: true, message: 'Valid token' }, { status: 200 });
-      }
+    if (password !== adminPassword) {
+      return NextResponse.json({ error: 'Geçersiz şifre' }, { status: 401 });
     }
     
     const expectedToken = 'static-admin-token-' + (process.env.ADMIN_PASSWORD || 'ocakbasi0123');
