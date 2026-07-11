@@ -1223,7 +1223,35 @@ function ItemForm({ item, onSave, onCancel, showBadge = true, showHighlight = fa
         )}
       </div>
       <div style={{ marginTop: 16 }}>
-        <label className="admin-label">Açıklama</label>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+          <label className="admin-label" style={{ marginBottom: 0 }}>Açıklama</label>
+          <button 
+            type="button"
+            onClick={async (e) => {
+              e.preventDefault();
+              if (!form.description) return alert('Lütfen önce kısa bir açıklama veya malzeme listesi yazın.');
+              try {
+                setForm(prev => ({ ...prev, description: '✨ Yapay zeka yazıyor...' }));
+                const token = localStorage.getItem('adminToken');
+                const res = await fetch('/api/ai/enhance', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                  body: JSON.stringify({ text: form.description, ingredients: form.ingredients })
+                });
+                const data = await res.json();
+                if (!res.ok) throw new Error(data.error || 'Bilinmeyen bir hata oluştu');
+                setForm(prev => ({ ...prev, description: data.result }));
+              } catch (err) {
+                alert('Yapay zeka hatası: ' + err.message);
+                setForm(prev => ({ ...prev, description: form.description })); 
+              }
+            }} 
+            className="admin-btn admin-btn-sm" 
+            style={{ background: 'linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%)', color: '#fff', border: 'none', gap: 6 }}
+          >
+            <i className="fa-solid fa-wand-magic-sparkles"></i> AI ile Düzenle
+          </button>
+        </div>
         <textarea className="admin-textarea" value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} placeholder="Ürün açıklaması..." />
       </div>
       <div style={{ marginTop: 16 }}>
