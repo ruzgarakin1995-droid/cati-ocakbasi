@@ -16,14 +16,17 @@ export async function POST(request) {
     }
     
     // Login
-    const adminPassword = process.env.ADMIN_PASSWORD || 'Ocakbaşı.0123';
+    const adminPassword = process.env.ADMIN_PASSWORD || 'ocakbasi0123';
     
-    if (password !== adminPassword) {
-      return NextResponse.json({ error: 'Geçersiz şifre' }, { status: 401 });
+    // Check if token matches our static format
+    if (token && token.startsWith('static-admin-token-')) {
+      const tokenPass = token.replace('static-admin-token-', '');
+      if (tokenPass === adminPassword) {
+        return NextResponse.json({ success: true, message: 'Valid token' }, { status: 200 });
+      }
     }
     
-    // Generate static token for serverless compatibility
-    const expectedToken = 'static-admin-token-' + (process.env.ADMIN_PASSWORD || 'Ocakbaşı.0123');
+    const expectedToken = 'static-admin-token-' + (process.env.ADMIN_PASSWORD || 'ocakbasi0123');
     await createSession(expectedToken);
     
     return NextResponse.json({ success: true, token: expectedToken });
