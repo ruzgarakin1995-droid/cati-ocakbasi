@@ -13,10 +13,10 @@ export async function POST(request) {
   
   try {
     const settings = await getSettings();
-    const apiKey = settings?.ai?.geminiApiKey;
+    const apiKey = settings?.ai?.geminiApiKey || process.env.GEMINI_API_KEY;
     
     if (!apiKey) {
-      return NextResponse.json({ error: 'Lütfen önce İşletme Ayarları bölümünden Gemini API Anahtarınızı ekleyin.' }, { status: 400 });
+      return NextResponse.json({ error: 'Lütfen Vercel üzerinden GEMINI_API_KEY ortam değişkenini ekleyin veya İşletme Ayarlarından API Anahtarınızı girin. (Eğer ayarlarınız kaydedilmiyorsa, Vercel KV veritabanı projenize bağlı değildir).' }, { status: 400 });
     }
 
     const { text, ingredients } = await request.json();
