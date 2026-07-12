@@ -10,7 +10,14 @@ async function checkAuth(request) {
 
 export async function GET() {
   try {
-    const settings = await getSettings();
+    const settings = await getSettings() || {};
+    
+    // Inject environment variable if memory store is wiped
+    if (!settings.ai) settings.ai = {};
+    if (!settings.ai.geminiApiKey && process.env.GEMINI_API_KEY) {
+      settings.ai.geminiApiKey = process.env.GEMINI_API_KEY;
+    }
+    
     return NextResponse.json(settings);
   } catch (error) {
     return NextResponse.json({ error: 'Ayarlar okunamadı' }, { status: 500 });
