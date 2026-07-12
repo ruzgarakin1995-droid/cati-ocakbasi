@@ -36,13 +36,35 @@ Orijinal İçerik: "${text}${ingredients && ingredients.length > 0 ? ', ' + ingr
 `;
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const resultText = response.text();
+    const modelsToTry = [
+      'gemini-1.5-flash',
+      'gemini-1.5-flash-latest',
+      'gemini-1.5-pro',
+      'gemini-1.0-pro',
+      'gemini-pro',
+      'gemini-1.5-flash-8b'
+    ];
+    
+    let resultText = null;
+    let lastError = null;
+    
+    for (const modelName of modelsToTry) {
+      try {
+        const model = genAI.getGenerativeModel({ model: modelName });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        if (response && response.text) {
+          resultText = response.text();
+          break; // Model success
+        }
+      } catch (err) {
+        lastError = err;
+        console.error(`Model ${modelName} failed:`, err.message);
+      }
+    }
     
     if (!resultText) {
-       return NextResponse.json({ error: 'Yapay zeka geçerli bir yanıt üretemedi.' }, { status: 500 });
+       return NextResponse.json({ error: lastError ? lastError.message : 'Yapay zeka geçerli bir yanıt üretemedi (Tüm modeller denendi ve reddedildi).' }, { status: 500 });
     }
 
     return NextResponse.json({ result: resultText.trim() });
