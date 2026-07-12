@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 import { NextResponse } from 'next/server';
 import { getSettings, validateSession } from '../../../../lib/store';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 async function checkAuth(request) {
   const authHeader = request.headers.get('authorization');
@@ -34,23 +35,11 @@ Kurallar:
 Orijinal İçerik: "${text}${ingredients && ingredients.length > 0 ? ', ' + ingredients.join(', ') : ''}"
 `;
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [{ text: prompt }]
-        }]
-      })
-    });
-
-    const data = await res.json();
-    
-    if (data.error) {
-      return NextResponse.json({ error: data.error.message || 'Yapay zeka servisi yanıt vermedi' }, { status: 500 });
-    }
-    
-    const resultText = data.candidates?.[0]?.content?.parts?.[0]?.text;
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const resultText = response.text();
     
     if (!resultText) {
        return NextResponse.json({ error: 'Yapay zeka geçerli bir yanıt üretemedi.' }, { status: 500 });
