@@ -13,7 +13,7 @@ export async function POST(request) {
   
   try {
     const settings = await getSettings();
-    const apiKey = settings?.ai?.geminiApiKey || process.env.GEMINI_API_KEY;
+    const apiKey = (settings?.ai?.geminiApiKey || process.env.GEMINI_API_KEY || '').trim();
     
     if (!apiKey) {
       return NextResponse.json({ error: 'Lütfen Vercel üzerinden GEMINI_API_KEY ortam değişkenini ekleyin veya İşletme Ayarlarından API Anahtarınızı girin. (Eğer ayarlarınız kaydedilmiyorsa, Vercel KV veritabanı projenize bağlı değildir).' }, { status: 400 });
@@ -34,7 +34,7 @@ Kurallar:
 Orijinal İçerik: "${text}${ingredients && ingredients.length > 0 ? ', ' + ingredients.join(', ') : ''}"
 `;
 
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`, {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
