@@ -43,7 +43,7 @@ export default function Home() {
 
   const handleCallWaiter = async () => {
     if (!waiterTableNo.trim()) {
-      setToast({ message: 'Lütfen masa numaranızı girin.', type: 'error' });
+      setToast({ msg: 'Lütfen masa numaranızı girin.', type: 'error' });
       return;
     }
     setWaiterLoading(true);
@@ -59,10 +59,10 @@ export default function Home() {
         setShowWaiterSuccess(true);
         setTimeout(() => setShowWaiterSuccess(false), 3500);
       } else {
-        setToast({ message: 'Talep oluşturulamadı. Lütfen tekrar deneyin.', type: 'error' });
+        setToast({ msg: 'Talep oluşturulamadı. Lütfen tekrar deneyin.', type: 'error' });
       }
     } catch (e) {
-      setToast({ message: 'Bağlantı hatası.', type: 'error' });
+      setToast({ msg: 'Bağlantı hatası.', type: 'error' });
     } finally {
       setWaiterLoading(false);
     }
@@ -182,11 +182,14 @@ export default function Home() {
         const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
         const randomMsg = toastMessages[Math.floor(Math.random() * toastMessages.length)];
         setToast({
+          type: 'cross-sell',
+          header: 'Bunu denemiş miydiniz?',
           title: randomItem.title,
           price: randomItem.price,
           image: randomItem.image,
           msg: randomMsg,
-          originalItem: randomItem
+          actionText: '+ Sipariş Ver',
+          action: () => addToCart(randomItem)
         });
         setTimeout(() => setToast(null), 8000);
       }
@@ -273,10 +276,10 @@ export default function Home() {
     let newFavs;
     if (favorites.some(f => f.id === item.id)) {
       newFavs = favorites.filter(f => f.id !== item.id);
-      setToast({ message: 'Ürün favorilerden çıkarıldı', originalItem: item });
+      setToast({ type: 'success', header: 'Favorilerden Çıkarıldı', title: item.title, msg: 'Ürün favorilerden çıkarıldı.', image: item.image });
     } else {
       newFavs = [...favorites, item];
-      setToast({ message: 'Ürün favorilere eklendi!', originalItem: item });
+      setToast({ type: 'success', header: 'Favorilere Eklendi', title: item.title, msg: 'Ürün favorilere eklendi!', image: item.image });
     }
     setFavorites(newFavs);
     localStorage.setItem('appFavs', JSON.stringify(newFavs));
@@ -297,9 +300,14 @@ export default function Home() {
           const validItems = randomCat.items.filter(i => i && i.title && i.price && !i.isHidden);
           const suggestion = validItems[Math.floor(Math.random() * validItems.length)];
           setToast({
-            message: 'Sepete Eklendi',
-            suggestion: suggestion,
-            originalItem: item
+            type: 'cross-sell',
+            header: 'Bunu denemiş miydiniz?',
+            title: suggestion.title,
+            msg: toastMessages[Math.floor(Math.random() * toastMessages.length)],
+            price: suggestion.price,
+            image: suggestion.image,
+            actionText: '+ Sepete Ekle',
+            action: () => addToCart(suggestion)
           });
           foundSuggestion = true;
         }
@@ -308,8 +316,12 @@ export default function Home() {
     
     if (!foundSuggestion) {
       setToast({
-        message: 'Sepete Eklendi',
-        originalItem: item
+        type: 'success',
+        header: 'Sepete Eklendi',
+        title: item.title,
+        msg: 'Ürün başarıyla sepete eklendi.',
+        price: item.price,
+        image: item.image,
       });
     }
     setTimeout(() => setToast(null), 8000);
@@ -1526,39 +1538,50 @@ export default function Home() {
       )}
 
       {/* PREMIUM TOAST */}
-      <div className={`premium-toast ${toast ? 'show' : ''}`}>
+      <div className={`premium-toast ${toast ? 'show' : ''} ${toast?.type === 'error' ? 'error' : ''}`}>
         {toast && (
           <>
             <i className="fa-solid fa-xmark toast-close" onClick={() => setToast(null)}></i>
-            <div className="toast-header">
-              <i className="fa-solid fa-bell" style={{ animation: 'ring 2s infinite', color: 'var(--primary-color)' }}></i>
-              Bunu denemiş miydiniz?
-            </div>
-            
-            <div className="toast-body">
-              {toast.image ? (
-                <div className="toast-img">
-                  <Image src={toast.image} alt={toast.title} fill style={{ objectFit: 'cover' }} sizes="70px" />
-                </div>
-              ) : (
-                <div className="toast-img-placeholder"><i className="fa-solid fa-utensils"></i></div>
-              )}
-              
-              <div className="toast-content">
-                <div className="toast-item-title">{toast.title}</div>
-                <div className="toast-msg">"{toast.msg}"</div>
-                <div className="toast-footer">
-                  <span className="toast-price">{toast.price} ₺</span>
-                  <button className="btn-toast-add" onClick={(e) => {
-                    e.stopPropagation();
-                    addToCart(toast.originalItem);
-                    setToast(null);
-                  }}>
-                    + Ekle
-                  </button>
-                </div>
+            {toast.type === 'error' ? (
+              <div className="toast-content" style={{ padding: '20px 24px', color: '#ef4444', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 12 }}>
+                 <i className="fa-solid fa-circle-exclamation" style={{ fontSize: 24 }}></i>
+                 {toast.msg}
               </div>
-            </div>
+            ) : (
+              <>
+                <div className="toast-header">
+                  <i className={`fa-solid ${toast.type === 'cross-sell' ? 'fa-bell' : 'fa-check-circle'}`} style={{ animation: toast.type === 'cross-sell' ? 'ring 2s infinite' : 'none', color: 'var(--primary-color)' }}></i>
+                  {toast.header}
+                </div>
+                
+                <div className="toast-body">
+                  {toast.image ? (
+                    <div className="toast-img">
+                      <Image src={toast.image} alt={toast.title} fill style={{ objectFit: 'cover' }} sizes="70px" />
+                    </div>
+                  ) : (
+                    <div className="toast-img-placeholder"><i className="fa-solid fa-utensils"></i></div>
+                  )}
+                  
+                  <div className="toast-content">
+                    <div className="toast-item-title">{toast.title}</div>
+                    <div className="toast-msg">"{toast.msg}"</div>
+                    <div className="toast-footer">
+                      {toast.price && <span className="toast-price">{toast.price} ₺</span>}
+                      {toast.action && (
+                        <button className="btn-toast-add" onClick={(e) => {
+                          e.stopPropagation();
+                          toast.action();
+                          setToast(null);
+                        }}>
+                          {toast.actionText}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
@@ -1730,7 +1753,7 @@ export default function Home() {
                         <div style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-main)', marginBottom: '2px' }}>{recommendation.item.title}</div>
                         <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{recommendation.item.price} ₺</div>
                       </div>
-                      <button onClick={(e) => { e.stopPropagation(); addToCart(recommendation.item); setToast({message: 'Öneri sepete eklendi!', originalItem: recommendation.item}); }} style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary-color)', color: '#000', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                      <button onClick={(e) => { e.stopPropagation(); addToCart(recommendation.item); setToast({type: 'success', header: 'Sepete Eklendi', title: recommendation.item.title, msg: 'Öneri sepete eklendi!', image: recommendation.item.image}); }} style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary-color)', color: '#000', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
                         <i className="fa-solid fa-plus"></i>
                       </button>
                     </div>
