@@ -112,6 +112,7 @@ export default function AdminPage() {
   const prevOrderCountRef = useRef(0);
   const prevWaiterCountRef = useRef(0);
   const [adminToast, setAdminToast] = useState(null);
+  const [notifPermission, setNotifPermission] = useState('granted');
   const sharedAudioCtxRef = useRef(null);
 
   // ---- AUTH & INIT AUDIO ----
@@ -362,10 +363,25 @@ export default function AdminPage() {
 
   // Request notification permission
   useEffect(() => {
-    if (authed && 'Notification' in window && Notification.permission === 'default') {
-      Notification.requestPermission();
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      setNotifPermission(Notification.permission);
     }
   }, [authed]);
+
+  async function requestNotificationPermission() {
+    if ('Notification' in window) {
+      const perm = await Notification.requestPermission();
+      setNotifPermission(perm);
+      if (perm === 'granted') {
+        if (!sharedAudioCtxRef.current) {
+          sharedAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (sharedAudioCtxRef.current.state === 'suspended') {
+          sharedAudioCtxRef.current.resume();
+        }
+      }
+    }
+  }
 
   // ---- LOGOUT ----
   function handleLogout() {
@@ -376,6 +392,31 @@ export default function AdminPage() {
   // ---- LOADING / AUTH GATE ----
   if (loading) return <div style={{ background: colors.bg, height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ color: colors.gold, fontSize: 24, fontFamily: 'Outfit' }}>Yükleniyor...</div></div>;
   if (!authed) return null;
+
+  // ---- NOTIFICATION FORCE GATE ----
+  if (notifPermission !== 'granted' && typeof window !== 'undefined' && 'Notification' in window) {
+    return (
+      <div style={{ background: colors.bg, height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, textAlign: 'center', fontFamily: "'Outfit', sans-serif" }}>
+        <div className="admin-card" style={{ maxWidth: 450, width: '100%', padding: 40, animation: 'fadeIn 0.5s ease', background: colors.cardBg, border: `1px solid ${colors.border}`, borderRadius: 24 }}>
+          <i className="fa-solid fa-bell-slash" style={{ fontSize: 56, color: colors.danger, marginBottom: 24 }}></i>
+          <h2 style={{ color: colors.text, marginBottom: 16, fontSize: 24, fontWeight: 600 }}>Bildirim İzni Zorunlu</h2>
+          <p style={{ color: colors.textMuted, marginBottom: 32, lineHeight: 1.6, fontSize: 16 }}>
+            Yeni siparişleri ve garson taleplerini <strong>anında sesli</strong> olarak duyabilmeniz için tarayıcı bildirimlerine izin vermeniz gerekmektedir. Aksi takdirde siparişleri kaçırabilirsiniz.
+          </p>
+          {notifPermission === 'denied' ? (
+            <div style={{ padding: 20, background: 'rgba(239,68,68,0.1)', color: colors.danger, borderRadius: 16, fontSize: 15, textAlign: 'left', border: '1px solid rgba(239,68,68,0.2)' }}>
+              <strong style={{ display: 'block', marginBottom: 8 }}><i className="fa-solid fa-triangle-exclamation"></i> Erişim Reddedildi!</strong> 
+              Tarayıcınızın adres çubuğundaki <strong>kilit simgesine</strong> (veya sayfa ayarlarına) tıklayarak Bildirimleri <strong>"İzin Ver"</strong> olarak değiştirin ve sayfayı yenileyin.
+            </div>
+          ) : (
+            <button className="admin-btn admin-btn-gold" style={{ width: '100%', padding: '16px 24px', fontSize: 18 }} onClick={requestNotificationPermission}>
+              <i className="fa-solid fa-check"></i> Bildirimlere İzin Ver
+            </button>
+          )}
+        </div>
+      </div>
+    );
+  }
 
   const newOrders = orders.filter(o => o.status === 'received').length;
   const activeOrders = orders.filter(o => o.status === 'preparing' || o.status === 'courier' || o.status === 'onway').length;
