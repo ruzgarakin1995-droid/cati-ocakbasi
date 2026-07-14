@@ -1173,13 +1173,14 @@ function CustomizableOptionsEditor({ options, onChange }) {
 // ============================================================
 // ITEM FORM (shared for banner/featured/menu)
 // ============================================================
-function ItemForm({ item, onSave, onCancel, showBadge = true, showHighlight = false, allCategories = [] }) {
+function ItemForm({ item, onSave, onCancel, showBadge = true, showHighlight = false, allCategories = [], defaultCategoryId = null }) {
   const [form, setForm] = useState({
     title: item?.title || '', emoji: item?.emoji || '', description: item?.description || '',
     price: item?.price || '', image: item?.image || '', badge: item?.badge || '',
     isHighlight: item?.isHighlight || false, ingredients: item?.ingredients || [],
     customizableIngredients: item?.customizableIngredients || [],
-    crossSellItemId: item?.crossSellItemId || 'auto'
+    crossSellItemId: item?.crossSellItemId || 'auto',
+    categoryId: defaultCategoryId || ''
   });
   const [uploading, setUploading] = useState(false);
 
@@ -1251,6 +1252,16 @@ function ItemForm({ item, onSave, onCancel, showBadge = true, showHighlight = fa
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, paddingTop: 24 }}>
             <input type="checkbox" className="admin-checkbox" checked={form.isHighlight} onChange={e => setForm({ ...form, isHighlight: e.target.checked })} />
             <label style={{ fontSize: 14, color: colors.textMuted }}>Öne Çıkar (isHighlight)</label>
+          </div>
+        )}
+        {allCategories && allCategories.length > 0 && defaultCategoryId && (
+          <div>
+            <label className="admin-label">Kategori *</label>
+            <select className="admin-select" value={form.categoryId} onChange={e => setForm({ ...form, categoryId: e.target.value })}>
+              {allCategories.map(cat => (
+                <option key={cat.id} value={cat.id}>{cat.title}</option>
+              ))}
+            </select>
           </div>
         )}
         {allCategories && allCategories.length > 0 && (
@@ -1517,6 +1528,9 @@ function MenuTab({ categories, reload }) {
   const [selectedCat, setSelectedCat] = useState(categories[0]?.id || '');
   const [editing, setEditing] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [isAddingCat, setIsAddingCat] = useState(false);
+  const [newCatTitle, setNewCatTitle] = useState('');
+  const [newCatEmoji, setNewCatEmoji] = useState('');
 
   useEffect(() => {
     if (categories.length > 0 && !categories.find(c => c.id === selectedCat)) {
@@ -1528,18 +1542,54 @@ function MenuTab({ categories, reload }) {
   const items = category?.items || [];
 
   async function handleSave(formData) {
+    const targetCatId = formData.categoryId || selectedCat;
     try {
-      const updatedCats = categories.map(c => {
-        if (c.id !== selectedCat) return c;
-        if (editing === 'new') {
-          return { ...c, items: [...c.items, { id: generateId('item'), ...formData }] };
-        }
-        return { ...c, items: c.items.map(it => it.id === editing.id ? { ...it, ...formData } : it) };
-      });
+      let updatedCats = categories.map(c => ({ ...c, items: [...c.items] }));
+      
+      if (editing === 'new') {
+         updatedCats = updatedCats.map(c => {
+           if (c.id === targetCatId) return { ...c, items: [...c.items, { id: generateId('item'), ...formData }] };
+           return c;
+         });
+      } else {
+         const originalCatId = selectedCat;
+         if (originalCatId !== targetCatId) {
+            updatedCats = updatedCats.map(c => {
+               if (c.id === originalCatId) return { ...c, items: c.items.filter(it => it.id !== editing.id) };
+               if (c.id === targetCatId) return { ...c, items: [...c.items, { ...editing, ...formData }] };
+               return c;
+            });
+         } else {
+            updatedCats = updatedCats.map(c => {
+               if (c.id === originalCatId) return { ...c, items: c.items.map(it => it.id === editing.id ? { ...it, ...formData } : it) };
+               return c;
+            });
+         }
+      }
+      setSelectedCat(targetCatId);
       await apiFetch('/api/menu', { method: 'PUT', body: JSON.stringify(updatedCats) });
       setEditing(null);
       reload();
     } catch (e) { alert('Hata: ' + e.message); }
+  }
+
+  async function handleAddCategory() {
+    if (!newCatTitle) return alert("Kategori adı zorunludur.");
+    const newCat = {
+      id: generateId('cat'),
+      title: newCatTitle,
+      emoji: newCatEmoji || '🍽️',
+      items: []
+    };
+    try {
+      const updatedCats = [...categories, newCat];
+      await apiFetch('/api/menu', { method: 'PUT', body: JSON.stringify(updatedCats) });
+      setNewCatTitle('');
+      setNewCatEmoji('');
+      setIsAddingCat(false);
+      setSelectedCat(newCat.id);
+      reload();
+    } catch(e) { alert('Hata: ' + e.message); }
   }
 
   async function handleDelete(itemId) {
@@ -1571,17 +1621,29 @@ function MenuTab({ categories, reload }) {
       <div style={{ display: 'flex', gap: 16, alignItems: 'center', marginBottom: 20, flexWrap: 'wrap' }}>
         <div style={{ flex: 1, minWidth: 200 }}>
           <label className="admin-label">Kategori Seçin</label>
-          <select className="admin-select" value={selectedCat} onChange={e => { setSelectedCat(e.target.value); setEditing(null); }}>
-            {categories.map(c => <option key={c.id} value={c.id}>{c.title} ({c.items?.length || 0} ürün)</option>)}
-          </select>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <select className="admin-select" value={selectedCat} onChange={e => { setSelectedCat(e.target.value); setEditing(null); }}>
+              {categories.map(c => <option key={c.id} value={c.id}>{c.title} ({c.items?.length || 0} ürün)</option>)}
+            </select>
+            <button className="admin-btn admin-btn-ghost" onClick={() => setIsAddingCat(true)} title="Yeni Kategori Ekle"><i className="fa-solid fa-folder-plus"></i></button>
+          </div>
         </div>
         <button className="admin-btn admin-btn-gold" onClick={() => setEditing('new')} style={{ marginTop: 20 }}>
           <i className="fa-solid fa-plus"></i> Yeni Ürün
         </button>
       </div>
 
+      {isAddingCat && (
+        <div className="admin-card" style={{ padding: 16, marginBottom: 20, display: 'flex', gap: 12, alignItems: 'center', animation: 'fadeIn 0.3s ease', flexWrap: 'wrap' }}>
+           <input className="admin-input" placeholder="Kategori Adı (Örn: İçecekler)" value={newCatTitle} onChange={e => setNewCatTitle(e.target.value)} style={{ flex: 1, minWidth: 200 }} />
+           <input className="admin-input" placeholder="Emoji (Örn: 🥤)" value={newCatEmoji} onChange={e => setNewCatEmoji(e.target.value)} style={{ width: 140 }} />
+           <button className="admin-btn admin-btn-gold" onClick={handleAddCategory}>Kaydet</button>
+           <button className="admin-btn admin-btn-ghost" onClick={() => setIsAddingCat(false)}>İptal</button>
+        </div>
+      )}
+
       {editing && (
-        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={true} allCategories={categories} />
+        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={true} allCategories={categories} defaultCategoryId={selectedCat} />
       )}
 
       <div style={{ display: 'grid', gap: 12 }}>
