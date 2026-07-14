@@ -222,6 +222,7 @@ export default function AdminPage() {
         if (prevWaiterCountRef.current !== undefined && pendingWaiters.length > prevWaiterCountRef.current) {
           // New waiter request
           playWaiterAlarm();
+          sendWaiterNotification(waiterData.find(w => w.status === 'pending'));
         }
         prevWaiterCountRef.current = pendingWaiters.length;
         setWaiterRequests(waiterData);
@@ -238,15 +239,32 @@ export default function AdminPage() {
 
   // ---- PENDING ALARM (Every 2 mins) ----
   const pendingOrdersRef = useRef(0);
+  const pendingWaitersRef = useRef(0);
+
   useEffect(() => {
     pendingOrdersRef.current = orders.filter(o => o.status === 'received').length;
   }, [orders]);
+
+  useEffect(() => {
+    pendingWaitersRef.current = waiterRequests.filter(w => w.status === 'pending').length;
+  }, [waiterRequests]);
 
   useEffect(() => {
     if (!authed) return;
     const interval = setInterval(() => {
       if (pendingOrdersRef.current > 0) {
         playAlarm();
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification('⚠️ Bekleyen Siparişler Var!', { body: `Onayınızı bekleyen ${pendingOrdersRef.current} adet sipariş var.`, icon: '/cati-logo.png' });
+        }
+      }
+      if (pendingWaitersRef.current > 0) {
+        setTimeout(() => {
+          playWaiterAlarm();
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('🛎️ Bekleyen Garson Talebi!', { body: `Bekleyen ${pendingWaitersRef.current} garson talebi var!`, icon: '/cati-logo.png' });
+          }
+        }, pendingOrdersRef.current > 0 ? 2000 : 0);
       }
     }, 120000); // 2 minutes
     return () => clearInterval(interval);
@@ -295,7 +313,14 @@ export default function AdminPage() {
 
   function sendNotification(order) {
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('🔔 Yeni Sipariş!', { body: `Sipariş #${order.id?.slice(-6) || ''} - ${formatPrice(order.totalAmount || 0)}`, icon: '/images/logo.png' });
+      new Notification('🔔 Yeni Sipariş!', { body: `Sipariş #${order.id?.slice(-6) || ''} - ${formatPrice(order.totalAmount || 0)}`, icon: '/cati-logo.png' });
+    }
+  }
+
+  function sendWaiterNotification(request) {
+    if (!request) return;
+    if ('Notification' in window && Notification.permission === 'granted') {
+      new Notification('🛎️ Yeni Garson Talebi!', { body: `Masa numarası: ${request.tableNo}`, icon: '/cati-logo.png' });
     }
   }
 
