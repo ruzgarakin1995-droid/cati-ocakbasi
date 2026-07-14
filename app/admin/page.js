@@ -2338,3 +2338,77 @@ function DesignTab({ settings, reload }) {
     </div>
   );
 }
+
+function WaitersTab({ requests, reload }) {
+  const handleComplete = async (id) => {
+    try {
+      const res = await fetch(`/api/waiter/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'completed' })
+      });
+      if (res.ok) {
+        reload();
+      } else {
+        alert('Hata oluştu.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Hata oluştu.');
+    }
+  };
+
+  const handleCancel = async (id) => {
+    if (!confirm('İptal etmek istediğinize emin misiniz?')) return;
+    try {
+      const res = await fetch(`/api/waiter/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: 'cancelled' })
+      });
+      if (res.ok) {
+        reload();
+      } else {
+        alert('Hata oluştu.');
+      }
+    } catch (e) {
+      console.error(e);
+      alert('Hata oluştu.');
+    }
+  };
+
+  if (!requests || requests.length === 0) {
+    return (
+      <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-alpha-05)', borderRadius: 20, border: '1px solid var(--glass-border)' }}>
+        <i className="fa-solid fa-bell-concierge" style={{ fontSize: 48, color: 'var(--text-muted)', marginBottom: 16 }}></i>
+        <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>Şu an bekleyen garson talebi bulunmuyor.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ display: 'grid', gap: '16px' }}>
+      {requests.map(req => (
+        <div key={req._id} style={{ background: 'var(--surface-color)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <div style={{ background: 'rgba(243, 156, 18, 0.1)', color: '#f39c12', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: '800', border: '1px solid rgba(243, 156, 18, 0.3)' }}>
+              {req.tableNo}
+            </div>
+            <div>
+              <h4 style={{ margin: '0 0 8px 0', fontSize: '18px', color: 'var(--text-main)', fontWeight: '700' }}>Masa {req.tableNo}</h4>
+              <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}><i className="fa-regular fa-clock" style={{ marginRight: '6px' }}></i>{new Date(req.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}</p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '12px' }}>
+            <button onClick={() => handleComplete(req._id)} style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.1)'}>
+              <i className="fa-solid fa-check" style={{ marginRight: '8px' }}></i> Tamamlandı
+            </button>
+            <button onClick={() => handleCancel(req._id)} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}>
+              İptal
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
