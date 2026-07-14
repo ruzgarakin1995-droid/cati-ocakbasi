@@ -1524,6 +1524,17 @@ function MenuTab({ categories, reload }) {
     } catch (e) { alert('Hata: ' + e.message); }
   }
 
+  async function handleToggleVisibility(itemId, newIsHidden) {
+    try {
+      const updatedCats = categories.map(c => {
+        if (c.id !== selectedCat) return c;
+        return { ...c, items: c.items.map(it => it.id === itemId ? { ...it, isHidden: newIsHidden } : it) };
+      });
+      await apiFetch('/api/menu', { method: 'PUT', body: JSON.stringify(updatedCats) });
+      reload();
+    } catch (e) { alert('Hata: ' + e.message); }
+  }
+
   return (
     <div>
       {/* Category selector */}
@@ -1545,7 +1556,14 @@ function MenuTab({ categories, reload }) {
 
       <div style={{ display: 'grid', gap: 12 }}>
         {items.map((item, i) => (
-          <div key={item.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.04}s both`, flexWrap: 'wrap' }}>
+          <div key={item.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.04}s both`, flexWrap: 'wrap', opacity: item.isHidden ? 0.5 : 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={item.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
+                <input type="checkbox" checked={!item.isHidden} onChange={(e) => handleToggleVisibility(item.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
+                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: item.isHidden ? 'var(--glass-border)' : '#f39c12', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
+                <span style={{ position: 'absolute', height: 18, width: 18, left: item.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
+              </label>
+            </div>
             {item.image && <img src={item.image} alt={item.title} style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 10, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 180 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>

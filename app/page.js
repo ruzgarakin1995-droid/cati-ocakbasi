@@ -114,7 +114,7 @@ export default function Home() {
 
         if (validCats.length > 0) {
           const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
-          const validItems = randomCat.items.filter(i => i && i.title && i.price);
+          const validItems = randomCat.items.filter(i => i && i.title && i.price && !i.isHidden);
           const suggestion = validItems[Math.floor(Math.random() * validItems.length)];
           const phrases = [
             "Bunun yanında şu da çok iyi gider;",
@@ -177,7 +177,7 @@ export default function Home() {
     // trackingOrder varsa bildirimleri durdur
     if (!data.categories || data.categories.length === 0 || trackingOrder) return;
     const interval = setInterval(() => {
-      const allItems = [...(data.banners || []), ...(data.categories.flatMap(c => c.items))].filter(i => i && i.title);
+      const allItems = [...(data.banners || []), ...(data.categories.flatMap(c => c.items))].filter(i => i && i.title && !i.isHidden);
       if (allItems.length > 0) {
         const randomItem = allItems[Math.floor(Math.random() * allItems.length)];
         const randomMsg = toastMessages[Math.floor(Math.random() * toastMessages.length)];
@@ -291,7 +291,7 @@ export default function Home() {
         const validCats = otherCats.filter(c => c.items && c.items.some(i => i && i.title && i.price));
         if (validCats.length > 0) {
           const randomCat = validCats[Math.floor(Math.random() * validCats.length)];
-          const validItems = randomCat.items.filter(i => i && i.title && i.price);
+          const validItems = randomCat.items.filter(i => i && i.title && i.price && !i.isHidden);
           const suggestion = validItems[Math.floor(Math.random() * validItems.length)];
           setToast({
             message: 'Sepete Eklendi',
@@ -768,13 +768,14 @@ export default function Home() {
 
         {/* MENU CATEGORIES */}
         {data.categories.map(cat => {
-          const filteredItems = cat.items.filter(item => 
-            !searchQuery || 
-            item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()))
-          );
+          const filteredItems = cat.items.filter(item => {
+            if (item.isHidden) return false;
+            return !searchQuery || 
+              item.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+              (item.description && item.description.toLowerCase().includes(searchQuery.toLowerCase()));
+          });
           
-          if (searchQuery && filteredItems.length === 0) return null;
+          if (filteredItems.length === 0) return null;
 
           return (
           <section key={cat.id} id={cat.id} className="menu-section">
