@@ -36,6 +36,9 @@ export default function Home() {
   const [recommendation, setRecommendation] = useState(null);
 
   // Waiter states
+  const [isWaiterOpen, setIsWaiterOpen] = useState(false);
+  const [waiterTableNo, setWaiterTableNo] = useState('');
+  const [waiterLoading, setWaiterLoading] = useState(false);
   const [showWaiterSuccess, setShowWaiterSuccess] = useState(false);
 
   const handleCallWaiter = async () => {
