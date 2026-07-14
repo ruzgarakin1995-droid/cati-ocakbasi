@@ -1603,7 +1603,7 @@ export default function Home() {
                   readOnly
                   style={{ width: '100%', background: 'var(--bg-alpha-10)', border: '2px solid', borderColor: waiterTableNo ? 'var(--primary-color)' : 'var(--glass-border)', color: 'var(--text-main)', padding: '20px', borderRadius: '20px', fontSize: '32px', fontWeight: '800', outline: 'none', transition: 'all 0.3s ease', textAlign: 'center', letterSpacing: '4px', boxShadow: waiterTableNo ? '0 0 20px rgba(243, 156, 18, 0.15) inset' : 'none' }}
                 />
-                {!waiterTableNo && <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none', color: 'var(--text-muted)', opacity: 0.5, fontSize: '16px', letterSpacing: 'normal', fontWeight: '500' }}>Aşağıdan tuşlayın 👇</div>}
+                {!waiterTableNo && <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none', color: 'var(--text-muted)', opacity: 0.5, fontSize: '15px', letterSpacing: 'normal', fontWeight: '500', width: '100%', textAlign: 'center' }}>Masa Numaranızı Tuşlayınız 👇</div>}
               </div>
             </div>
 
@@ -1622,7 +1622,8 @@ export default function Home() {
               style={{ 
                 width: '100%', 
                 background: waiterTableNo ? 'linear-gradient(135deg, var(--primary-color), #f39c12)' : 'var(--bg-alpha-10)', 
-                color: waiterTableNo ? '#000' : 'var(--text-muted)', 
+                color: waiterTableNo ? '#fff' : 'var(--text-muted)', 
+                textShadow: waiterTableNo ? '0 1px 3px rgba(0,0,0,0.5)' : 'none',
                 border: 'none', 
                 padding: '20px', 
                 borderRadius: '20px', 
