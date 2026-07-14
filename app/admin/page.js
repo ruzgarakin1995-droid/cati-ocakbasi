@@ -1585,13 +1585,6 @@ function FeaturedTab({ featured, reload }) {
       <div style={{ display: 'grid', gap: 16 }}>
         {featured.map((f, i) => (
           <div key={f.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.05}s both`, flexWrap: 'wrap', opacity: f.isHidden ? 0.5 : 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={f.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
-                <input type="checkbox" checked={!f.isHidden} onChange={(e) => handleToggleVisibility(f.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
-                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: f.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
-                <span style={{ position: 'absolute', height: 18, width: 18, left: f.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
-              </label>
-            </div>
             {f.image && <img src={f.image} alt={f.title} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 12, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
@@ -1601,20 +1594,29 @@ function FeaturedTab({ featured, reload }) {
               <p style={{ margin: 0, fontSize: 13, color: colors.textMuted, lineHeight: 1.4 }}>{f.description?.slice(0, 100)}...</p>
               <div style={{ fontSize: 14, fontWeight: 700, color: colors.gold, marginTop: 4 }}>{formatPrice(f.price)}</div>
             </div>
-            <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-              <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(f)}>
-                <i className="fa-solid fa-pen"></i> Düzenle
-              </button>
-              {deleting === f.id ? (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => handleDelete(f.id)}>Evet</button>
-                  <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(null)}>Hayır</button>
-                </div>
-              ) : (
-                <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(f.id)} style={{ color: colors.danger }}>
-                  <i className="fa-solid fa-trash"></i>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexShrink: 0, width: '100%', justifyContent: 'space-between', borderTop: `1px solid ${colors.border}`, paddingTop: 12, marginTop: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={f.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
+                  <input type="checkbox" checked={!f.isHidden} onChange={(e) => handleToggleVisibility(f.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
+                  <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: f.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
+                  <span style={{ position: 'absolute', height: 18, width: 18, left: f.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
+                </label>
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(f)}>
+                  <i className="fa-solid fa-pen"></i> Düzenle
                 </button>
-              )}
+                {deleting === f.id ? (
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => handleDelete(f.id)}>Evet</button>
+                    <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(null)}>Hayır</button>
+                  </div>
+                ) : (
+                  <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(f.id)} style={{ color: colors.danger }}>
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
@@ -1751,13 +1753,6 @@ function MenuTab({ categories, reload }) {
       <div style={{ display: 'grid', gap: 12 }}>
         {items.map((item, i) => (
           <div key={item.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.04}s both`, flexWrap: 'wrap', opacity: item.isHidden ? 0.5 : 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={item.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
-                <input type="checkbox" checked={!item.isHidden} onChange={(e) => handleToggleVisibility(item.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
-                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: item.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
-                <span style={{ position: 'absolute', height: 18, width: 18, left: item.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
-              </label>
-            </div>
             {item.image && <img src={item.image} alt={item.title} style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 10, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 180 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
@@ -1769,20 +1764,29 @@ function MenuTab({ categories, reload }) {
               <p style={{ margin: 0, fontSize: 12, color: colors.textMuted }}>{item.description?.slice(0, 80)}...</p>
               <span style={{ fontSize: 14, fontWeight: 700, color: colors.gold }}>{formatPrice(item.price)}</span>
             </div>
-            <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-              <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(item)}>
-                <i className="fa-solid fa-pen"></i>
-              </button>
-              {deleting === item.id ? (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => handleDelete(item.id)}>Sil</button>
-                  <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(null)}>×</button>
-                </div>
-              ) : (
-                <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(item.id)} style={{ color: colors.danger }}>
-                  <i className="fa-solid fa-trash"></i>
+            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexShrink: 0, width: '100%', justifyContent: 'space-between', borderTop: `1px solid ${colors.border}`, paddingTop: 12, marginTop: 4 }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={item.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
+                  <input type="checkbox" checked={!item.isHidden} onChange={(e) => handleToggleVisibility(item.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
+                  <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: item.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
+                  <span style={{ position: 'absolute', height: 18, width: 18, left: item.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
+                </label>
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(item)}>
+                  <i className="fa-solid fa-pen"></i>
                 </button>
-              )}
+                {deleting === item.id ? (
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => handleDelete(item.id)}>Sil</button>
+                    <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(null)}>×</button>
+                  </div>
+                ) : (
+                  <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(item.id)} style={{ color: colors.danger }}>
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
