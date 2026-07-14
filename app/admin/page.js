@@ -2375,6 +2375,7 @@ function WaitersTab({ requests, reload }) {
       });
       if (res.ok) {
         reload();
+        alert('Garson talebi başarıyla tamamlandı.');
       } else {
         if (res.status === 404) {
           // Sistem resetlenmiş olabilir, sayfayı yenile
@@ -2403,6 +2404,7 @@ function WaitersTab({ requests, reload }) {
       });
       if (res.ok) {
         reload();
+        alert('Garson talebi iptal edildi.');
       } else {
         if (res.status === 404) {
           reload();
