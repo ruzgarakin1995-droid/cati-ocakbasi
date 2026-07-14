@@ -2773,7 +2773,9 @@ function WaitersTab({ requests, reload }) {
     }
   };
 
-  if (!requests || requests.length === 0) {
+  const pendingRequests = requests.filter(r => r.status === 'pending');
+
+  if (!pendingRequests || pendingRequests.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-alpha-05)', borderRadius: 20, border: '1px solid var(--glass-border)' }}>
         <i className="fa-solid fa-bell-concierge" style={{ fontSize: 48, color: 'var(--text-muted)', marginBottom: 16 }}></i>
@@ -2784,7 +2786,7 @@ function WaitersTab({ requests, reload }) {
 
   return (
     <div style={{ display: 'grid', gap: '16px' }}>
-      {requests.map(req => (
+      {pendingRequests.map(req => (
         <div key={req.id || req._id} style={{ background: 'var(--surface-color)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <div style={{ background: 'rgba(243, 156, 18, 0.1)', color: '#f39c12', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: '800', border: '1px solid rgba(243, 156, 18, 0.3)' }}>
