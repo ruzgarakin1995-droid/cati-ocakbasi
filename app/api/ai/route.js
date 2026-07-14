@@ -16,7 +16,7 @@ export async function POST(request) {
 
     const headerApiKey = request.headers.get('x-ai-api-key');
     const settings = await getSettings();
-    const apiKey = headerApiKey || settings?.aiApiKey || process.env.AI_API_KEY;
+    const apiKey = headerApiKey || settings?.ai?.geminiApiKey || process.env.AI_API_KEY;
     if (!apiKey) {
       return NextResponse.json({ error: 'API Anahtarı bulunamadı. Lütfen Ayarlar sekmesinden Gemini API anahtarınızı girin.' }, { status: 400 });
     }

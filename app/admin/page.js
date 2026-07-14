@@ -2045,7 +2045,7 @@ function AIChatAssistant({ reloadAll }) {
     setLoading(true);
 
     try {
-      const localApiKey = localStorage.getItem('aiApiKey');
+      const localApiKey = localStorage.getItem('geminiApiKey');
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 
@@ -2164,8 +2164,8 @@ function SettingsTab({ settings, reload }) {
 
   useEffect(() => {
     if (settings) {
-      const localKey = localStorage.getItem('aiApiKey');
-      setForm({ ...settings, aiApiKey: settings.aiApiKey || localKey || '' });
+      const localKey = localStorage.getItem('geminiApiKey');
+      setForm({ ...settings, ai: { ...settings.ai, geminiApiKey: settings.ai?.geminiApiKey || localKey || '' } });
     }
   }, [settings]);
 
@@ -2173,10 +2173,10 @@ function SettingsTab({ settings, reload }) {
     setSaving(true);
     try {
       await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify(form) });
-      if (form.aiApiKey) {
-        localStorage.setItem('aiApiKey', form.aiApiKey);
+      if (form.ai?.geminiApiKey) {
+        localStorage.setItem('geminiApiKey', form.ai.geminiApiKey);
       } else {
-        localStorage.removeItem('aiApiKey');
+        localStorage.removeItem('geminiApiKey');
       }
       reload();
       alert('Ayarlar başarıyla kaydedildi!');
@@ -2242,12 +2242,6 @@ function SettingsTab({ settings, reload }) {
 
         {/* Links */}
         <div>
-          <h3 style={{ fontSize: 16, color: colors.gold, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Yapay Zeka (AI) Entegrasyonu</h3>
-          <label style={{ display: 'block', marginBottom: 24 }}>
-            <div style={{ marginBottom: 6, fontSize: 13, color: colors.textMuted }}>Google Gemini API Key</div>
-            <input type="password" className="admin-input" value={form.aiApiKey || ''} onChange={e => setForm({...form, aiApiKey: e.target.value})} placeholder="AIzaSy..." />
-          </label>
-
           <h3 style={{ fontSize: 16, color: colors.gold, marginBottom: 16, borderBottom: '1px solid ' + colors.border, paddingBottom: 8 }}>Dış Platform Linkleri</h3>
           
           <label style={{ display: 'block', marginBottom: 16 }}>
