@@ -36,9 +36,7 @@ export default function Home() {
   const [recommendation, setRecommendation] = useState(null);
 
   // Waiter states
-  const [isWaiterOpen, setIsWaiterOpen] = useState(false);
-  const [waiterTableNo, setWaiterTableNo] = useState('');
-  const [waiterLoading, setWaiterLoading] = useState(false);
+  const [showWaiterSuccess, setShowWaiterSuccess] = useState(false);
 
   const handleCallWaiter = async () => {
     if (!waiterTableNo.trim()) {
@@ -55,7 +53,8 @@ export default function Home() {
       if (res.ok) {
         setIsWaiterOpen(false);
         setWaiterTableNo('');
-        setToast({ message: 'Garson talebiniz alındı, hemen geliyoruz!', type: 'success' });
+        setShowWaiterSuccess(true);
+        setTimeout(() => setShowWaiterSuccess(false), 3500);
       } else {
         setToast({ message: 'Talep oluşturulamadı. Lütfen tekrar deneyin.', type: 'error' });
       }
@@ -1574,46 +1573,81 @@ export default function Home() {
         </button>
       </div>
 
-      {/* WAITER MODAL */}
+      {/* WAITER MODAL - PREMIUM */}
       <div className={`checkout-overlay ${isWaiterOpen ? 'active' : ''}`} onClick={(e) => { if(e.target.className.includes('checkout-overlay')) setIsWaiterOpen(false); }}>
-        <div className={`checkout-sheet ${isWaiterOpen ? 'open' : ''}`} style={{ background: 'var(--surface-color)', height: 'auto', maxHeight: '90vh', minHeight: '30vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column', padding: '24px' }}>
+        <div className={`checkout-sheet ${isWaiterOpen ? 'open' : ''}`} style={{ background: 'var(--surface-color)', height: 'auto', maxHeight: '95vh', minHeight: '30vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column', padding: '32px 24px', boxShadow: '0 -20px 40px rgba(0,0,0,0.5)', borderTop: '1px solid var(--glass-border)', backgroundImage: 'linear-gradient(to bottom, rgba(255,255,255,0.05), transparent)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-            <h2 style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-main)' }}><i className="fa-solid fa-bell-concierge" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Garson Çağır</h2>
-            <button onClick={() => setIsWaiterOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '24px', cursor: 'pointer' }}>&times;</button>
+            <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: 'linear-gradient(135deg, var(--primary-color), #f39c12)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', boxShadow: '0 4px 15px rgba(243, 156, 18, 0.4)' }}>
+                <i className="fa-solid fa-bell-concierge" style={{ fontSize: '20px' }}></i>
+              </div>
+              Garson Çağır
+            </h2>
+            <button onClick={() => setIsWaiterOpen(false)} style={{ background: 'var(--bg-alpha-10)', border: 'none', color: 'var(--text-muted)', fontSize: '24px', cursor: 'pointer', width: '40px', height: '40px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.3s' }}>&times;</button>
           </div>
           
-          <div style={{ flex: 1 }}>
-            <p style={{ color: 'var(--text-muted)', marginBottom: '16px', fontSize: '14px' }}>Lütfen oturduğunuz masa numarasını girin, garsonumuz hemen ilgilenecektir.</p>
-            <div style={{ marginBottom: '24px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Masa Numarası *</label>
-              <input 
-                type="text" 
-                value={waiterTableNo} 
-                onChange={(e) => setWaiterTableNo(e.target.value)}
-                placeholder="Numaratörden tuşlayın..." 
-                readOnly
-                style={{ width: '100%', background: 'var(--bg-alpha-05)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', padding: '16px', borderRadius: '12px', fontSize: '20px', fontWeight: '700', outline: 'none', transition: 'border 0.3s', textAlign: 'center', letterSpacing: '2px' }}
-              />
+          <div style={{ flex: 1, animation: isWaiterOpen ? 'fadeInUp 0.5s ease forwards' : 'none' }}>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '24px', fontSize: '15px', lineHeight: '1.5' }}>İsteğiniz veya siparişiniz için masanıza hemen bir arkadaşımızı yönlendiriyoruz. Lütfen masa numaranızı tuşlayın.</p>
+            
+            <div style={{ marginBottom: '24px', position: 'relative' }}>
+              <label style={{ display: 'block', marginBottom: '12px', fontSize: '12px', color: 'var(--primary-color)', textTransform: 'uppercase', letterSpacing: '2px', fontWeight: '700' }}>Masa Numaranız</label>
+              <div style={{ position: 'relative' }}>
+                <input 
+                  type="text" 
+                  value={waiterTableNo} 
+                  onChange={(e) => setWaiterTableNo(e.target.value)}
+                  placeholder="?" 
+                  readOnly
+                  style={{ width: '100%', background: 'var(--bg-alpha-10)', border: '2px solid', borderColor: waiterTableNo ? 'var(--primary-color)' : 'var(--glass-border)', color: 'var(--text-main)', padding: '20px', borderRadius: '20px', fontSize: '32px', fontWeight: '800', outline: 'none', transition: 'all 0.3s ease', textAlign: 'center', letterSpacing: '4px', boxShadow: waiterTableNo ? '0 0 20px rgba(243, 156, 18, 0.15) inset' : 'none' }}
+                />
+                {!waiterTableNo && <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', pointerEvents: 'none', color: 'var(--text-muted)', opacity: 0.5, fontSize: '16px', letterSpacing: 'normal', fontWeight: '500' }}>Aşağıdan tuşlayın 👇</div>}
+              </div>
             </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '32px' }}>
               {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
-                <button key={num} onClick={() => setWaiterTableNo(prev => prev + num)} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '24px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}>{num}</button>
+                <button key={num} onClick={() => setWaiterTableNo(prev => prev + num)} style={{ background: 'var(--bg-alpha-05)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '28px', fontWeight: '700', padding: '16px', borderRadius: '16px', cursor: 'pointer', transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }} onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'} onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>{num}</button>
               ))}
-              <button onClick={() => setWaiterTableNo('')} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: '#ef4444', fontSize: '20px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}>C</button>
-              <button onClick={() => setWaiterTableNo(prev => prev + '0')} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '24px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}>0</button>
-              <button onClick={() => setWaiterTableNo(prev => prev.slice(0, -1))} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '20px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}><i className="fa-solid fa-delete-left"></i></button>
+              <button onClick={() => setWaiterTableNo('')} style={{ background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', color: '#ef4444', fontSize: '24px', fontWeight: '700', padding: '16px', borderRadius: '16px', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }} onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'} onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>C</button>
+              <button onClick={() => setWaiterTableNo(prev => prev + '0')} style={{ background: 'var(--bg-alpha-05)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '28px', fontWeight: '700', padding: '16px', borderRadius: '16px', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }} onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'} onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>0</button>
+              <button onClick={() => setWaiterTableNo(prev => prev.slice(0, -1))} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '24px', fontWeight: '700', padding: '16px', borderRadius: '16px', cursor: 'pointer', transition: 'all 0.2s', boxShadow: '0 4px 6px rgba(0,0,0,0.1)' }} onMouseDown={e => e.currentTarget.style.transform = 'scale(0.95)'} onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}><i className="fa-solid fa-delete-left"></i></button>
             </div>
             
             <button 
               onClick={handleCallWaiter}
-              disabled={waiterLoading}
-              style={{ width: '100%', background: 'var(--primary-color)', color: '#000', border: 'none', padding: '16px', borderRadius: '16px', fontSize: '16px', fontWeight: '700', cursor: waiterLoading ? 'not-allowed' : 'pointer', transition: 'transform 0.2s', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+              disabled={waiterLoading || !waiterTableNo}
+              style={{ 
+                width: '100%', 
+                background: waiterTableNo ? 'linear-gradient(135deg, var(--primary-color), #f39c12)' : 'var(--bg-alpha-10)', 
+                color: waiterTableNo ? '#000' : 'var(--text-muted)', 
+                border: 'none', 
+                padding: '20px', 
+                borderRadius: '20px', 
+                fontSize: '18px', 
+                fontWeight: '800', 
+                cursor: waiterLoading || !waiterTableNo ? 'not-allowed' : 'pointer', 
+                transition: 'all 0.3s', 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                gap: '12px',
+                boxShadow: waiterTableNo ? '0 10px 20px rgba(243, 156, 18, 0.3)' : 'none',
+                transform: waiterLoading ? 'scale(0.98)' : 'scale(1)'
+              }}
             >
-              {waiterLoading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-bell"></i>}
-              {waiterLoading ? 'Çağrılıyor...' : 'Garson Çağır'}
+              {waiterLoading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-paper-plane" style={{ animation: waiterTableNo && !waiterLoading ? 'bounce 2s infinite' : 'none' }}></i>}
+              {waiterLoading ? 'Çağrılıyor...' : 'Garsonu Çağır'}
             </button>
           </div>
+        </div>
+      </div>
+
+      {/* FUN WAITER SUCCESS POPUP */}
+      <div className={`checkout-overlay ${showWaiterSuccess ? 'active' : ''}`} style={{ zIndex: 10005, alignItems: 'center' }}>
+        <div style={{ background: 'var(--surface-color)', padding: '40px 32px', borderRadius: '32px', textAlign: 'center', maxWidth: '320px', width: '90%', border: '2px solid var(--primary-color)', boxShadow: '0 20px 50px rgba(0,0,0,0.8), 0 0 40px rgba(243,156,18,0.3) inset', transform: showWaiterSuccess ? 'scale(1) translateY(0)' : 'scale(0.8) translateY(20px)', opacity: showWaiterSuccess ? 1 : 0, transition: 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
+          <div style={{ fontSize: '72px', marginBottom: '20px', animation: 'bounce 2s infinite' }}>🏃‍♂️💨</div>
+          <h2 style={{ fontSize: '24px', fontWeight: '800', color: 'var(--primary-color)', marginBottom: '12px' }}>Hemen Geliyoruz!</h2>
+          <p style={{ color: 'var(--text-main)', fontSize: '15px', lineHeight: '1.6' }}>Garson arkadaşımız depara kalktı, masanıza doğru uçuyor! Lütfen kemerlerinizi bağlayın 🍽️✨</p>
         </div>
       </div>
 
