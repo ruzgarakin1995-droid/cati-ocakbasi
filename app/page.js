@@ -35,6 +35,37 @@ export default function Home() {
   const [detailQuantity, setDetailQuantity] = useState(1);
   const [recommendation, setRecommendation] = useState(null);
 
+  // Waiter states
+  const [isWaiterOpen, setIsWaiterOpen] = useState(false);
+  const [waiterTableNo, setWaiterTableNo] = useState('');
+  const [waiterLoading, setWaiterLoading] = useState(false);
+
+  const handleCallWaiter = async () => {
+    if (!waiterTableNo.trim()) {
+      setToast({ message: 'Lütfen masa numaranızı girin.', type: 'error' });
+      return;
+    }
+    setWaiterLoading(true);
+    try {
+      const res = await fetch('/api/waiter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tableNo: waiterTableNo })
+      });
+      if (res.ok) {
+        setIsWaiterOpen(false);
+        setWaiterTableNo('');
+        setToast({ message: 'Garson talebiniz alındı, hemen geliyoruz!', type: 'success' });
+      } else {
+        setToast({ message: 'Talep oluşturulamadı. Lütfen tekrar deneyin.', type: 'error' });
+      }
+    } catch (e) {
+      setToast({ message: 'Bağlantı hatası.', type: 'error' });
+    } finally {
+      setWaiterLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (isDetailOpen && selectedItem) {
       if (data.categories && data.categories.length > 0) {
@@ -1531,6 +1562,9 @@ export default function Home() {
         <button onClick={() => { setActiveNav('home'); window.scrollTo({top: 0, behavior: 'smooth'}); }} style={{ background: activeNav === 'home' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'home' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <i className="fa-solid fa-house"></i>
         </button>
+        <button onClick={() => { setIsWaiterOpen(true); }} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
+          <i className="fa-solid fa-bell-concierge"></i>
+        </button>
         <button onClick={() => { setIsFavoritesOpen(true); }} style={{ background: activeNav === 'favorites' ? 'var(--primary-color)' : 'transparent', border: 'none', color: activeNav === 'favorites' ? '#000' : 'var(--text-muted)', fontSize: '20px', cursor: 'pointer', width: '48px', height: '48px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.3s ease' }}>
           <i className="fa-solid fa-heart"></i>
         </button>
@@ -1538,6 +1572,41 @@ export default function Home() {
           <i className="fa-solid fa-cart-shopping"></i>
           {cart.length > 0 && <span style={{ position: 'absolute', top: -2, right: -2, background: '#ef4444', color: '#fff', fontSize: '11px', width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', border: '2px solid var(--bg-color)' }}>{cart.length}</span>}
         </button>
+      </div>
+
+      {/* WAITER MODAL */}
+      <div className={`checkout-overlay ${isWaiterOpen ? 'active' : ''}`} onClick={(e) => { if(e.target.className.includes('checkout-overlay')) setIsWaiterOpen(false); }}>
+        <div className={`checkout-sheet ${isWaiterOpen ? 'open' : ''}`} style={{ background: 'var(--surface-color)', height: 'auto', maxHeight: '90vh', minHeight: '30vh', borderRadius: '32px 32px 0 0', display: 'flex', flexDirection: 'column', padding: '24px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: '700', color: 'var(--text-main)' }}><i className="fa-solid fa-bell-concierge" style={{ color: 'var(--primary-color)', marginRight: '8px' }}></i> Garson Çağır</h2>
+            <button onClick={() => setIsWaiterOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--text-muted)', fontSize: '24px', cursor: 'pointer' }}>&times;</button>
+          </div>
+          
+          <div style={{ flex: 1 }}>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '16px', fontSize: '14px' }}>Lütfen oturduğunuz masa numarasını girin, garsonumuz hemen ilgilenecektir.</p>
+            <div className="form-group" style={{ marginBottom: '24px' }}>
+              <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Masa Numarası *</label>
+              <input 
+                type="text" 
+                value={waiterTableNo} 
+                onChange={(e) => setWaiterTableNo(e.target.value)}
+                placeholder="Örn: Masa 5 veya 12" 
+                style={{ width: '100%', background: 'var(--bg-alpha-05)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', padding: '16px', borderRadius: '12px', fontSize: '16px', outline: 'none', transition: 'border 0.3s' }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--glass-border)'}
+              />
+            </div>
+            
+            <button 
+              onClick={handleCallWaiter}
+              disabled={waiterLoading}
+              style={{ width: '100%', background: 'var(--primary-color)', color: '#000', border: 'none', padding: '16px', borderRadius: '16px', fontSize: '16px', fontWeight: '700', cursor: waiterLoading ? 'not-allowed' : 'pointer', transition: 'transform 0.2s', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '8px' }}
+            >
+              {waiterLoading ? <i className="fa-solid fa-circle-notch fa-spin"></i> : <i className="fa-solid fa-bell"></i>}
+              {waiterLoading ? 'Çağrılıyor...' : 'Garson Çağır'}
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* PRODUCT DETAILS MODAL (FULL SCREEN SHEET) */}

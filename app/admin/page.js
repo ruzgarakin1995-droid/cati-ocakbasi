@@ -106,9 +106,11 @@ export default function AdminPage() {
   const [reminders, setReminders] = useState([]);
   const [activeReminders, setActiveReminders] = useState([]);
   const [orderCount, setOrderCount] = useState(0);
+  const [waiterRequests, setWaiterRequests] = useState([]);
 
   // Order alarm
   const prevOrderCountRef = useRef(0);
+  const prevWaiterCountRef = useRef(0);
   const alarmAudioRef = useRef(null);
 
   // ---- AUTH ----
@@ -139,10 +141,18 @@ export default function AdminPage() {
     } catch {}
   }, []);
 
+  const loadWaiterRequests = useCallback(async () => {
+    try {
+      const data = await apiFetch('/api/waiter');
+      const sorted = [...data].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setWaiterRequests(sorted);
+    } catch {}
+  }, []);
+
   useEffect(() => {
     if (!authed) return;
-    loadBanners(); loadFeatured(); loadMenu(); loadCoupons(); loadOrders(); loadSettings(); loadExpenses(); loadReminders();
-  }, [authed, loadBanners, loadFeatured, loadMenu, loadCoupons, loadOrders, loadSettings, loadExpenses, loadReminders]);
+    loadBanners(); loadFeatured(); loadMenu(); loadCoupons(); loadOrders(); loadSettings(); loadExpenses(); loadReminders(); loadWaiterRequests();
+  }, [authed, loadBanners, loadFeatured, loadMenu, loadCoupons, loadOrders, loadSettings, loadExpenses, loadReminders, loadWaiterRequests]);
 
   // ---- REMINDER CHECKER ----
   useEffect(() => {
@@ -205,6 +215,17 @@ export default function AdminPage() {
         }
         prevOrderCountRef.current = sorted.length;
         setOrderCount(sorted.length);
+
+        // Check waiter requests
+        const waiterData = await apiFetch('/api/waiter');
+        const pendingWaiters = waiterData.filter(w => w.status === 'pending');
+        if (pendingWaiters.length > prevWaiterCountRef.current && prevWaiterCountRef.current > 0) {
+          // New waiter request
+          playAlarm();
+        }
+        prevWaiterCountRef.current = pendingWaiters.length;
+        setWaiterRequests(waiterData);
+
       } catch {}
     }, 5000);
     return () => clearInterval(interval);
@@ -282,6 +303,7 @@ export default function AdminPage() {
     { id: 'menu', icon: 'fa-solid fa-utensils', label: '🍽️ Menü Yönetimi' },
     { id: 'coupons', icon: 'fa-solid fa-ticket', label: '🎟️ Kupon Kodları' },
     { id: 'orders', icon: 'fa-solid fa-box', label: '📦 Siparişler', badge: newOrders, activeBadge: activeOrders },
+    { id: 'waiters', icon: 'fa-solid fa-bell-concierge', label: '🛎️ Garson Talepleri', badge: waiterRequests.filter(r => r.status === 'pending').length },
     { id: 'finance', icon: 'fa-solid fa-chart-line', label: '💰 Maliyet & Finans' },
     { id: 'settings', icon: 'fa-solid fa-store', label: '🏪 İşletme Ayarları' },
     { id: 'design', icon: 'fa-solid fa-palette', label: '🎨 Tasarım Yönetimi' },
@@ -402,6 +424,7 @@ export default function AdminPage() {
           {activeTab === 'menu' && <MenuTab categories={categories} reload={loadMenu} />}
           {activeTab === 'coupons' && <CouponsTab coupons={coupons} reload={loadCoupons} />}
           {activeTab === 'orders' && <OrdersTab orders={orders} reload={loadOrders} />}
+          {activeTab === 'waiters' && <WaitersTab requests={waiterRequests} reload={loadWaiterRequests} />}
           {activeTab === 'settings' && <SettingsTab settings={settings} reload={loadSettings} />}
           {activeTab === 'finance' && <FinanceTab expenses={expenses} categories={categories} orders={orders} reloadExpenses={loadExpenses} reloadCategories={loadMenu} reminders={reminders} reloadReminders={loadReminders} />}
           {activeTab === 'design' && <DesignTab settings={settings} reload={loadSettings} />}
