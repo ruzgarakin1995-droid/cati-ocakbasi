@@ -1323,7 +1323,7 @@ export default function Home() {
       </div>
 
       {/* EDIT INGREDIENTS MODAL */}
-      <div className={`edit-item-overlay ${isEditOpen ? 'active' : ''}`} style={{ opacity: isEditOpen ? 1 : 0, pointerEvents: isEditOpen ? 'auto' : 'none', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 10000, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 0.3s ease' }}>
+      <div className={`edit-item-overlay ${isEditOpen ? 'active' : ''}`} style={{ opacity: isEditOpen ? 1 : 0, pointerEvents: isEditOpen ? 'auto' : 'none', position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.8)', zIndex: 10010, display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'opacity 0.3s ease' }}>
         <div className="edit-item-sheet" style={{ background: 'var(--surface-color)', padding: '20px', borderRadius: '16px', width: '90%', maxWidth: '350px', border: '1px solid var(--glass-border)' }}>
           <div className="edit-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
             <h4 style={{ margin: 0, color: 'var(--text-main)', fontSize: '18px' }}>

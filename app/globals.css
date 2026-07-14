@@ -14,22 +14,22 @@
   --toast-border: rgba(255, 255, 255, 0.1);
   
   /* Additional Variables for Refactoring */
-  --bg-alpha-02: var(--bg-alpha-02);
-  --bg-alpha-03: var(--bg-alpha-03);
-  --bg-alpha-04: var(--bg-alpha-04);
-  --bg-alpha-05: var(--bg-alpha-05);
-  --bg-alpha-06: var(--bg-alpha-06);
-  --bg-alpha-07: var(--bg-alpha-07);
-  --bg-alpha-10: var(--bg-alpha-10);
-  --bg-alpha-20: var(--bg-alpha-20);
+  --bg-alpha-02: rgba(255, 255, 255, 0.02);
+  --bg-alpha-03: rgba(255, 255, 255, 0.04);
+  --bg-alpha-04: rgba(255, 255, 255, 0.05);
+  --bg-alpha-05: rgba(255, 255, 255, 0.06);
+  --bg-alpha-06: rgba(255, 255, 255, 0.08);
+  --bg-alpha-07: rgba(255, 255, 255, 0.10);
+  --bg-alpha-10: rgba(255, 255, 255, 0.15);
+  --bg-alpha-20: rgba(255, 255, 255, 0.25);
   
-  --text-alpha-40: var(--text-alpha-40);
-  --text-alpha-50: var(--text-alpha-50);
-  --text-alpha-60: var(--text-alpha-60);
-  --text-alpha-70: var(--text-alpha-70);
+  --text-alpha-40: rgba(255, 255, 255, 0.4);
+  --text-alpha-50: rgba(255, 255, 255, 0.5);
+  --text-alpha-60: rgba(255, 255, 255, 0.6);
+  --text-alpha-70: rgba(255, 255, 255, 0.7);
   
-  --glass-input-focus: var(--glass-input-focus);
-  --theme-btn-bg: var(--bg-alpha-10);
+  --glass-input-focus: rgba(0, 0, 0, 0.6);
+  --theme-btn-bg: rgba(255, 255, 255, 0.08);
   --theme-btn-color: var(--text-main);
 }
 
