@@ -219,9 +219,9 @@ export default function AdminPage() {
         // Check waiter requests
         const waiterData = await apiFetch('/api/waiter');
         const pendingWaiters = waiterData.filter(w => w.status === 'pending');
-        if (pendingWaiters.length > prevWaiterCountRef.current && prevWaiterCountRef.current > 0) {
+        if (prevWaiterCountRef.current !== undefined && pendingWaiters.length > prevWaiterCountRef.current) {
           // New waiter request
-          playAlarm();
+          playWaiterAlarm();
         }
         prevWaiterCountRef.current = pendingWaiters.length;
         setWaiterRequests(waiterData);
@@ -266,6 +266,29 @@ export default function AdminPage() {
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.5);
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 1.5);
+      }
+    } catch {}
+  }
+
+  function playWaiterAlarm() {
+    try {
+      if (!alarmAudioRef.current) {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const playTone = (freq, time, duration) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + time);
+          gain.gain.setValueAtTime(0.3, ctx.currentTime + time);
+          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + time + duration);
+          osc.start(ctx.currentTime + time);
+          osc.stop(ctx.currentTime + time + duration);
+        };
+        // Kapı zili benzeri çift ses (Ding-dong)
+        playTone(659.25, 0, 0.4);   // E5
+        playTone(523.25, 0.4, 0.6); // C5
       }
     } catch {}
   }
@@ -2353,11 +2376,17 @@ function WaitersTab({ requests, reload }) {
       if (res.ok) {
         reload();
       } else {
-        alert('Hata oluştu.');
+        if (res.status === 404) {
+          // Sistem resetlenmiş olabilir, sayfayı yenile
+          reload();
+        } else {
+          const data = await res.json().catch(() => ({}));
+          alert(data.error || 'Hata oluştu.');
+        }
       }
     } catch (e) {
       console.error(e);
-      alert('Hata oluştu.');
+      alert('Bağlantı hatası.');
     }
   };
 
@@ -2375,11 +2404,16 @@ function WaitersTab({ requests, reload }) {
       if (res.ok) {
         reload();
       } else {
-        alert('Hata oluştu.');
+        if (res.status === 404) {
+          reload();
+        } else {
+          const data = await res.json().catch(() => ({}));
+          alert(data.error || 'Hata oluştu.');
+        }
       }
     } catch (e) {
       console.error(e);
-      alert('Hata oluştu.');
+      alert('Bağlantı hatası.');
     }
   };
 

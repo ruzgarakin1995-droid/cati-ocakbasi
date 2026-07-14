@@ -57,8 +57,8 @@ export async function PUT(request) {
     }
 
     const requests = await getWaiterRequests();
-    const index = requests.findIndex(r => r.id === id);
-    if (index === -1) return NextResponse.json({ error: 'Talep bulunamadı' }, { status: 404 });
+    const index = requests.findIndex(r => r.id === id || r._id === id);
+    if (index === -1) return NextResponse.json({ error: 'Talep bulunamadı (ID: ' + id + ')' }, { status: 404 });
     
     requests[index].status = status;
     requests[index].updatedAt = new Date().toISOString();
