@@ -1584,17 +1584,25 @@ export default function Home() {
           
           <div style={{ flex: 1 }}>
             <p style={{ color: 'var(--text-muted)', marginBottom: '16px', fontSize: '14px' }}>Lütfen oturduğunuz masa numarasını girin, garsonumuz hemen ilgilenecektir.</p>
-            <div className="form-group" style={{ marginBottom: '24px' }}>
+            <div style={{ marginBottom: '24px' }}>
               <label style={{ display: 'block', marginBottom: '8px', fontSize: '13px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Masa Numarası *</label>
               <input 
                 type="text" 
                 value={waiterTableNo} 
                 onChange={(e) => setWaiterTableNo(e.target.value)}
-                placeholder="Örn: Masa 5 veya 12" 
-                style={{ width: '100%', background: 'var(--bg-alpha-05)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', padding: '16px', borderRadius: '12px', fontSize: '16px', outline: 'none', transition: 'border 0.3s' }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--primary-color)'}
-                onBlur={(e) => e.target.style.borderColor = 'var(--glass-border)'}
+                placeholder="Numaratörden tuşlayın..." 
+                readOnly
+                style={{ width: '100%', background: 'var(--bg-alpha-05)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', padding: '16px', borderRadius: '12px', fontSize: '20px', fontWeight: '700', outline: 'none', transition: 'border 0.3s', textAlign: 'center', letterSpacing: '2px' }}
               />
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', marginBottom: '24px' }}>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
+                <button key={num} onClick={() => setWaiterTableNo(prev => prev + num)} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '24px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}>{num}</button>
+              ))}
+              <button onClick={() => setWaiterTableNo('')} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: '#ef4444', fontSize: '20px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}>C</button>
+              <button onClick={() => setWaiterTableNo(prev => prev + '0')} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '24px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}>0</button>
+              <button onClick={() => setWaiterTableNo(prev => prev.slice(0, -1))} style={{ background: 'var(--bg-alpha-10)', border: '1px solid var(--glass-border)', color: 'var(--text-main)', fontSize: '20px', fontWeight: '600', padding: '16px', borderRadius: '12px', cursor: 'pointer', transition: 'background 0.2s' }}><i className="fa-solid fa-delete-left"></i></button>
             </div>
             
             <button 
