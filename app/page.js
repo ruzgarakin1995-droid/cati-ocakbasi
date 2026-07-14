@@ -1599,7 +1599,7 @@ export default function Home() {
                   type="text" 
                   value={waiterTableNo} 
                   onChange={(e) => setWaiterTableNo(e.target.value)}
-                  placeholder="?" 
+                  placeholder="" 
                   readOnly
                   style={{ width: '100%', background: 'var(--bg-alpha-10)', border: '2px solid', borderColor: waiterTableNo ? 'var(--primary-color)' : 'var(--glass-border)', color: 'var(--text-main)', padding: '20px', borderRadius: '20px', fontSize: '32px', fontWeight: '800', outline: 'none', transition: 'all 0.3s ease', textAlign: 'center', letterSpacing: '4px', boxShadow: waiterTableNo ? '0 0 20px rgba(243, 156, 18, 0.15) inset' : 'none' }}
                 />
@@ -1621,10 +1621,10 @@ export default function Home() {
               disabled={waiterLoading || !waiterTableNo}
               style={{ 
                 width: '100%', 
-                background: waiterTableNo ? 'linear-gradient(135deg, var(--primary-color), #f39c12)' : 'var(--bg-alpha-10)', 
+                background: waiterTableNo ? 'linear-gradient(135deg, var(--primary-color), #f39c12)' : 'var(--bg-alpha-05)', 
                 color: waiterTableNo ? '#fff' : 'var(--text-muted)', 
                 textShadow: waiterTableNo ? '0 1px 3px rgba(0,0,0,0.5)' : 'none',
-                border: 'none', 
+                border: waiterTableNo ? '1px solid transparent' : '1px solid var(--glass-border)', 
                 padding: '20px', 
                 borderRadius: '20px', 
                 fontSize: '18px', 
@@ -1635,7 +1635,7 @@ export default function Home() {
                 justifyContent: 'center', 
                 alignItems: 'center', 
                 gap: '12px',
-                boxShadow: waiterTableNo ? '0 10px 20px rgba(243, 156, 18, 0.3)' : 'none',
+                boxShadow: waiterTableNo ? '0 10px 20px rgba(243, 156, 18, 0.3)' : '0 4px 6px rgba(0,0,0,0.1)',
                 transform: waiterLoading ? 'scale(0.98)' : 'scale(1)'
               }}
             >
