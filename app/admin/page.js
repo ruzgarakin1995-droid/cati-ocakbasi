@@ -108,13 +108,25 @@ export default function AdminPage() {
   const [orderCount, setOrderCount] = useState(0);
   const [waiterRequests, setWaiterRequests] = useState([]);
 
-  // Order alarm
+  // Order alarm & notifications
   const prevOrderCountRef = useRef(0);
   const prevWaiterCountRef = useRef(0);
-  const alarmAudioRef = useRef(null);
+  const [adminToast, setAdminToast] = useState(null);
+  const sharedAudioCtxRef = useRef(null);
 
-  // ---- AUTH ----
+  // ---- AUTH & INIT AUDIO ----
   useEffect(() => {
+    const initAudioOnInteraction = () => {
+      if (!sharedAudioCtxRef.current) {
+        sharedAudioCtxRef.current = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (sharedAudioCtxRef.current.state === 'suspended') {
+        sharedAudioCtxRef.current.resume();
+      }
+    };
+    window.addEventListener('click', initAudioOnInteraction, { once: true });
+    window.addEventListener('touchstart', initAudioOnInteraction, { once: true });
+
     const token = getToken();
     if (!token) { router.replace('/'); return; }
     fetch('/api/auth', { method: 'GET', headers: { Authorization: `Bearer ${token}` } })
@@ -122,6 +134,11 @@ export default function AdminPage() {
       .then(() => setAuthed(true))
       .catch(() => { localStorage.removeItem('adminToken'); router.replace('/'); })
       .finally(() => setLoading(false));
+
+    return () => {
+      window.removeEventListener('click', initAudioOnInteraction);
+      window.removeEventListener('touchstart', initAudioOnInteraction);
+    };
   }, [router]);
 
   // ---- LOAD DATA ----
@@ -254,15 +271,21 @@ export default function AdminPage() {
     const interval = setInterval(() => {
       if (pendingOrdersRef.current > 0) {
         playAlarm();
+        const msg = `Onayınızı bekleyen ${pendingOrdersRef.current} adet sipariş var.`;
+        setAdminToast({ title: '⚠️ Bekleyen Siparişler!', body: msg, type: 'order' });
+        setTimeout(() => setAdminToast(null), 8000);
         if ('Notification' in window && Notification.permission === 'granted') {
-          new Notification('⚠️ Bekleyen Siparişler Var!', { body: `Onayınızı bekleyen ${pendingOrdersRef.current} adet sipariş var.`, icon: '/cati-logo.png' });
+          new Notification('⚠️ Bekleyen Siparişler Var!', { body: msg, icon: '/cati-logo.png' });
         }
       }
       if (pendingWaitersRef.current > 0) {
         setTimeout(() => {
           playWaiterAlarm();
+          const msg = `Bekleyen ${pendingWaitersRef.current} garson talebi var!`;
+          setAdminToast({ title: '🛎️ Bekleyen Garson Talebi!', body: msg, type: 'waiter' });
+          setTimeout(() => setAdminToast(null), 8000);
           if ('Notification' in window && Notification.permission === 'granted') {
-            new Notification('🛎️ Bekleyen Garson Talebi!', { body: `Bekleyen ${pendingWaitersRef.current} garson talebi var!`, icon: '/cati-logo.png' });
+            new Notification('🛎️ Bekleyen Garson Talebi!', { body: msg, icon: '/cati-logo.png' });
           }
         }, pendingOrdersRef.current > 0 ? 2000 : 0);
       }
@@ -272,55 +295,68 @@ export default function AdminPage() {
 
   function playAlarm() {
     try {
-      if (!alarmAudioRef.current) {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      let ctx = sharedAudioCtxRef.current;
+      if (!ctx) {
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        sharedAudioCtxRef.current = ctx;
+      }
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.5);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 1.5);
+    } catch (e) { console.error('Audio play error:', e); }
+  }
+
+  function playWaiterAlarm() {
+    try {
+      let ctx = sharedAudioCtxRef.current;
+      if (!ctx) {
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+        sharedAudioCtxRef.current = ctx;
+      }
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const playTone = (freq, time, duration) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(880, ctx.currentTime);
-        gain.gain.setValueAtTime(0.3, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 1.5);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 1.5);
-      }
-    } catch {}
-  }
-
-  function playWaiterAlarm() {
-    try {
-      if (!alarmAudioRef.current) {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const playTone = (freq, time, duration) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, ctx.currentTime + time);
-          gain.gain.setValueAtTime(0.3, ctx.currentTime + time);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + time + duration);
-          osc.start(ctx.currentTime + time);
-          osc.stop(ctx.currentTime + time + duration);
-        };
-        // Kapı zili benzeri çift ses (Ding-dong)
-        playTone(659.25, 0, 0.4);   // E5
-        playTone(523.25, 0.4, 0.6); // C5
-      }
-    } catch {}
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + time);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime + time);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + time + duration);
+        osc.start(ctx.currentTime + time);
+        osc.stop(ctx.currentTime + time + duration);
+      };
+      playTone(659.25, 0, 0.4);   // E5
+      playTone(523.25, 0.4, 0.6); // C5
+    } catch (e) { console.error('Audio play error:', e); }
   }
 
   function sendNotification(order) {
+    const msg = `Sipariş #${order.id?.slice(-6) || ''} - ${formatPrice(order.totalAmount || 0)}`;
+    setAdminToast({ title: '🔔 Yeni Sipariş!', body: msg, type: 'order' });
+    setTimeout(() => setAdminToast(null), 8000);
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('🔔 Yeni Sipariş!', { body: `Sipariş #${order.id?.slice(-6) || ''} - ${formatPrice(order.totalAmount || 0)}`, icon: '/cati-logo.png' });
+      new Notification('🔔 Yeni Sipariş!', { body: msg, icon: '/cati-logo.png' });
     }
   }
 
   function sendWaiterNotification(request) {
     if (!request) return;
+    const msg = `Masa numarası: ${request.tableNo}`;
+    setAdminToast({ title: '🛎️ Yeni Garson Talebi!', body: msg, type: 'waiter' });
+    setTimeout(() => setAdminToast(null), 8000);
     if ('Notification' in window && Notification.permission === 'granted') {
-      new Notification('🛎️ Yeni Garson Talebi!', { body: `Masa numarası: ${request.tableNo}`, icon: '/cati-logo.png' });
+      new Notification('🛎️ Yeni Garson Talebi!', { body: msg, icon: '/cati-logo.png' });
     }
   }
 
