@@ -2045,11 +2045,13 @@ function AIChatAssistant({ reloadAll }) {
     setLoading(true);
 
     try {
+      const localApiKey = localStorage.getItem('aiApiKey');
       const res = await fetch('/api/ai', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+          'X-AI-API-Key': localApiKey || ''
         },
         body: JSON.stringify({ message: userText })
       });
@@ -2161,13 +2163,21 @@ function SettingsTab({ settings, reload }) {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (settings) setForm(settings);
+    if (settings) {
+      const localKey = localStorage.getItem('aiApiKey');
+      setForm({ ...settings, aiApiKey: settings.aiApiKey || localKey || '' });
+    }
   }, [settings]);
 
   async function handleSave() {
     setSaving(true);
     try {
       await apiFetch('/api/settings', { method: 'PUT', body: JSON.stringify(form) });
+      if (form.aiApiKey) {
+        localStorage.setItem('aiApiKey', form.aiApiKey);
+      } else {
+        localStorage.removeItem('aiApiKey');
+      }
       reload();
       alert('Ayarlar başarıyla kaydedildi!');
     } catch (e) { alert('Hata: ' + e.message); }
