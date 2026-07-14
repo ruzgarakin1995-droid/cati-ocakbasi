@@ -2342,10 +2342,10 @@ function DesignTab({ settings, reload }) {
 function WaitersTab({ requests, reload }) {
   const handleComplete = async (id) => {
     try {
-      const res = await fetch(`/api/waiter/${id}`, {
+      const res = await fetch(`/api/waiter`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'completed' })
+        body: JSON.stringify({ id, status: 'completed' })
       });
       if (res.ok) {
         reload();
@@ -2361,10 +2361,10 @@ function WaitersTab({ requests, reload }) {
   const handleCancel = async (id) => {
     if (!confirm('İptal etmek istediğinize emin misiniz?')) return;
     try {
-      const res = await fetch(`/api/waiter/${id}`, {
+      const res = await fetch(`/api/waiter`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: 'cancelled' })
+        body: JSON.stringify({ id, status: 'cancelled' })
       });
       if (res.ok) {
         reload();
@@ -2389,7 +2389,7 @@ function WaitersTab({ requests, reload }) {
   return (
     <div style={{ display: 'grid', gap: '16px' }}>
       {requests.map(req => (
-        <div key={req._id} style={{ background: 'var(--surface-color)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+        <div key={req.id || req._id} style={{ background: 'var(--surface-color)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
             <div style={{ background: 'rgba(243, 156, 18, 0.1)', color: '#f39c12', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: '800', border: '1px solid rgba(243, 156, 18, 0.3)' }}>
               {req.tableNo}
@@ -2400,10 +2400,10 @@ function WaitersTab({ requests, reload }) {
             </div>
           </div>
           <div style={{ display: 'flex', gap: '12px' }}>
-            <button onClick={() => handleComplete(req._id)} style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.1)'}>
+            <button onClick={() => handleComplete(req.id || req._id)} style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.1)'}>
               <i className="fa-solid fa-check" style={{ marginRight: '8px' }}></i> Tamamlandı
             </button>
-            <button onClick={() => handleCancel(req._id)} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}>
+            <button onClick={() => handleCancel(req.id || req._id)} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}>
               İptal
             </button>
           </div>
