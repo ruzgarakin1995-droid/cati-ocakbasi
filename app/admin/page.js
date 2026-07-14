@@ -1594,7 +1594,7 @@ function FeaturedTab({ featured, reload }) {
               <p style={{ margin: 0, fontSize: 13, color: colors.textMuted, lineHeight: 1.4 }}>{f.description?.slice(0, 100)}...</p>
               <div style={{ fontSize: 14, fontWeight: 700, color: colors.gold, marginTop: 4 }}>{formatPrice(f.price)}</div>
             </div>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexShrink: 0, width: '100%', justifyContent: 'space-between', borderTop: `1px solid ${colors.border}`, paddingTop: 12, marginTop: 4 }}>
+            <div className="admin-item-actions">
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={f.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
                   <input type="checkbox" checked={!f.isHidden} onChange={(e) => handleToggleVisibility(f.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
@@ -1764,7 +1764,7 @@ function MenuTab({ categories, reload }) {
               <p style={{ margin: 0, fontSize: 12, color: colors.textMuted }}>{item.description?.slice(0, 80)}...</p>
               <span style={{ fontSize: 14, fontWeight: 700, color: colors.gold }}>{formatPrice(item.price)}</span>
             </div>
-            <div style={{ display: 'flex', gap: 16, alignItems: 'center', flexShrink: 0, width: '100%', justifyContent: 'space-between', borderTop: `1px solid ${colors.border}`, paddingTop: 12, marginTop: 4 }}>
+            <div className="admin-item-actions">
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={item.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
                   <input type="checkbox" checked={!item.isHidden} onChange={(e) => handleToggleVisibility(item.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
