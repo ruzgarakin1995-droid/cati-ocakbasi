@@ -261,6 +261,9 @@ export default function Home() {
   const courierFee = settings.courierFee ?? 60;
   const isStoreOpen = settings.isStoreOpen ?? true;
 
+  const activeBanners = (data.banners || []).filter(b => !b.isHidden);
+  const activeFeatured = (data.featured || []).filter(f => !f.isHidden);
+
   const cartTotal = cart.reduce((sum, item) => sum + item.price, 0);
   const discountAmount = appliedCoupon ? appliedCoupon.discount : 0;
   const finalTotal = cartTotal - discountAmount;
@@ -528,10 +531,10 @@ export default function Home() {
     // Auto-play slider
     const slider = document.getElementById('mainBannerSlider');
     let slideInterval;
-    if (slider && data.banners.length > 0) {
+    if (slider && activeBanners.length > 0) {
       slideInterval = setInterval(() => {
         setCurrentSlide(prev => {
-          const next = (prev + 1) % data.banners.length;
+          const next = (prev + 1) % activeBanners.length;
           slider.scrollTo({ left: slider.clientWidth * next, behavior: 'smooth' });
           return next;
         });
@@ -577,7 +580,7 @@ export default function Home() {
       window.removeEventListener('scroll', handleScroll);
       if (slideInterval) clearInterval(slideInterval);
     };
-  }, [data.categories, activeTab, data.banners.length]);
+  }, [data.categories, activeTab, activeBanners.length]);
 
   return (
     <>
@@ -687,7 +690,7 @@ export default function Home() {
       <main className="container">
         
         {/* SLIDER BANNERS */}
-        {!searchQuery && data.banners.length > 0 && (
+        {!searchQuery && activeBanners.length > 0 && (
           <>
             <div 
               className="banner-slider" 
@@ -697,7 +700,7 @@ export default function Home() {
                 if (index !== currentSlide) setCurrentSlide(index);
               }}
             >
-              {data.banners.map((banner, i) => (
+              {activeBanners.map((banner, i) => (
                 <div key={banner.id} className="banner-card" onClick={() => { setSelectedItem(banner); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
                   <div className="item-badges">
                   {banner.badge && <span className="tag-badge tag-pop" style={{ fontSize: '12px', padding: '6px 12px' }}><i className="fa-solid fa-star"></i> {banner.badge}</span>}
@@ -722,7 +725,7 @@ export default function Home() {
             ))}
           </div>
           <div className="slider-dots" id="bannerDots" style={{ marginTop: '16px', marginBottom: '32px' }}>
-            {data.banners.map((_, idx) => (
+            {activeBanners.map((_, idx) => (
               <div 
                 key={idx} 
                 className={`slider-dot ${currentSlide === idx ? 'active' : ''}`}
@@ -740,9 +743,9 @@ export default function Home() {
       )}
 
         {/* FEATURED ITEMS (SÜPER LEZZETLER) */}
-        {!searchQuery && data.featured.length > 0 && (
+        {!searchQuery && activeFeatured.length > 0 && (
           <div className="featured-grid">
-            {data.featured.map(item => (
+            {activeFeatured.map(item => (
               <div key={item.id} className="featured-card" onClick={() => { setSelectedItem(item); setIsDetailOpen(true); }} style={{ cursor: 'pointer' }}>
                 <div className="featured-img-wrapper">
                   <Image src={item.image} alt={item.title} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 50vw, 300px" />

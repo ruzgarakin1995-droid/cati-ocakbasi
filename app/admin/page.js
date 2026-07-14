@@ -1346,6 +1346,14 @@ function BannersTab({ banners, reload }) {
     } catch (e) { alert('Hata: ' + e.message); }
   }
 
+  async function handleToggleVisibility(bannerId, newIsHidden) {
+    try {
+      const updated = banners.map(b => b.id === bannerId ? { ...b, isHidden: newIsHidden } : b);
+      await apiFetch('/api/banners', { method: 'PUT', body: JSON.stringify(updated) });
+      reload();
+    } catch (e) { alert('Hata: ' + e.message); }
+  }
+
   async function handleDelete(id) {
     try {
       const updated = banners.filter(b => b.id !== id);
@@ -1358,20 +1366,27 @@ function BannersTab({ banners, reload }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <p style={{ color: colors.textMuted, margin: 0 }}>{banners.length} banner kayıtlı</p>
+        <h2 style={{ fontSize: 20, margin: 0, color: colors.gold }}>Slider (Vitrin)</h2>
         <button className="admin-btn admin-btn-gold" onClick={() => setEditing('new')}>
-          <i className="fa-solid fa-plus"></i> Yeni Banner
+          <i className="fa-solid fa-plus"></i> Yeni Ekle
         </button>
       </div>
 
       {editing && (
-        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} />
+        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
       )}
 
-      <div style={{ display: 'grid', gap: 12 }}>
+      <div style={{ display: 'grid', gap: 16 }}>
         {banners.map((b, i) => (
-          <div key={b.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.05}s both`, flexWrap: 'wrap' }}>
-            {b.image && <img src={b.image} alt={b.title} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 12, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
+          <div key={b.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.05}s both`, flexWrap: 'wrap', opacity: b.isHidden ? 0.5 : 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={b.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
+                <input type="checkbox" checked={!b.isHidden} onChange={(e) => handleToggleVisibility(b.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
+                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: b.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
+                <span style={{ position: 'absolute', height: 18, width: 18, left: b.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
+              </label>
+            </div>
+            {b.image && <img src={b.image} alt={b.title} style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 12, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
                 {b.emoji && <span>{b.emoji}</span>}
@@ -1424,6 +1439,14 @@ function FeaturedTab({ featured, reload }) {
     } catch (e) { alert('Hata: ' + e.message); }
   }
 
+  async function handleToggleVisibility(featuredId, newIsHidden) {
+    try {
+      const updated = featured.map(f => f.id === featuredId ? { ...f, isHidden: newIsHidden } : f);
+      await apiFetch('/api/featured', { method: 'PUT', body: JSON.stringify(updated) });
+      reload();
+    } catch (e) { alert('Hata: ' + e.message); }
+  }
+
   async function handleDelete(id) {
     try {
       const updated = featured.filter(f => f.id !== id);
@@ -1436,19 +1459,26 @@ function FeaturedTab({ featured, reload }) {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
-        <p style={{ color: colors.textMuted, margin: 0 }}>{featured.length} süper lezzet kayıtlı</p>
+        <h2 style={{ fontSize: 20, margin: 0, color: colors.gold }}>Süper Lezzetler</h2>
         <button className="admin-btn admin-btn-gold" onClick={() => setEditing('new')}>
-          <i className="fa-solid fa-plus"></i> Yeni Lezzet
+          <i className="fa-solid fa-plus"></i> Yeni Ekle
         </button>
       </div>
 
       {editing && (
-        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} />
+        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
       )}
 
-      <div style={{ display: 'grid', gap: 12 }}>
+      <div style={{ display: 'grid', gap: 16 }}>
         {featured.map((f, i) => (
-          <div key={f.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.05}s both`, flexWrap: 'wrap' }}>
+          <div key={f.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.05}s both`, flexWrap: 'wrap', opacity: f.isHidden ? 0.5 : 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
+              <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={f.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
+                <input type="checkbox" checked={!f.isHidden} onChange={(e) => handleToggleVisibility(f.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
+                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: f.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
+                <span style={{ position: 'absolute', height: 18, width: 18, left: f.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
+              </label>
+            </div>
             {f.image && <img src={f.image} alt={f.title} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 12, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
@@ -1560,7 +1590,7 @@ function MenuTab({ categories, reload }) {
             <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
               <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={item.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
                 <input type="checkbox" checked={!item.isHidden} onChange={(e) => handleToggleVisibility(item.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
-                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: item.isHidden ? 'var(--glass-border)' : '#f39c12', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
+                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: item.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
                 <span style={{ position: 'absolute', height: 18, width: 18, left: item.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
               </label>
             </div>
