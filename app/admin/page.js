@@ -2344,7 +2344,10 @@ function WaitersTab({ requests, reload }) {
     try {
       const res = await fetch(`/api/waiter`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
         body: JSON.stringify({ id, status: 'completed' })
       });
       if (res.ok) {
@@ -2363,7 +2366,10 @@ function WaitersTab({ requests, reload }) {
     try {
       const res = await fetch(`/api/waiter`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
         body: JSON.stringify({ id, status: 'cancelled' })
       });
       if (res.ok) {
