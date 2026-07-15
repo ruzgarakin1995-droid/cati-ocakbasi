@@ -1485,20 +1485,16 @@ function BannersTab({ banners, reload }) {
         </button>
       </div>
 
-      {editing && (
-        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
+      {editing === 'new' && (
+        <ItemForm item={null} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
       )}
 
       <div style={{ display: 'grid', gap: 16 }}>
         {banners.map((b, i) => (
+          editing?.id === b.id ? (
+            <ItemForm key={b.id} item={editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
+          ) : (
           <div key={b.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.05}s both`, flexWrap: 'wrap', opacity: b.isHidden ? 0.5 : 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
-              <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={b.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
-                <input type="checkbox" checked={!b.isHidden} onChange={(e) => handleToggleVisibility(b.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
-                <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: b.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
-                <span style={{ position: 'absolute', height: 18, width: 18, left: b.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
-              </label>
-            </div>
             {b.image && <img src={b.image} alt={b.title} style={{ width: 80, height: 80, objectFit: 'cover', borderRadius: 12, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 200 }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
@@ -1509,22 +1505,32 @@ function BannersTab({ banners, reload }) {
               <p style={{ margin: 0, fontSize: 13, color: colors.textMuted, lineHeight: 1.4 }}>{b.description?.slice(0, 100)}...</p>
               <div style={{ fontSize: 14, fontWeight: 700, color: colors.gold, marginTop: 4 }}>{formatPrice(b.price)}</div>
             </div>
-            <div style={{ display: 'flex', gap: 8, flexShrink: 0 }}>
-              <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(b)}>
-                <i className="fa-solid fa-pen"></i> Düzenle
-              </button>
-              {deleting === b.id ? (
-                <div style={{ display: 'flex', gap: 6 }}>
-                  <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => handleDelete(b.id)}>Evet</button>
-                  <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(null)}>Hayır</button>
-                </div>
-              ) : (
-                <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(b.id)} style={{ color: colors.danger }}>
-                  <i className="fa-solid fa-trash"></i>
+            <div className="admin-item-actions">
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <label style={{ cursor: 'pointer', position: 'relative', display: 'inline-block', width: 44, height: 24 }} title={b.isHidden ? "Satışa Aç" : "Satışa Kapat"}>
+                  <input type="checkbox" checked={!b.isHidden} onChange={(e) => handleToggleVisibility(b.id, !e.target.checked)} style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }} />
+                  <span style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: b.isHidden ? '#ef4444' : '#22c55e', borderRadius: 24, transition: '.3s', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.5)' }}></span>
+                  <span style={{ position: 'absolute', height: 18, width: 18, left: b.isHidden ? 3 : 23, bottom: 3, backgroundColor: 'white', borderRadius: '50%', transition: '.3s', boxShadow: '0 2px 5px rgba(0,0,0,0.3)' }}></span>
+                </label>
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setEditing(b)}>
+                  <i className="fa-solid fa-pen"></i> Düzenle
                 </button>
-              )}
+                {deleting === b.id ? (
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button className="admin-btn admin-btn-danger admin-btn-sm" onClick={() => handleDelete(b.id)}>Evet</button>
+                    <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(null)}>Hayır</button>
+                  </div>
+                ) : (
+                  <button className="admin-btn admin-btn-ghost admin-btn-sm" onClick={() => setDeleting(b.id)} style={{ color: colors.danger }}>
+                    <i className="fa-solid fa-trash"></i>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
+          )
         ))}
       </div>
     </div>
