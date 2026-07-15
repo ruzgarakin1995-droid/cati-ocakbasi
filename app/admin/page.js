@@ -10,7 +10,7 @@ const colors = {
   bg: 'var(--bg-color)',
   bgCard: 'var(--bg-alpha-04)',
   bgCardHover: 'var(--bg-alpha-07)',
-  bgSidebar: 'var(--surface-color)',
+  bgSidebar: 'var(--glass-bg)',
   gold: 'var(--primary-color)',
   goldLight: 'var(--accent-color)',
   goldDark: '#b8961f',
@@ -522,7 +522,7 @@ export default function AdminPage() {
         )}
 
         {/* Header */}
-        <header style={{ padding: '16px 24px', borderBottom: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--surface-color)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 50 }}>
+        <header style={{ padding: '16px 24px', borderBottom: `1px solid ${colors.border}`, display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'var(--glass-bg)', backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)', position: 'sticky', top: 0, zIndex: 50 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <button className="admin-mobile-toggle" onClick={() => setSidebarOpen(true)} style={{ background: 'none', border: 'none', color: colors.text, fontSize: 20, cursor: 'pointer', padding: 8 }}>
               <i className="fa-solid fa-bars"></i>
