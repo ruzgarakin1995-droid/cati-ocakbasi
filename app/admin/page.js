@@ -2792,39 +2792,71 @@ function WaitersTab({ requests, reload }) {
   };
 
   const pendingRequests = requests.filter(r => r.status === 'pending');
-
-  if (!pendingRequests || pendingRequests.length === 0) {
-    return (
-      <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-alpha-05)', borderRadius: 20, border: '1px solid var(--glass-border)' }}>
-        <i className="fa-solid fa-bell-concierge" style={{ fontSize: 48, color: 'var(--text-muted)', marginBottom: 16 }}></i>
-        <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>Şu an bekleyen garson talebi bulunmuyor.</p>
-      </div>
-    );
-  }
+  const pastRequests = requests.filter(r => r.status !== 'pending').slice(0, 50);
 
   return (
-    <div style={{ display: 'grid', gap: '16px' }}>
-      {pendingRequests.map(req => (
-        <div key={req.id || req._id} style={{ background: 'var(--surface-color)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div style={{ background: 'rgba(243, 156, 18, 0.1)', color: '#f39c12', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: '800', border: '1px solid rgba(243, 156, 18, 0.3)' }}>
-              {req.tableNo}
-            </div>
-            <div>
-              <h4 style={{ margin: '0 0 8px 0', fontSize: '18px', color: 'var(--text-main)', fontWeight: '700' }}>Masa {req.tableNo}</h4>
-              <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}><i className="fa-regular fa-clock" style={{ marginRight: '6px' }}></i>{new Date(req.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}</p>
-            </div>
-          </div>
-          <div style={{ display: 'flex', gap: '12px' }}>
-            <button onClick={() => handleComplete(req.id || req._id)} style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.1)'}>
-              <i className="fa-solid fa-check" style={{ marginRight: '8px' }}></i> Tamamlandı
-            </button>
-            <button onClick={() => handleCancel(req.id || req._id)} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}>
-              İptal
-            </button>
-          </div>
+    <div>
+      <h3 style={{ marginBottom: 16, color: 'var(--text-main)', fontSize: 18 }}>Bekleyen Talepler</h3>
+      
+      {pendingRequests.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '60px 20px', background: 'var(--bg-alpha-05)', borderRadius: 20, border: '1px solid var(--glass-border)', marginBottom: 32 }}>
+          <i className="fa-solid fa-bell-concierge" style={{ fontSize: 48, color: 'var(--text-muted)', marginBottom: 16 }}></i>
+          <p style={{ color: 'var(--text-muted)', fontSize: 16 }}>Şu an bekleyen garson talebi bulunmuyor.</p>
         </div>
-      ))}
+      ) : (
+        <div style={{ display: 'grid', gap: '16px', marginBottom: 32 }}>
+          {pendingRequests.map(req => (
+            <div key={req.id || req._id} style={{ background: 'var(--surface-color)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', boxShadow: '0 4px 6px rgba(0,0,0,0.05)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <div style={{ background: 'rgba(243, 156, 18, 0.1)', color: '#f39c12', width: '60px', height: '60px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', fontWeight: '800', border: '1px solid rgba(243, 156, 18, 0.3)' }}>
+                  {req.tableNo}
+                </div>
+                <div>
+                  <h4 style={{ margin: '0 0 8px 0', fontSize: '18px', color: 'var(--text-main)', fontWeight: '700' }}>Masa {req.tableNo}</h4>
+                  <p style={{ margin: 0, fontSize: '14px', color: 'var(--text-muted)' }}><i className="fa-regular fa-clock" style={{ marginRight: '6px' }}></i>{new Date(req.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}</p>
+                </div>
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button onClick={() => handleComplete(req.id || req._id)} style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(34, 197, 94, 0.1)'}>
+                  <i className="fa-solid fa-check" style={{ marginRight: '8px' }}></i> Tamamlandı
+                </button>
+                <button onClick={() => handleCancel(req.id || req._id)} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '12px 24px', borderRadius: '12px', fontSize: '15px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s' }} onMouseOver={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.2)'} onMouseOut={e => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}>
+                  İptal
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {pastRequests.length > 0 && (
+        <>
+          <h3 style={{ marginBottom: 16, color: 'var(--text-muted)', fontSize: 18, borderTop: '1px solid var(--glass-border)', paddingTop: 24 }}>Geçmiş Talepler (Son 50)</h3>
+          <div style={{ display: 'grid', gap: '12px' }}>
+            {pastRequests.map(req => (
+              <div key={req.id || req._id} style={{ background: 'var(--bg-alpha-03)', border: '1px solid var(--glass-border)', borderRadius: '16px', padding: '16px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', opacity: 0.7 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                  <div style={{ background: 'var(--bg-alpha-10)', color: 'var(--text-muted)', width: '50px', height: '50px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: '800' }}>
+                    {req.tableNo}
+                  </div>
+                  <div>
+                    <h4 style={{ margin: '0 0 4px 0', fontSize: '16px', color: 'var(--text-muted)', fontWeight: '600' }}>Masa {req.tableNo}</h4>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--text-alpha-50)' }}>
+                      <i className="fa-regular fa-clock" style={{ marginRight: '6px' }}></i>
+                      {new Date(req.createdAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}
+                      {req.updatedAt && ` - ${new Date(req.updatedAt).toLocaleTimeString('tr-TR', { hour: '2-digit', minute: '2-digit' })}`}
+                    </p>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: req.status === 'completed' ? '#22c55e' : '#ef4444', fontSize: '14px', fontWeight: '600', padding: '6px 12px', background: req.status === 'completed' ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', borderRadius: '8px' }}>
+                  <i className={`fa-solid ${req.status === 'completed' ? 'fa-check' : 'fa-xmark'}`}></i> 
+                  {req.status === 'completed' ? 'Tamamlandı' : 'İptal Edildi'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }
