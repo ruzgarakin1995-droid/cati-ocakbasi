@@ -1578,12 +1578,15 @@ function FeaturedTab({ featured, reload }) {
         </button>
       </div>
 
-      {editing && (
-        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
+      {editing === 'new' && (
+        <ItemForm item={null} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
       )}
 
       <div style={{ display: 'grid', gap: 16 }}>
         {featured.map((f, i) => (
+          editing?.id === f.id ? (
+            <ItemForm key={f.id} item={editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={false} />
+          ) : (
           <div key={f.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.05}s both`, flexWrap: 'wrap', opacity: f.isHidden ? 0.5 : 1 }}>
             {f.image && <img src={f.image} alt={f.title} style={{ width: 64, height: 64, objectFit: 'cover', borderRadius: 12, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 200 }}>
@@ -1619,6 +1622,7 @@ function FeaturedTab({ featured, reload }) {
               </div>
             </div>
           </div>
+          )
         ))}
       </div>
     </div>
@@ -1746,12 +1750,15 @@ function MenuTab({ categories, reload }) {
         </div>
       )}
 
-      {editing && (
-        <ItemForm item={editing === 'new' ? null : editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={true} allCategories={categories} defaultCategoryId={selectedCat} />
+      {editing === 'new' && (
+        <ItemForm item={null} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={true} allCategories={categories} defaultCategoryId={selectedCat} />
       )}
 
       <div style={{ display: 'grid', gap: 12 }}>
         {items.map((item, i) => (
+          editing?.id === item.id ? (
+            <ItemForm key={item.id} item={editing} onSave={handleSave} onCancel={() => setEditing(null)} showHighlight={true} allCategories={categories} defaultCategoryId={selectedCat} />
+          ) : (
           <div key={item.id} className="admin-card" style={{ padding: 16, display: 'flex', gap: 16, alignItems: 'center', animation: `fadeIn 0.3s ease ${i * 0.04}s both`, flexWrap: 'wrap', opacity: item.isHidden ? 0.5 : 1 }}>
             {item.image && <img src={item.image} alt={item.title} style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 10, border: `1px solid ${colors.border}`, flexShrink: 0 }} onError={e => { e.target.style.display = 'none'; }} />}
             <div style={{ flex: 1, minWidth: 180 }}>
@@ -1789,6 +1796,7 @@ function MenuTab({ categories, reload }) {
               </div>
             </div>
           </div>
+          )
         ))}
         {items.length === 0 && <p style={{ textAlign: 'center', color: colors.textMuted, padding: 40 }}>Bu kategoride ürün bulunamadı.</p>}
       </div>
